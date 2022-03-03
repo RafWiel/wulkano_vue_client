@@ -9,7 +9,7 @@
         style="min-height:100vh">
         <v-col>
           <!-- Main workspace -->
-          <v-main>
+          <v-main style="height: 100%">
             <router-view
               @isProcessing="isProcessing = $event"
               @showMessage="showMessageDialog"
@@ -97,3 +97,47 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+  //@import url('https://fonts.googleapis.com/css?family=Montserrat:330,400,600,800');
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap');
+
+  //$font-family: 'Montserrat';
+  $font-family: 'Nunito';
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  // Vuetify buttons are uppercase by default, this allows normal text
+  button {
+    text-transform: unset !important;
+  }
+
+  #app {
+    font-family: $font-family, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+    background: #e8e8e8;
+
+    @media (max-width: 960px) {
+      background: white;
+    }
+  }
+
+  .v-application {
+    [class*='text-'] {
+      font-family: $font-family, sans-serif !important;
+    }
+
+    font-family: $font-family, sans-serif !important;
+  }
+
+  .v-btn {
+    @media (max-width: 960px) {
+      min-height: 50px;
+    }
+  }
+
+</style>
