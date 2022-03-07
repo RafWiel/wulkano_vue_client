@@ -167,30 +167,78 @@
                 </h3>
               </v-col>
             </v-row>
-            <!-- Tire 1 -->
+            <!-- Tires -->
+            <div
+              v-for="(tire, index) in item.tires"
+              :key="index">
+              <tire-info :item="tire"/>
+            </div>
+            <!-- Diagnostics -->
+            <v-textarea
+              label="Diagnostyka / zalecenia"
+              hide-details="auto"
+              validate-on-blur
+              auto-grow
+              rows="4"
+              v-model.lazy="item.tireDiagnostics"/>
+          </v-col>
+        </v-row>
+      </v-card>
+      <!-- Actions -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        <v-row class="no-gutters" style="height:100%">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
             <v-row class="no-gutters">
               <v-col>
-                <tire-info />
+                <h3 class="primary--text text--darken-1">
+                  Czynności wykonane
+                </h3>
               </v-col>
             </v-row>
-            <!-- Tire 2 -->
-            <v-row class="no-gutters">
-              <v-col>
-                <tire-info />
-              </v-col>
-            </v-row>
-            <!-- Tire 3 -->
-            <v-row class="no-gutters">
-              <v-col>
-                <tire-info />
-              </v-col>
-            </v-row>
-            <!-- Tire 4 -->
-            <v-row class="no-gutters">
-              <v-col>
-                <tire-info />
-              </v-col>
-            </v-row>
+            <!-- Actions -->
+            <service-action :item="actions.tireInspection"/>
+            <service-action :item="actions.pressureRegulation"/>
+            <service-action :item="actions.wheelWashing">
+              <template v-slot:extra-info>
+                <v-text-field
+                  v-model.lazy="item.extraInfo"
+                  label=""/>
+              </template>
+            </service-action>
+            <service-action :item="actions.wheelUnscrewing">
+              <template v-slot:extra-info>
+                <v-text-field
+                  v-model.lazy="item.extraInfo"
+                  label=""/>
+              </template>
+            </service-action>
+            <service-action :item="actions.tireInstallation">
+              <template v-slot:extra-info>
+                <v-text-field
+                  v-model.lazy="item.extraInfo"
+                  label=""/>
+              </template>
+            </service-action>
+            <service-action :item="actions.wheelBalancing">
+              <template v-slot:extra-info>
+                <v-text-field
+                  v-model.lazy="item.extraInfo"
+                  label=""/>
+              </template>
+            </service-action>
+            <service-action :item="actions.wheelWeights">
+              <template v-slot:extra-info>
+                <v-text-field
+                  v-model.lazy="item.extraInfo"
+                  label=""/>
+              </template>
+            </service-action>
+            <service-action :item="actions.wheelCentering"/>
+            <service-action :item="actions.pinsCleaning"/>
           </v-col>
         </v-row>
       </v-card>
@@ -201,12 +249,14 @@
 <script>
 import vehicleType from '@/enums/vehicleType';
 import TireInfo from '@/components/TireInfo.vue';
+import ServiceAction from '@/components/ServiceAction.vue';
 
 export default {
   name: 'OrderForm',
 
   components: {
     TireInfo,
+    ServiceAction,
   },
   data: () => ({
     isFormValid: false,
@@ -221,6 +271,90 @@ export default {
       registrationNumber: '',
       mileage: 0,
       description: '',
+      tires: [
+        {
+          size: '315/80/R22,5',
+          pressure: 3.0,
+          tread: 4.5,
+        },
+        {
+          size: '315/80/R22,5',
+          pressure: 3.0,
+          tread: 4.5,
+        },
+        {
+          size: '335/80/R22,5',
+          pressure: 3.0,
+          tread: 4.5,
+        },
+        {
+          size: '335/80/R22,5',
+          pressure: 3.0,
+          tread: 4.5,
+        },
+      ],
+      tireDiagnostics: '',
+    },
+    actions: {
+      tireInspection: {
+        isChecked: false,
+        text: 'Inspekcja stany ogumienia',
+        count: 0,
+        info: '',
+      },
+      pressureRegulation: {
+        isChecked: false,
+        text: 'Regulacja ciśnienia',
+        count: 0,
+        info: '',
+      },
+      wheelWashing: {
+        isChecked: false,
+        text: 'Mycie koła',
+        count: 0,
+        info: '',
+        extraInfo: '',
+      },
+      wheelUnscrewing: {
+        isChecked: false,
+        text: 'Odkręcanie koła',
+        count: 0,
+        info: '',
+        extraInfo: '',
+      },
+      tireInstallation: {
+        isChecked: false,
+        text: 'Demontaż / montaż opony',
+        count: 0,
+        info: '',
+        extraInfo: '',
+      },
+      wheelBalancing: {
+        isChecked: false,
+        text: 'Wyważanie',
+        count: 0,
+        info: '',
+        extraInfo: '',
+      },
+      wheelWeights: {
+        isChecked: false,
+        text: 'Ciężarki',
+        count: 0,
+        info: '',
+        extraInfo: '',
+      },
+      wheelCentering: {
+        isChecked: false,
+        text: 'Centrowanie koła',
+        count: 0,
+        info: '',
+      },
+      pinsCleaning: {
+        isChecked: false,
+        text: 'Czyszczenie / smarowanie szpilek',
+        count: 0,
+        info: '',
+      },
     },
     rules: {
       required: (value) => !!value || 'Pole wymagane',
