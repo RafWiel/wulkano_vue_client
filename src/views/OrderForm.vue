@@ -171,7 +171,7 @@
             <div
               v-for="(tire, index) in item.tires"
               :key="index">
-              <tire-info :item="tire"/>
+              <tire-measurement-info :item="tire"/>
             </div>
             <!-- Diagnostics -->
             <v-textarea
@@ -205,40 +205,320 @@
             <service-action :item="actions.wheelWashing">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.extraInfo"
+                  v-model.lazy="actions.wheelWashing.extraInfo"
                   label=""/>
               </template>
             </service-action>
             <service-action :item="actions.wheelUnscrewing">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.extraInfo"
+                  v-model.lazy="actions.wheelUnscrewing.extraInfo"
                   label=""/>
               </template>
             </service-action>
             <service-action :item="actions.tireInstallation">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.extraInfo"
+                  v-model.lazy="actions.tireInstallation.extraInfo"
                   label=""/>
               </template>
             </service-action>
             <service-action :item="actions.wheelBalancing">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.extraInfo"
+                  v-model.lazy="actions.wheelBalancing.extraInfo"
                   label=""/>
               </template>
             </service-action>
             <service-action :item="actions.wheelWeights">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.extraInfo"
+                  v-model.lazy="actions.wheelWeights.extraInfo"
                   label=""/>
               </template>
             </service-action>
             <service-action :item="actions.wheelCentering"/>
             <service-action :item="actions.pinsCleaning"/>
+            <service-action :item="actions.tighteningWithTorqueWrench"/>
+            <service-action :item="actions.handingOverTighteningCard"/>
+            <service-action :item="actions.pumping">
+              <template v-slot:extra-info>
+                <v-text-field
+                  v-model.lazy="actions.pumping.extraInfo"
+                  label=""/>
+              </template>
+            </service-action>
+            <service-action :item="actions.valveChange">
+              <template v-slot:extra-info>
+                <v-text-field
+                  v-model.lazy="actions.valveChange.extraInfo"
+                  label=""/>
+              </template>
+            </service-action>
+            <service-action :item="actions.extensionInstallation">
+              <template v-slot:extra-info>
+                <v-text-field
+                  v-model.lazy="actions.extensionInstallation.extraInfo"
+                  label=""/>
+              </template>
+            </service-action>
+            <service-action :item="actions.deepening">
+              <template v-slot:extra-info>
+                <v-row class="no-gutters">
+                  <v-col cols="auto">
+                    <v-checkbox
+                      v-model="actions.deepening.F"
+                      label="F"
+                      hide-details
+                      class="shrink ml-4 mt-0"/>
+                  </v-col>
+                  <v-col cols="auto">
+                    <v-checkbox
+                      v-model="actions.deepening.D"
+                      label="D"
+                      hide-details
+                      class="shrink ml-4 mt-0"/>
+                  </v-col>
+                  <v-col cols="auto">
+                    <v-checkbox
+                      v-model="actions.deepening.T"
+                      label="T"
+                      hide-details
+                      class="shrink ml-4 mt-0"/>
+                  </v-col>
+                </v-row>
+              </template>
+            </service-action>
+            <service-action :item="actions.coldHotRepair">
+              <template v-slot:extra-info>
+                <v-text-field
+                  v-model.lazy="actions.coldHotRepair.extraInfo"
+                  label=""/>
+              </template>
+            </service-action>
+            <service-action :item="actions.utilization">
+              <template v-slot:extra-info>
+                <v-text-field
+                  v-model.lazy="actions.utilization.extraInfo"
+                  label=""/>
+              </template>
+            </service-action>
+            <service-action :item="actions.drive">
+              <template v-slot:extra-info>
+                <v-text-field
+                  v-model.lazy="actions.drive.extraInfo"
+                  label=""/>
+              </template>
+            </service-action>
+            <service-action :item="actions.other">
+              <template v-slot:extra-info>
+                <v-text-field
+                  v-model.lazy="actions.other.extraInfo"
+                  label=""/>
+              </template>
+            </service-action>
+          </v-col>
+        </v-row>
+      </v-card>
+      <!-- Installed tires -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        <v-row class="no-gutters" style="height:100%">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
+            <v-row class="no-gutters">
+              <v-col>
+                <h3 class="primary--text text--darken-1">
+                  Opony założone
+                </h3>
+              </v-col>
+            </v-row>
+            <div
+              v-for="(tire, index) in item.installedTires"
+              :key="index">
+              <tire-brand-info :item="tire"/>
+            </div>
+          </v-col>
+        </v-row>
+      </v-card>
+      <!-- Other materials -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        <v-row class="no-gutters" style="height:100%">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
+            <v-row class="no-gutters">
+              <v-col>
+                <h3 class="primary--text text--darken-1">
+                  Inne materiały
+                </h3>
+              </v-col>
+            </v-row>
+            <div
+              v-for="(material, index) in item.materials"
+              :key="index">
+              <v-row class="no-gutters mt-n4">
+                <v-col>
+                  <v-text-field
+                    v-model.lazy="material.item"
+                    type="input"
+                    hide-details="auto"
+                    validate-on-blur/>
+                </v-col>
+              </v-row>
+            </div>
+          </v-col>
+        </v-row>
+      </v-card>
+      <!-- Deinstalled tires -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        <v-row class="no-gutters" style="height:100%">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
+            <v-row class="no-gutters">
+              <v-col>
+                <h3 class="primary--text text--darken-1">
+                  Opony zdemontowane
+                </h3>
+              </v-col>
+            </v-row>
+            <div
+              v-for="(tire, index) in item.deinstalledTires"
+              :key="index">
+              <tire-brand-info :item="tire"/>
+            </div>
+          </v-col>
+        </v-row>
+      </v-card>
+      <!-- Recommendations -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        <v-row class="no-gutters" style="height:100%">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
+            <v-row class="no-gutters">
+              <v-col>
+                <h3 class="primary--text text--darken-1">
+                  Zalecenia dotyczące pojazdu
+                </h3>
+              </v-col>
+            </v-row>
+            <v-row class="no-gutters mt-2">
+              <v-col cols="auto">
+                <v-checkbox
+                  v-model="item.recommendations.geometry"
+                  label="Geometria"
+                  hide-details
+                  class="shrink mt-0"/>
+              </v-col>
+              <v-col cols="auto">
+                <v-checkbox
+                  v-model="item.recommendations.shockAbsorbers"
+                  label="Amortyzatory"
+                  hide-details
+                  class="shrink ml-4 mt-0"/>
+              </v-col>
+              <v-col cols="auto">
+                <v-checkbox
+                  v-model="item.recommendations.brakes"
+                  label="Hamulce"
+                  hide-details
+                  class="shrink ml-4 mt-0"/>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+      <!-- Next visit -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        <v-row class="no-gutters" style="height:100%">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
+            <v-row class="no-gutters">
+              <v-col>
+                <h3 class="primary--text text--darken-1">
+                  Następna wizyta
+                </h3>
+              </v-col>
+            </v-row>
+            <v-row class="no-gutters">
+              <v-col>
+                <v-menu
+                  v-model="item.nextVisit.isDatePickerVisible"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  class="pa-0"
+                  min-width="auto">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="item.nextVisit.date"
+                      label="Data"
+                      readonly
+                      hide-details="auto"
+                      v-bind="attrs"
+                      v-on="on"/>
+                  </template>
+                  <v-date-picker
+                    v-model="item.nextVisit.date"
+                    no-title
+                    locale="pl-pl"
+                    @input="item.nextVisit.isDatePickerVisible = false"/>
+                </v-menu>
+              </v-col>
+              <v-col class="ml-2">
+                <v-text-field
+                  v-model.lazy="item.nextVisit.purpose"
+                  type="input"
+                  label="Cel"
+                  hide-details="auto"
+                  validate-on-blur/>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+      <!-- Mechanic -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        <v-row class="no-gutters" style="height:100%">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
+            <v-row class="no-gutters">
+              <v-col>
+                <h3 class="primary--text text--darken-1">
+                  Mechanik
+                </h3>
+              </v-col>
+            </v-row>
+            <v-row
+              v-for="(mechanic, index) in item.mechanics"
+              :key="index"
+              class="no-gutters">
+              <v-col>
+                <v-text-field
+                  v-model.lazy="mechanic.name"
+                  type="input"
+                  label="Nazwisko"
+                  hide-details="auto"
+                  validate-on-blur/>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-card>
@@ -248,15 +528,17 @@
 
 <script>
 import vehicleType from '@/enums/vehicleType';
-import TireInfo from '@/components/TireInfo.vue';
+import TireMeasurementInfo from '@/components/TireMeasurementInfo.vue';
 import ServiceAction from '@/components/ServiceAction.vue';
+import TireBrandInfo from '@/components/TireBrandInfo.vue';
 
 export default {
   name: 'OrderForm',
 
   components: {
-    TireInfo,
+    TireMeasurementInfo,
     ServiceAction,
+    TireBrandInfo,
   },
   data: () => ({
     isFormValid: false,
@@ -294,6 +576,53 @@ export default {
         },
       ],
       tireDiagnostics: '',
+      installedTires: [
+        {
+          size: '315/80/R22,5',
+          name: 'Hankook',
+          tread: 'DH31',
+          serial: '1234567890',
+        },
+        {
+          size: '315/80/R22,5',
+          name: 'Hankook',
+          tread: 'DH31',
+          serial: '1234567890',
+        },
+      ],
+      materials: [
+        {
+          item: 'Płyn do spryskiwawczy 10l',
+        },
+      ],
+      deinstalledTires: [
+        {
+          size: '315/80/R22,5',
+          name: 'Hankook',
+          tread: 'DH31',
+          serial: '1234567890',
+        },
+        {
+          size: '315/80/R22,5',
+          name: 'Hankook',
+          tread: 'DH31',
+          serial: '1234567890',
+        },
+      ],
+      recommendations: {
+        geometry: false,
+        shockAbsorbers: false,
+        brakes: false,
+      },
+      nextVisit: {
+        isDatePickerVisible: false,
+        date: '',
+        purpose: '',
+      },
+      mechanics: [
+        { name: 'Nowak' },
+        { name: 'Kowalski' },
+      ],
     },
     actions: {
       tireInspection: {
@@ -354,6 +683,76 @@ export default {
         text: 'Czyszczenie / smarowanie szpilek',
         count: 0,
         info: '',
+      },
+      tighteningWithTorqueWrench: {
+        isChecked: false,
+        text: 'Dokręcanie kluczem dynamometrycznym',
+        count: 0,
+        info: '',
+      },
+      handingOverTighteningCard: {
+        isChecked: false,
+        text: 'Przekazanie karty dokręceń',
+        count: 0,
+        info: '',
+      },
+      pumping: {
+        isChecked: false,
+        text: 'Pompowanie',
+        count: 0,
+        info: '',
+        extraInfo: '',
+      },
+      valveChange: {
+        isChecked: false,
+        text: 'Montaż / wymiana zaworu',
+        count: 0,
+        info: '',
+        extraInfo: '',
+      },
+      extensionInstallation: {
+        isChecked: false,
+        text: 'Montaż przedłużki',
+        count: 0,
+        info: '',
+        extraInfo: '',
+      },
+      deepening: {
+        isChecked: false,
+        text: 'Pogłębianie',
+        count: 0,
+        info: '',
+        F: false,
+        D: false,
+        T: false,
+      },
+      coldHotRepair: {
+        isChecked: false,
+        text: 'Naprawa na zimno / gorąco',
+        count: 0,
+        info: '',
+        extraInfo: '',
+      },
+      utilization: {
+        isChecked: false,
+        text: 'Utylizacja',
+        count: 0,
+        info: '',
+        extraInfo: '',
+      },
+      drive: {
+        isChecked: false,
+        text: 'Dojazd',
+        count: 0,
+        info: '',
+        extraInfo: '',
+      },
+      other: {
+        isChecked: false,
+        text: 'Inne',
+        count: 0,
+        info: '',
+        extraInfo: '',
       },
     },
     rules: {

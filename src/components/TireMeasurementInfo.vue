@@ -29,7 +29,7 @@
 <script>
 export default
 {
-  name: 'TireInfo',
+  name: 'TireMeasurementInfo',
   props: {
     item: Object,
   },
