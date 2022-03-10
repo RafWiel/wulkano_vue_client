@@ -84,6 +84,7 @@
                   :rules="[rules.required]"/>
               </v-col>
             </v-row>
+            <signature-field />
           </v-col>
         </v-row>
       </v-card>
@@ -522,6 +523,51 @@
           </v-col>
         </v-row>
       </v-card>
+      <!-- Employee signature -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        <v-row class="no-gutters" style="height:100%">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
+            <v-row class="no-gutters">
+              <v-col>
+                <h3 class="primary--text text--darken-1">
+                  Podpis pracownika
+                </h3>
+              </v-col>
+            </v-row>
+            <signature-field />
+          </v-col>
+        </v-row>
+      </v-card>
+      <!-- Client signature -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        <v-row class="no-gutters" style="height:100%">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
+            <v-row class="no-gutters">
+              <v-col>
+                <h3 class="primary--text text--darken-1">
+                  Podpis klienta
+                </h3>
+              </v-col>
+            </v-row>
+            <v-row class="no-gutters">
+              <v-col>
+                <p class="text-body-2 grey--text text--darken-1">
+                  Opony zdemontowane i pozostawione, po upływie 14 dni zostaną zutylizowane
+                </p>
+              </v-col>
+            </v-row>
+            <signature-field />
+          </v-col>
+        </v-row>
+      </v-card>
     </v-form>
   </v-container>
 </template>
@@ -531,6 +577,7 @@ import vehicleType from '@/enums/vehicleType';
 import TireMeasurementInfo from '@/components/TireMeasurementInfo.vue';
 import ServiceAction from '@/components/ServiceAction.vue';
 import TireBrandInfo from '@/components/TireBrandInfo.vue';
+import SignatureField from '@/components/SignatureField.vue';
 
 export default {
   name: 'OrderForm',
@@ -539,6 +586,7 @@ export default {
     TireMeasurementInfo,
     ServiceAction,
     TireBrandInfo,
+    SignatureField,
   },
   data: () => ({
     isFormValid: false,
