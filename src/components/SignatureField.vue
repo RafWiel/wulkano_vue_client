@@ -2,13 +2,14 @@
   <div>
     <canvas
       ref="canvas"
-      width="500"
+      :width="canvasWidth"
       height="200"
       id="drawing-pad"/>
     <img
       ref="img"
       src=""
       id="canvas-img"/>
+      <p>{{ canvasWidth }}</p>
     <v-row class="no-gutters">
       <v-col cols="2">
         <v-btn
@@ -55,6 +56,7 @@ export default
     startX: 0,
     startY: 0,
     points: [],
+    canvasWidth: 0,
   }),
   mounted() {
     const vm = this;
@@ -64,6 +66,17 @@ export default
     vm.canvas.addEventListener('mousedown', vm.mousedown);
     vm.canvas.addEventListener('mousemove', vm.mousemove);
     document.addEventListener('mouseup', vm.mouseup);
+    window.addEventListener('resize', vm.resize);
+
+    vm.resize();
+  },
+  unmounted() {
+    const vm = this;
+
+    vm.canvas.removeEventListener('mousedown', vm.mousedown);
+    vm.canvas.removeEventListener('mousemove', vm.mousemove);
+    document.removeEventListener('mouseup', vm.mouseup);
+    window.removeEventListener('resize', vm.resize);
   },
   methods: {
     mousedown(e) {
@@ -87,13 +100,7 @@ export default
       const y = e.clientY - rect.top;
 
       if (vm.isDrawing) {
-        vm.context.beginPath();
-        vm.context.moveTo(vm.startX, vm.startY);
-        vm.context.lineTo(x, y);
-        vm.context.lineWidth = 2;
-        vm.context.lineCap = 'round';
-        vm.context.strokeStyle = 'rgba(0,0,0,1)';
-        vm.context.stroke();
+        vm.contextDraw(vm.startX, vm.startY, x, y);
 
         vm.startX = x;
         vm.startY = y;
@@ -112,6 +119,14 @@ export default
       if (vm.points.length > 0) {
         localStorage.points = JSON.stringify(vm.points);
       }
+    },
+    resize() {
+      const vm = this;
+
+      vm.canvasWidth = vm.getCanvasWidth();
+    },
+    getCanvasWidth() {
+      return document.documentElement.clientWidth - (this.$vuetify.breakpoint.mdAndUp ? 68 : 0);
     },
     resetCanvas() {
       const vm = this;
@@ -149,13 +164,7 @@ export default
         const startY = vm.points[index - 1].y;
         const { x, y } = vm.points[index];
 
-        vm.context.beginPath();
-        vm.context.moveTo(startX, startY);
-        vm.context.lineTo(x, y);
-        vm.context.lineWidth = 2;
-        vm.context.lineCap = 'round';
-        vm.context.strokeStyle = 'rgba(0,0,0,1)';
-        vm.context.stroke();
+        vm.contextDraw(startX, startY, x, y);
       }
 
       let index = 1;
@@ -164,13 +173,24 @@ export default
         index += 1;
       }, 10);
     },
+    contextDraw(startX, startY, x, y) {
+      const vm = this;
+
+      vm.context.beginPath();
+      vm.context.moveTo(startX, startY);
+      vm.context.lineTo(x, y);
+      vm.context.lineWidth = 2;
+      vm.context.lineCap = 'round';
+      vm.context.strokeStyle = 'rgba(0,0,0,1)';
+      vm.context.stroke();
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
   canvas {
-    width: 500px;
+    width: 100%;
     height: 200px;
     z-index: 0;
     border: 1px solid grey;

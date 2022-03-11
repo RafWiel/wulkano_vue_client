@@ -11,7 +11,48 @@
       <!-- Header -->
       <v-card
         flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        :color="$vuetify.breakpoint.mdAndUp ? '#FAFAFA' : '#E8E8E8'"
+        :rounded="$vuetify.breakpoint.mdAndUp ? 'md' : '0'"
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-2 mt-0'">
+        <v-row class="no-gutters" style="height:100%">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
+            <v-row class="no-gutters" align="center">
+              <v-col
+                cols="12"
+                md="4"
+                :class="$vuetify.breakpoint.mdAndUp ? 'text-left' : 'text-center'">
+                <p class="light-blue--text text--darken-4 text-h5 ma-0">
+                  Zlecenie warsztatowe moze inna czcionka?
+                </p>
+              </v-col>
+              <v-col
+                cols="12"
+                md="4"
+                class="text-center">
+                <p class="light-blue--text text--darken-3 text-h4 ma-0">
+                  {{ item.orderNumber }}
+                </p>
+              </v-col>
+              <v-col
+                cols="12"
+                md="4"
+                :class="$vuetify.breakpoint.mdAndUp ? 'text-right' : 'text-center'">
+                <p
+                  :class="$vuetify.breakpoint.mdAndUp ? 'text-h5' : 'text-h6'"
+                  class="light-blue--text text--darken-4 ma-0">
+                  {{ date }}
+                </p>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+      <!-- Client -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-2 mt-0'">
         <v-row class="no-gutters" style="height:100%">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
@@ -19,32 +60,8 @@
             <v-row class="no-gutters">
               <v-col>
                 <h3 class="primary--text text--darken-1">
-                  Zlecenie warsztatowe
+                  Dane klienta
                 </h3>
-              </v-col>
-            </v-row>
-            <!-- Number -->
-            <v-row class="no-gutters">
-              <v-col>
-                <v-text-field
-                  v-model.lazy="item.orderNumber"
-                  label="Numer (todo: wyeksponuj)"
-                  type="input"
-                  hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
-              </v-col>
-            </v-row>
-            <!-- Date -->
-            <v-row class="no-gutters mt-2">
-              <v-col>
-                <v-text-field
-                  v-model.lazy="item.date"
-                  label="Data (todo: wyeksponuj)"
-                  type="input"
-                  hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
               </v-col>
             </v-row>
             <!-- Company -->
@@ -84,7 +101,6 @@
                   :rules="[rules.required]"/>
               </v-col>
             </v-row>
-            <signature-field />
           </v-col>
         </v-row>
       </v-card>
@@ -573,6 +589,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import vehicleType from '@/enums/vehicleType';
 import TireMeasurementInfo from '@/components/TireMeasurementInfo.vue';
 import ServiceAction from '@/components/ServiceAction.vue';
@@ -581,12 +598,16 @@ import SignatureField from '@/components/SignatureField.vue';
 
 export default {
   name: 'OrderForm',
-
   components: {
     TireMeasurementInfo,
     ServiceAction,
     TireBrandInfo,
     SignatureField,
+  },
+  computed: {
+    date() {
+      return moment(this.item.date).format('DD-MM-YYYY');
+    },
   },
   data: () => ({
     isFormValid: false,

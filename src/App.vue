@@ -10,6 +10,7 @@
         <v-col>
           <!-- Main workspace -->
           <v-main style="height: 100%">
+            <app-bar />
             <router-view
               @isProcessing="isProcessing = $event"
               @showMessage="showMessageDialog"
@@ -46,6 +47,7 @@
 import LoadingIcon from '@/components/LoadingIcon.vue';
 import MessageDialog from '@/components/MessageDialog.vue';
 import QuestionDialog from '@/components/QuestionDialog.vue';
+import AppBar from '@/components/AppBar.vue';
 
 export default {
   name: 'App',
@@ -53,6 +55,7 @@ export default {
     LoadingIcon,
     MessageDialog,
     QuestionDialog,
+    AppBar,
   },
   data: () => ({
     isProcessing: false,
