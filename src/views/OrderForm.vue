@@ -11,7 +11,7 @@
       <!-- Header -->
       <v-card
         flat
-        :color="$vuetify.breakpoint.mdAndUp ? '#FAFAFA' : '#E8E8E8'"
+        color="light-blue darken-3"
         :rounded="$vuetify.breakpoint.mdAndUp ? 'md' : '0'"
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-2 mt-0'">
         <v-row class="no-gutters" style="height:100%">
@@ -23,15 +23,15 @@
                 cols="12"
                 md="4"
                 :class="$vuetify.breakpoint.mdAndUp ? 'text-left' : 'text-center'">
-                <p class="light-blue--text text--darken-4 text-h5 ma-0">
-                  Zlecenie warsztatowe moze inna czcionka?
+                <p class="grey--text text--lighten-2 text-h5 ma-0 semibold">
+                  Zlecenie warsztatowe
                 </p>
               </v-col>
               <v-col
                 cols="12"
                 md="4"
                 class="text-center">
-                <p class="light-blue--text text--darken-3 text-h4 ma-0">
+                <p class="white--text text-h4 ma-0 semibold">
                   {{ item.orderNumber }}
                 </p>
               </v-col>
@@ -41,7 +41,7 @@
                 :class="$vuetify.breakpoint.mdAndUp ? 'text-right' : 'text-center'">
                 <p
                   :class="$vuetify.breakpoint.mdAndUp ? 'text-h5' : 'text-h6'"
-                  class="light-blue--text text--darken-4 ma-0">
+                  class="grey--text text--lighten-2 ma-0 semibold">
                   {{ date }}
                 </p>
               </v-col>
@@ -52,34 +52,33 @@
       <!-- Client -->
       <v-card
         flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-2 mt-0'">
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-0'">
         <v-row class="no-gutters" style="height:100%">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
             <!-- Title -->
             <v-row class="no-gutters">
               <v-col>
-                <h3 class="primary--text text--darken-1">
+                <h3 class="primary--text text--darken-1" >
                   Dane klienta
                 </h3>
               </v-col>
             </v-row>
-            <!-- Company -->
             <v-row class="no-gutters mt-2">
-              <v-col>
+              <!-- Company -->
+              <v-col cols="6" md="3" lg="2">
                 <v-text-field
                   ref="firstControl"
                   v-model.lazy="item.companyName"
                   label="Firma"
                   type="input"
+                  class="text_ellipsis"
                   hide-details="auto"
                   validate-on-blur
                   :rules="[rules.required]"/>
               </v-col>
-            </v-row>
-            <!-- City -->
-            <v-row class="no-gutters mt-2">
-              <v-col>
+              <!-- City -->
+              <v-col cols="6" md="3" lg="2" class="pl-2">
                 <v-text-field
                   v-model.lazy="item.city"
                   label="Miasto"
@@ -88,13 +87,13 @@
                   validate-on-blur
                   :rules="[rules.required]"/>
               </v-col>
-            </v-row>
-            <!-- Description -->
-            <v-row class="no-gutters mt-2">
-              <v-col>
+              <!-- Description -->
+              <v-col
+                cols="12" md="6" lg="8"
+                :class="$vuetify.breakpoint.mdAndUp ? 'pl-2' : 'mt-2'">
                 <v-text-field
                   v-model.lazy="item.description"
-                  label="Opis"
+                  label="Cel wizyty"
                   type="input"
                   hide-details="auto"
                   validate-on-blur
@@ -107,7 +106,7 @@
       <!-- Vehicle -->
       <v-card
         flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
         <v-row class="no-gutters" style="height:100%">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
@@ -121,7 +120,7 @@
             </v-row>
             <!-- Vehicle name -->
             <v-row class="no-gutters">
-              <v-col>
+              <v-col cols="6" md="3" lg="2">
                 <v-text-field
                   v-model.lazy="item.vehicleName"
                   label="Marka pojazdu"
@@ -130,10 +129,8 @@
                   validate-on-blur
                   :rules="[rules.required]"/>
               </v-col>
-            </v-row>
-            <!-- Registration number -->
-            <v-row class="no-gutters mt-2">
-              <v-col>
+              <!-- Registration number -->
+              <v-col cols="6" md="3" lg="2" class="pl-2">
                 <v-text-field
                   v-model.lazy="item.registrationNumber"
                   label="Numer rejestracyjny"
@@ -142,28 +139,31 @@
                   validate-on-blur
                   :rules="[rules.required]"/>
               </v-col>
-            </v-row>
-            <!-- Mileage -->
-            <v-row class="no-gutters mt-2">
-              <v-col>
-                <v-text-field
-                  v-model.lazy="item.mileage"
-                  label="Przebieg"
-                  type="input"
-                  hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
-              </v-col>
-            </v-row>
-            <!-- Vehicle type -->
-            <v-row class="no-gutters mt-2">
-              <v-col>
+              <!-- Vehicle type -->
+              <v-col
+                cols="6" md="3" lg="2"
+                :class="$vuetify.breakpoint.mdAndUp ? 'pl-2' : 'mt-2'">
                 <v-select
                   v-model="item.vehicleType"
                   :items="vehicleTypeItems"
                   item-value="id"
                   hide-details="auto"
                   label="Typ pojazdu"/>
+              </v-col>
+              <!-- Mileage -->
+              <v-col
+                cols="6" md="3" lg="6"
+                class="pl-2"
+                :class="$vuetify.breakpoint.mdAndUp ? '' : 'mt-2'">
+                <v-text-field
+                  v-model.number="item.mileage"
+                  label="Przebieg"
+                  type="number"
+                  hide-spin-buttons
+                  single-line
+                  hide-details="auto"
+                  validate-on-blur
+                  :rules="[rules.integer, rules.required]"/>
               </v-col>
             </v-row>
           </v-col>
@@ -172,7 +172,7 @@
       <!-- Tires size -->
       <v-card
         flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
         <v-row class="no-gutters" style="height:100%">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
@@ -196,6 +196,7 @@
               hide-details="auto"
               validate-on-blur
               auto-grow
+              class="mt-2"
               rows="4"
               v-model.lazy="item.tireDiagnostics"/>
           </v-col>
@@ -204,7 +205,7 @@
       <!-- Actions -->
       <v-card
         flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
         <v-row class="no-gutters" style="height:100%">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
@@ -223,6 +224,7 @@
               <template v-slot:extra-info>
                 <v-text-field
                   v-model.lazy="actions.wheelWashing.extraInfo"
+                  hide-details
                   label=""/>
               </template>
             </service-action>
@@ -230,6 +232,7 @@
               <template v-slot:extra-info>
                 <v-text-field
                   v-model.lazy="actions.wheelUnscrewing.extraInfo"
+                  hide-details
                   label=""/>
               </template>
             </service-action>
@@ -237,6 +240,7 @@
               <template v-slot:extra-info>
                 <v-text-field
                   v-model.lazy="actions.tireInstallation.extraInfo"
+                  hide-details
                   label=""/>
               </template>
             </service-action>
@@ -244,6 +248,7 @@
               <template v-slot:extra-info>
                 <v-text-field
                   v-model.lazy="actions.wheelBalancing.extraInfo"
+                  hide-details
                   label=""/>
               </template>
             </service-action>
@@ -251,6 +256,7 @@
               <template v-slot:extra-info>
                 <v-text-field
                   v-model.lazy="actions.wheelWeights.extraInfo"
+                  hide-details
                   label=""/>
               </template>
             </service-action>
@@ -262,6 +268,7 @@
               <template v-slot:extra-info>
                 <v-text-field
                   v-model.lazy="actions.pumping.extraInfo"
+                  hide-details
                   label=""/>
               </template>
             </service-action>
@@ -269,6 +276,7 @@
               <template v-slot:extra-info>
                 <v-text-field
                   v-model.lazy="actions.valveChange.extraInfo"
+                  hide-details
                   label=""/>
               </template>
             </service-action>
@@ -276,6 +284,7 @@
               <template v-slot:extra-info>
                 <v-text-field
                   v-model.lazy="actions.extensionInstallation.extraInfo"
+                  hide-details
                   label=""/>
               </template>
             </service-action>
@@ -310,6 +319,7 @@
               <template v-slot:extra-info>
                 <v-text-field
                   v-model.lazy="actions.coldHotRepair.extraInfo"
+                  hide-details
                   label=""/>
               </template>
             </service-action>
@@ -317,6 +327,7 @@
               <template v-slot:extra-info>
                 <v-text-field
                   v-model.lazy="actions.utilization.extraInfo"
+                  hide-details
                   label=""/>
               </template>
             </service-action>
@@ -324,6 +335,7 @@
               <template v-slot:extra-info>
                 <v-text-field
                   v-model.lazy="actions.drive.extraInfo"
+                  hide-details
                   label=""/>
               </template>
             </service-action>
@@ -331,6 +343,7 @@
               <template v-slot:extra-info>
                 <v-text-field
                   v-model.lazy="actions.other.extraInfo"
+                  hide-details
                   label=""/>
               </template>
             </service-action>
@@ -340,7 +353,7 @@
       <!-- Installed tires -->
       <v-card
         flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
         <v-row class="no-gutters" style="height:100%">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
@@ -363,7 +376,7 @@
       <!-- Other materials -->
       <v-card
         flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
         <v-row class="no-gutters" style="height:100%">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
@@ -394,7 +407,7 @@
       <!-- Deinstalled tires -->
       <v-card
         flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
         <v-row class="no-gutters" style="height:100%">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
@@ -417,7 +430,7 @@
       <!-- Recommendations -->
       <v-card
         flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
         <v-row class="no-gutters" style="height:100%">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
@@ -458,7 +471,7 @@
       <!-- Next visit -->
       <v-card
         flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
         <v-row class="no-gutters" style="height:100%">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
@@ -511,7 +524,7 @@
       <!-- Mechanic -->
       <v-card
         flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
         <v-row class="no-gutters" style="height:100%">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
@@ -542,7 +555,7 @@
       <!-- Employee signature -->
       <v-card
         flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
         <v-row class="no-gutters" style="height:100%">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
@@ -561,7 +574,7 @@
       <!-- Client signature -->
       <v-card
         flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-0 mt-2'">
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
         <v-row class="no-gutters" style="height:100%">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
@@ -624,22 +637,30 @@ export default {
       description: '',
       tires: [
         {
-          size: '315/80/R22,5',
+          width: 315,
+          profile: 80,
+          diameter: 22.5,
           pressure: 3.0,
           tread: 4.5,
         },
         {
-          size: '315/80/R22,5',
+          width: 315,
+          profile: 80,
+          diameter: 22.5,
           pressure: 3.0,
           tread: 4.5,
         },
         {
-          size: '335/80/R22,5',
+          width: 315,
+          profile: 80,
+          diameter: 22.5,
           pressure: 3.0,
           tread: 4.5,
         },
         {
-          size: '335/80/R22,5',
+          width: 315,
+          profile: 80,
+          diameter: 22.5,
           pressure: 3.0,
           tread: 4.5,
         },
@@ -696,7 +717,7 @@ export default {
     actions: {
       tireInspection: {
         isChecked: false,
-        text: 'Inspekcja stany ogumienia',
+        text: 'Inspekcja stanu ogumienia',
         count: 0,
         info: '',
       },
@@ -826,7 +847,25 @@ export default {
     },
     rules: {
       required: (value) => !!value || 'Pole wymagane',
+      integer: (value) => !Number.isNaN(parseInt(value, 10)) || 'Wymagana wartość liczbowa',
     },
   }),
 };
 </script>
+
+<style lang="scss" scoped>
+  @import url('https://fonts.googleapis.com/css?family=Montserrat:330,400,600,800');
+
+  .semibold {
+    font-family: 'Montserrat' !important;
+    font-weight: 600;
+  }
+
+  .text_ellipsis {
+    //overflow: hidden;
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+</style>
