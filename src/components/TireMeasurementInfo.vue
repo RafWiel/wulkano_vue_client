@@ -66,5 +66,16 @@ export default
         float: (value) => !Number.isNaN(parseFloat(value, 10)) || 'Wymagana wartość liczbowa',
       },
   }),
+  watch: {
+    item: {
+      // This will let Vue know to look inside the array
+      deep: true,
+
+      // We have to move our method to a handler field
+      handler() {
+        this.$emit('change', this.item);
+      },
+    },
+  },
 };
 </script>

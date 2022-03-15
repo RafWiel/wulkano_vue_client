@@ -3,6 +3,7 @@
     fluid
     class="pa-0 d-flex flex-column flex-nowrap"
     style="height: 100%">
+    <h1>Opakuj rules w 'klase'</h1>
     <v-form
       lazy-validation
       v-model="isFormValid"
@@ -14,7 +15,7 @@
         color="light-blue darken-3"
         :rounded="$vuetify.breakpoint.mdAndUp ? 'md' : '0'"
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-2 mt-0'">
-        <v-row class="no-gutters" style="height:100%">
+        <v-row class="no-gutters">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
             <!-- Title -->
@@ -53,7 +54,7 @@
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-0'">
-        <v-row class="no-gutters" style="height:100%">
+        <v-row class="no-gutters">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
             <!-- Title -->
@@ -107,7 +108,7 @@
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters" style="height:100%">
+        <v-row class="no-gutters">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
             <!-- Title -->
@@ -173,7 +174,7 @@
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters" style="height:100%">
+        <v-row class="no-gutters">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
             <!-- Title -->
@@ -188,7 +189,12 @@
             <div
               v-for="(tire, index) in item.tires"
               :key="index">
-              <tire-measurement-info :item="tire"/>
+              <tire-measurement-info :item="tire" @change="addArrayObject(tire, item.tires, 18, {
+                width: '',
+                profile: '',
+                diameter: '',
+                pressure: '',
+                tread: '' })"/>
             </div>
             <!-- Diagnostics -->
             <v-textarea
@@ -206,7 +212,7 @@
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters" style="height:100%">
+        <v-row class="no-gutters">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
             <!-- Title -->
@@ -296,21 +302,21 @@
                       v-model="actions.deepening.F"
                       label="F"
                       hide-details
-                      class="shrink ml-4 mt-0"/>
+                      class="shrink ml-4 mt-3"/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
                       v-model="actions.deepening.D"
                       label="D"
                       hide-details
-                      class="shrink ml-4 mt-0"/>
+                      class="shrink ml-4 mt-3"/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
                       v-model="actions.deepening.T"
                       label="T"
                       hide-details
-                      class="shrink ml-4 mt-0"/>
+                      class="shrink ml-4 mt-3"/>
                   </v-col>
                 </v-row>
               </template>
@@ -354,7 +360,7 @@
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters" style="height:100%">
+        <v-row class="no-gutters">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
             <!-- Title -->
@@ -368,7 +374,14 @@
             <div
               v-for="(tire, index) in item.installedTires"
               :key="index">
-              <tire-brand-info :item="tire"/>
+              <tire-brand-info :item="tire" @change="addArrayObject(tire, item.installedTires, 18, {
+                width: '',
+                profile: '',
+                diameter: '',
+                brand: '',
+                tread: '',
+                serial: ''
+              })"/>
             </div>
           </v-col>
         </v-row>
@@ -377,7 +390,7 @@
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters" style="height:100%">
+        <v-row class="no-gutters">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
             <!-- Title -->
@@ -408,7 +421,7 @@
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters" style="height:100%">
+        <v-row class="no-gutters">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
             <!-- Title -->
@@ -422,7 +435,14 @@
             <div
               v-for="(tire, index) in item.deinstalledTires"
               :key="index">
-              <tire-brand-info :item="tire"/>
+              <tire-brand-info :item="tire" @change="addArrayObject(tire, item.deinstalledTires, 18, {
+                width: '',
+                profile: '',
+                diameter: '',
+                brand: '',
+                tread: '',
+                serial: ''
+              })"/>
             </div>
           </v-col>
         </v-row>
@@ -431,7 +451,7 @@
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters" style="height:100%">
+        <v-row class="no-gutters">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
             <!-- Title -->
@@ -472,7 +492,7 @@
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters" style="height:100%">
+        <v-row class="no-gutters">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
             <!-- Title -->
@@ -484,7 +504,7 @@
               </v-col>
             </v-row>
             <v-row class="no-gutters">
-              <v-col>
+              <v-col cols="3" md="2" lg="1">
                 <v-menu
                   v-model="item.nextVisit.isDatePickerVisible"
                   :close-on-content-click="false"
@@ -525,7 +545,7 @@
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters" style="height:100%">
+        <v-row class="no-gutters">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
             <!-- Title -->
@@ -539,14 +559,11 @@
             <v-row
               v-for="(mechanic, index) in item.mechanics"
               :key="index"
-              class="no-gutters">
+              class="no-gutters mt-2">
               <v-col>
-                <v-text-field
-                  v-model.lazy="mechanic.name"
-                  type="input"
-                  label="Nazwisko"
-                  hide-details="auto"
-                  validate-on-blur/>
+                <mechanic :item="mechanic" @change="addArrayObject(mechanic, item.mechanics, 5, {
+                  name: '',
+                })"/>
               </v-col>
             </v-row>
           </v-col>
@@ -556,7 +573,7 @@
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters" style="height:100%">
+        <v-row class="no-gutters">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
             <!-- Title -->
@@ -567,7 +584,7 @@
                 </h3>
               </v-col>
             </v-row>
-            <signature-field />
+            <signature-field class="mt-2" />
           </v-col>
         </v-row>
       </v-card>
@@ -575,7 +592,7 @@
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters" style="height:100%">
+        <v-row class="no-gutters">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
             <!-- Title -->
@@ -588,12 +605,27 @@
             </v-row>
             <v-row class="no-gutters">
               <v-col>
-                <p class="text-body-2 grey--text text--darken-1">
-                  Opony zdemontowane i pozostawione, po upływie 14 dni zostaną zutylizowane
+                <p class="text-body-2 grey--text text--darken-1 ma-0 mt-1 pa-0">
+                  UWAGA: Opony zdemontowane i pozostawione, po upływie 14 dni zostaną zutylizowane
                 </p>
               </v-col>
             </v-row>
-            <signature-field />
+            <signature-field class="mt-2"/>
+          </v-col>
+        </v-row>
+      </v-card>
+      <!-- Apply button -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
+        <v-row class="no-gutters" justify="end">
+          <v-col cols="12" sm="6" md="4" lg="2">
+            <v-btn
+              depressed
+              block
+              color="primary">
+              Zapisz
+            </v-btn>
           </v-col>
         </v-row>
       </v-card>
@@ -608,6 +640,7 @@ import TireMeasurementInfo from '@/components/TireMeasurementInfo.vue';
 import ServiceAction from '@/components/ServiceAction.vue';
 import TireBrandInfo from '@/components/TireBrandInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
+import Mechanic from '@/components/Mechanic.vue';
 
 export default {
   name: 'OrderForm',
@@ -616,6 +649,7 @@ export default {
     ServiceAction,
     TireBrandInfo,
     SignatureField,
+    Mechanic,
   },
   computed: {
     date() {
@@ -637,45 +671,49 @@ export default {
       description: '',
       tires: [
         {
-          width: 315,
-          profile: 80,
-          diameter: 22.5,
-          pressure: 3.0,
-          tread: 4.5,
+          width: '',
+          profile: '',
+          diameter: '',
+          pressure: '',
+          tread: '',
         },
         {
-          width: 315,
-          profile: 80,
-          diameter: 22.5,
-          pressure: 3.0,
-          tread: 4.5,
+          width: '',
+          profile: '',
+          diameter: '',
+          pressure: '',
+          tread: '',
         },
         {
-          width: 315,
-          profile: 80,
-          diameter: 22.5,
-          pressure: 3.0,
-          tread: 4.5,
+          width: '',
+          profile: '',
+          diameter: '',
+          pressure: '',
+          tread: '',
         },
         {
-          width: 315,
-          profile: 80,
-          diameter: 22.5,
-          pressure: 3.0,
-          tread: 4.5,
+          width: '',
+          profile: '',
+          diameter: '',
+          pressure: '',
+          tread: '',
         },
       ],
       tireDiagnostics: '',
       installedTires: [
         {
-          size: '315/80/R22,5',
-          name: 'Hankook',
+          width: 315,
+          profile: 80,
+          diameter: 22.5,
+          brand: 'Hankook',
           tread: 'DH31',
           serial: '1234567890',
         },
         {
-          size: '315/80/R22,5',
-          name: 'Hankook',
+          width: 315,
+          profile: 80,
+          diameter: 22.5,
+          brand: 'Hankook',
           tread: 'DH31',
           serial: '1234567890',
         },
@@ -687,14 +725,18 @@ export default {
       ],
       deinstalledTires: [
         {
-          size: '315/80/R22,5',
-          name: 'Hankook',
+          width: 315,
+          profile: 80,
+          diameter: 22.5,
+          brand: 'Hankook',
           tread: 'DH31',
           serial: '1234567890',
         },
         {
-          size: '315/80/R22,5',
-          name: 'Hankook',
+          width: 315,
+          profile: 80,
+          diameter: 22.5,
+          brand: 'Hankook',
           tread: 'DH31',
           serial: '1234567890',
         },
@@ -850,6 +892,18 @@ export default {
       integer: (value) => !Number.isNaN(parseInt(value, 10)) || 'Wymagana wartość liczbowa',
     },
   }),
+  methods: {
+    addArrayObject(item, array, maxCount, newItem) {
+      //check if last item in array
+      const index = array.indexOf(item);
+      if (array.length >= maxCount || index < array.length - 1) {
+        return;
+      }
+
+      //add new item
+      array.push(newItem);
+    },
+  },
 };
 </script>
 

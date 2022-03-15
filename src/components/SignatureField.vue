@@ -9,9 +9,8 @@
       ref="img"
       src=""
       id="canvas-img"/>
-      <p>{{ canvasWidth }}</p>
-    <v-row class="no-gutters">
-      <v-col cols="2">
+    <v-row class="no-gutters" justify="start">
+      <v-col cols="6" sm="3" md="2" lg="1">
         <v-btn
           depressed
           block
@@ -20,7 +19,7 @@
           Wyczyść
         </v-btn>
       </v-col>
-      <v-col cols="2" class="ml-2">
+      <!-- <v-col cols="2" class="ml-2">
         <v-btn
           depressed
           block
@@ -28,7 +27,7 @@
           @click="saveImage">
           Zapisz
         </v-btn>
-      </v-col>
+      </v-col> -->
       <!-- <v-col class="ml-2">
         <v-btn
           depressed
@@ -39,7 +38,6 @@
         </v-btn>
       </v-col> -->
     </v-row>
-
   </div>
 </template>
 <script>
