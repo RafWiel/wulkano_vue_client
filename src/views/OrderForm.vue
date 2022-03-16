@@ -3,7 +3,6 @@
     fluid
     class="pa-0 d-flex flex-column flex-nowrap"
     style="height: 100%">
-    <h1>Opakuj rules w 'klase'</h1>
     <v-form
       lazy-validation
       v-model="isFormValid"
@@ -635,6 +634,7 @@
 
 <script>
 import moment from 'moment';
+import rules from '@/misc/rules';
 import vehicleType from '@/enums/vehicleType';
 import TireMeasurementInfo from '@/components/TireMeasurementInfo.vue';
 import ServiceAction from '@/components/ServiceAction.vue';
@@ -661,7 +661,7 @@ export default {
     vehicleTypeItems: vehicleType.items,
     item: {
       id: 1,
-      orderNumber: '1/2/2022',
+      orderNumber: moment(new Date()).format('1/M/YYYY'),
       date: new Date(),
       companyName: '',
       city: '',
@@ -702,43 +702,27 @@ export default {
       tireDiagnostics: '',
       installedTires: [
         {
-          width: 315,
-          profile: 80,
-          diameter: 22.5,
-          brand: 'Hankook',
-          tread: 'DH31',
-          serial: '1234567890',
-        },
-        {
-          width: 315,
-          profile: 80,
-          diameter: 22.5,
-          brand: 'Hankook',
-          tread: 'DH31',
-          serial: '1234567890',
+          width: '',
+          profile: '',
+          diameter: '',
+          brand: '',
+          tread: '',
+          serial: '',
         },
       ],
       materials: [
         {
-          item: 'Płyn do spryskiwawczy 10l',
+          item: '',
         },
       ],
       deinstalledTires: [
         {
-          width: 315,
-          profile: 80,
-          diameter: 22.5,
-          brand: 'Hankook',
-          tread: 'DH31',
-          serial: '1234567890',
-        },
-        {
-          width: 315,
-          profile: 80,
-          diameter: 22.5,
-          brand: 'Hankook',
-          tread: 'DH31',
-          serial: '1234567890',
+          width: '',
+          profile: '',
+          diameter: '',
+          brand: '',
+          tread: '',
+          serial: '',
         },
       ],
       recommendations: {
@@ -752,8 +736,7 @@ export default {
         purpose: '',
       },
       mechanics: [
-        { name: 'Nowak' },
-        { name: 'Kowalski' },
+        { name: '' },
       ],
     },
     actions: {
@@ -888,8 +871,8 @@ export default {
       },
     },
     rules: {
-      required: (value) => !!value || 'Pole wymagane',
-      integer: (value) => !Number.isNaN(parseInt(value, 10)) || 'Wymagana wartość liczbowa',
+      required: rules.required,
+      integer: rules.integer,
     },
   }),
   methods: {

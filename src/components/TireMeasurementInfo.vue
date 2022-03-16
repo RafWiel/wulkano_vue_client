@@ -53,6 +53,8 @@
   </v-row>
 </template>
 <script>
+import rules from '@/misc/rules';
+
 export default
 {
   name: 'TireMeasurementInfo',
@@ -61,9 +63,9 @@ export default
   },
   data: () => ({
     rules: {
-        required: (value) => !!value || 'Pole wymagane',
-        integer: (value) => !Number.isNaN(parseInt(value, 10)) || 'Wymagana wartość liczbowa',
-        float: (value) => !Number.isNaN(parseFloat(value, 10)) || 'Wymagana wartość liczbowa',
+        required: rules.required,
+        integer: rules.integer,
+        float: rules.float,
       },
   }),
   watch: {

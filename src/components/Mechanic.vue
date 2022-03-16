@@ -12,6 +12,8 @@
   </v-row>
 </template>
 <script>
+import rules from '@/misc/rules';
+
 export default
 {
   name: 'Mechanic',
@@ -20,7 +22,7 @@ export default
   },
   data: () => ({
     rules: {
-        required: (value) => !!value || 'Pole wymagane',
+        required: rules.required,
       },
   }),
   watch: {
