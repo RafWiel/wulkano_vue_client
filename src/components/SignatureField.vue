@@ -5,6 +5,7 @@
       :width="canvasWidth"
       height="200"
       id="drawing-pad"/>
+    {{ test }}
     <img
       ref="img"
       src=""
@@ -55,6 +56,7 @@ export default
     startY: 0,
     points: [],
     canvasWidth: 0,
+    test: '',
   }),
   mounted() {
     const vm = this;
@@ -64,6 +66,10 @@ export default
     vm.canvas.addEventListener('mousedown', vm.mousedown);
     vm.canvas.addEventListener('mousemove', vm.mousemove);
     document.addEventListener('mouseup', vm.mouseup);
+    vm.canvas.addEventListener('touchstart', vm.mousedown, false);
+    vm.canvas.addEventListener('touchmove', vm.touchmove, false);
+    document.addEventListener('touchend', vm.mouseup);
+
     window.addEventListener('resize', vm.resize);
 
     vm.resize();
@@ -74,14 +80,19 @@ export default
     vm.canvas.removeEventListener('mousedown', vm.mousedown);
     vm.canvas.removeEventListener('mousemove', vm.mousemove);
     document.removeEventListener('mouseup', vm.mouseup);
+    vm.canvas.removeEventListener('touchstart', vm.mousedown);
+    vm.canvas.removeEventListener('touchmove', vm.touchmove);
+    document.removeEventListener('touchend', vm.mouseup);
+
     window.removeEventListener('resize', vm.resize);
   },
   methods: {
     mousedown(e) {
       const vm = this;
+
       const rect = vm.canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const x = Math.round(e.clientX - rect.left);
+      const y = Math.round(e.clientY - rect.top);
 
       vm.isDrawing = true;
       vm.startX = x;
@@ -90,13 +101,16 @@ export default
         x,
         y,
       });
+      vm.test = `down: ${vm.isDrawing} - ${x}:${y}`;
     },
     mousemove(e) {
       const vm = this;
-      const rect = vm.canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
 
+      const rect = vm.canvas.getBoundingClientRect();
+      const x = Math.round(e.clientX - rect.left);
+      const y = Math.round(e.clientY - rect.top);
+
+      vm.test = `move: ${vm.isDrawing} - ${x}:${y} - ${e}`;
       if (vm.isDrawing) {
         vm.contextDraw(vm.startX, vm.startY, x, y);
 
@@ -109,9 +123,40 @@ export default
         });
       }
     },
+    touchmove(e) {
+      const vm = this;
+
+      const rect = vm.canvas.getBoundingClientRect();
+      let x;
+      let y;
+
+      if (e.touches) {
+        if (e.touches.length === 1) { // Only deal with one finger
+          const touch = e.touches[0]; // Get the information for finger #1
+          x = Math.round(touch.pageX - touch.target.offsetLeft - rect.left);
+          y = Math.round(touch.pageY - touch.target.offsetTop - rect.top);
+        }
+      }
+
+      vm.test = `move: ${vm.isDrawing} - ${x}:${y} - ${rect.top}`;
+      if (vm.isDrawing) {
+        vm.contextDraw(vm.startX, vm.startY, x, y);
+
+        vm.startX = x;
+        vm.startY = y;
+
+        vm.points.push({
+          x,
+          y,
+        });
+      }
+
+      e.preventDefault();
+    },
     mouseup() {
       const vm = this;
 
+      vm.test = `up: ${vm.isDrawing}`;
       vm.isDrawing = false;
 
       if (vm.points.length > 0) {
