@@ -56,7 +56,6 @@ export default
     startY: 0,
     points: [],
     canvasWidth: 0,
-    test: '',
   }),
   mounted() {
     const vm = this;
@@ -101,7 +100,6 @@ export default
         x,
         y,
       });
-      vm.test = `down: ${vm.isDrawing} - ${x}:${y}`;
     },
     mousemove(e) {
       const vm = this;
@@ -110,7 +108,6 @@ export default
       const x = Math.round(e.clientX - rect.left);
       const y = Math.round(e.clientY - rect.top);
 
-      vm.test = `move: ${vm.isDrawing} - ${x}:${y} - ${e}`;
       if (vm.isDrawing) {
         vm.contextDraw(vm.startX, vm.startY, x, y);
 
@@ -155,7 +152,6 @@ export default
     mouseup() {
       const vm = this;
 
-      vm.test = `up: ${vm.isDrawing}`;
       vm.isDrawing = false;
 
       if (vm.points.length > 0) {
