@@ -100,9 +100,6 @@
                   :rules="[rules.required]"/>
               </v-col>
             </v-row>
-
-            <signature-field class="mt-2" />
-
           </v-col>
         </v-row>
       </v-card>
