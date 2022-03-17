@@ -17,7 +17,7 @@
         hide-details
         class="ml-2"/>
     </v-col>
-    <v-col cols="2" md="3" lg="4">
+    <v-col cols="2" md="5" lg="7">
       <v-text-field
         v-model.lazy="item.info"
         label="Info"
