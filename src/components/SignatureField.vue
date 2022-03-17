@@ -133,12 +133,11 @@ export default
       if (e.touches) {
         if (e.touches.length === 1) { // Only deal with one finger
           const touch = e.touches[0]; // Get the information for finger #1
-          x = Math.round(touch.pageX - touch.target.offsetLeft - rect.left);
-          y = Math.round(touch.pageY - touch.target.offsetTop - rect.top);
+          x = Math.round(touch.clientX - rect.left);
+          y = Math.round(touch.clientY - rect.top);
         }
       }
 
-      vm.test = `move: ${vm.isDrawing} - ${x}:${y} - ${rect.top}`;
       if (vm.isDrawing) {
         vm.contextDraw(vm.startX, vm.startY, x, y);
 
