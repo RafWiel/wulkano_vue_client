@@ -5,7 +5,6 @@
       :width="canvasWidth"
       height="200"
       id="drawing-pad"/>
-    {{ test }}
     <img
       ref="img"
       src=""
@@ -56,6 +55,7 @@ export default
     startY: 0,
     points: [],
     canvasWidth: 0,
+    test: '',
   }),
   mounted() {
     const vm = this;
@@ -65,7 +65,7 @@ export default
     vm.canvas.addEventListener('mousedown', vm.mousedown);
     vm.canvas.addEventListener('mousemove', vm.mousemove);
     document.addEventListener('mouseup', vm.mouseup);
-    vm.canvas.addEventListener('touchstart', vm.mousedown, false);
+    vm.canvas.addEventListener('touchstart', vm.touchstart, false);
     vm.canvas.addEventListener('touchmove', vm.touchmove, false);
     document.addEventListener('touchend', vm.mouseup);
 
@@ -79,7 +79,7 @@ export default
     vm.canvas.removeEventListener('mousedown', vm.mousedown);
     vm.canvas.removeEventListener('mousemove', vm.mousemove);
     document.removeEventListener('mouseup', vm.mouseup);
-    vm.canvas.removeEventListener('touchstart', vm.mousedown);
+    vm.canvas.removeEventListener('touchstart', vm.touchstart);
     vm.canvas.removeEventListener('touchmove', vm.touchmove);
     document.removeEventListener('touchend', vm.mouseup);
 
@@ -100,6 +100,32 @@ export default
         x,
         y,
       });
+    },
+    touchstart(e) {
+      const vm = this;
+
+      const rect = vm.canvas.getBoundingClientRect();
+      let x;
+      let y;
+
+      if (e.touches) {
+        if (e.touches.length === 1) { // Only deal with one finger
+          const touch = e.touches[0]; // Get the information for finger #1
+          x = Math.round(touch.clientX - rect.left);
+          y = Math.round(touch.clientY - rect.top);
+        }
+      }
+
+      vm.test = `touch start: ${x}:${y}`;
+      vm.isDrawing = true;
+      vm.startX = x;
+      vm.startY = y;
+      vm.points.push({
+        x,
+        y,
+      });
+
+      vm.contextDraw(vm.startX, vm.startY, x, y);
     },
     mousemove(e) {
       const vm = this;
