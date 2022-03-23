@@ -1,6 +1,14 @@
 <template>
   <v-row class="no-gutters mt-2">
     <v-col md="1">
+      <v-select
+        v-model="item.location"
+        :items="tireLocationItems"
+        item-value="id"
+        hide-details="auto"
+        label="Pozycja"/>
+    </v-col>
+    <v-col md="1" class="pl-2">
       <v-text-field
         v-model.number="item.width"
         label="Szerokość"
@@ -40,7 +48,7 @@
         validate-on-blur
         :rules="[rules.float, rules.required]"/>
     </v-col>
-    <v-col lg="8" md="7" class="pl-2">
+    <v-col lg="7" md="6" class="pl-2">
       <v-text-field
         v-model.number="item.tread"
         label="Bieżnik [mm]"
@@ -54,6 +62,7 @@
 </template>
 <script>
 import rules from '@/misc/rules';
+import tireLocation from '@/enums/tireLocation';
 
 export default
 {
@@ -62,6 +71,7 @@ export default
     item: Object,
   },
   data: () => ({
+    tireLocationItems: tireLocation.items,
     rules: {
         required: rules.required,
         integer: rules.integer,

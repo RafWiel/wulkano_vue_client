@@ -206,7 +206,7 @@ export default
 
       img.src = dataURL;
 
-      console.log(vm.points);
+      // console.log(vm.points);
     },
     loadFromStorage() {
       const vm = this;

@@ -295,27 +295,32 @@
             </service-action>
             <service-action :item="actions.deepening">
               <template v-slot:extra-info>
-                <v-row class="no-gutters">
+                <v-row
+                  class="no-gutters"
+                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 110%'">
                   <v-col cols="auto">
                     <v-checkbox
                       v-model="actions.deepening.F"
                       label="F"
                       hide-details
-                      class="shrink ml-4 mt-3"/>
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
+                      class="shrink mt-4"/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
                       v-model="actions.deepening.D"
                       label="D"
                       hide-details
-                      class="shrink ml-4 mt-3"/>
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
+                      class="shrink mt-4"/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
                       v-model="actions.deepening.T"
                       label="T"
                       hide-details
-                      class="shrink ml-4 mt-3"/>
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
+                      class="shrink mt-4"/>
                   </v-col>
                 </v-row>
               </template>
@@ -462,26 +467,28 @@
               </v-col>
             </v-row>
             <v-row class="no-gutters mt-2">
-              <v-col cols="auto">
+              <v-col cols="12" sm="auto">
                 <v-checkbox
                   v-model="item.recommendations.geometry"
                   label="Geometria"
                   hide-details
                   class="shrink mt-0"/>
               </v-col>
-              <v-col cols="auto">
+              <v-col cols="12" sm="auto">
                 <v-checkbox
                   v-model="item.recommendations.shockAbsorbers"
                   label="Amortyzatory"
                   hide-details
-                  class="shrink ml-4 mt-0"/>
+                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
+                  class="shrink mt-0"/>
               </v-col>
-              <v-col cols="auto">
+              <v-col cols="12" sm="auto">
                 <v-checkbox
                   v-model="item.recommendations.brakes"
                   label="Hamulce"
                   hide-details
-                  class="shrink ml-4 mt-0"/>
+                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
+                  class="shrink mt-0"/>
               </v-col>
             </v-row>
           </v-col>
@@ -636,6 +643,7 @@
 import moment from 'moment';
 import rules from '@/misc/rules';
 import vehicleType from '@/enums/vehicleType';
+import tireLocation from '@/enums/tireLocation';
 import TireMeasurementInfo from '@/components/TireMeasurementInfo.vue';
 import ServiceAction from '@/components/ServiceAction.vue';
 import TireBrandInfo from '@/components/TireBrandInfo.vue';
@@ -671,6 +679,7 @@ export default {
       description: '',
       tires: [
         {
+          location: tireLocation.leftAxle1,
           width: '',
           profile: '',
           diameter: '',
@@ -678,6 +687,7 @@ export default {
           tread: '',
         },
         {
+          location: tireLocation.rightAxle1,
           width: '',
           profile: '',
           diameter: '',
@@ -685,6 +695,7 @@ export default {
           tread: '',
         },
         {
+          location: tireLocation.leftOutsideAxle2,
           width: '',
           profile: '',
           diameter: '',
@@ -692,6 +703,7 @@ export default {
           tread: '',
         },
         {
+          location: tireLocation.rightOutsideAxle2,
           width: '',
           profile: '',
           diameter: '',
