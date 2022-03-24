@@ -18,7 +18,6 @@
         label="Ilość"
         type="number"
         hide-spin-buttons
-        single-line
         hide-details
         class="ml-2"/>
     </v-col>

@@ -66,7 +66,7 @@
             </v-row>
             <v-row class="no-gutters mt-2">
               <!-- Company -->
-              <v-col cols="6" md="3" lg="2">
+              <v-col cols="6" sm="4" md="3" lg="2">
                 <v-text-field
                   ref="firstControl"
                   v-model.lazy="item.companyName"
@@ -78,7 +78,7 @@
                   :rules="[rules.required]"/>
               </v-col>
               <!-- City -->
-              <v-col cols="6" md="3" lg="2" class="pl-2">
+              <v-col cols="6" sm="8" md="3" lg="2" class="pl-2">
                 <v-text-field
                   v-model.lazy="item.city"
                   label="Miasto"
@@ -120,9 +120,9 @@
             </v-row>
             <!-- Vehicle name -->
             <v-row class="no-gutters">
-              <v-col cols="6" md="3" lg="2">
+              <v-col cols="6" sm="4" md="3" lg="2">
                 <v-text-field
-                  v-model.lazy="item.vehicleName"
+                  v-model.lazy="item.vehicle.name"
                   label="Marka pojazdu"
                   type="input"
                   hide-details="auto"
@@ -130,9 +130,9 @@
                   :rules="[rules.required]"/>
               </v-col>
               <!-- Registration number -->
-              <v-col cols="6" md="3" lg="2" class="pl-2">
+              <v-col cols="6" sm="8" md="3" lg="2" class="pl-2">
                 <v-text-field
-                  v-model.lazy="item.registrationNumber"
+                  v-model.lazy="item.vehicle.registrationNumber"
                   label="Numer rejestracyjny"
                   type="input"
                   hide-details="auto"
@@ -141,10 +141,10 @@
               </v-col>
               <!-- Vehicle type -->
               <v-col
-                cols="6" md="3" lg="2"
+                cols="6" sm="4" md="3" lg="2"
                 :class="$vuetify.breakpoint.mdAndUp ? 'pl-2' : 'mt-2'">
                 <v-select
-                  v-model="item.vehicleType"
+                  v-model="item.vehicle.type"
                   :items="vehicleTypeItems"
                   item-value="id"
                   hide-details="auto"
@@ -152,15 +152,14 @@
               </v-col>
               <!-- Mileage -->
               <v-col
-                cols="6" md="3" lg="6"
+                cols="6" sm="8" md="3" lg="6"
                 class="pl-2"
                 :class="$vuetify.breakpoint.mdAndUp ? '' : 'mt-2'">
                 <v-text-field
-                  v-model.number="item.mileage"
+                  v-model.number="item.vehicle.mileage"
                   label="Przebieg"
                   type="number"
                   hide-spin-buttons
-                  single-line
                   hide-details="auto"
                   validate-on-blur
                   :rules="[rules.integer, rules.required]"/>
@@ -188,7 +187,7 @@
             <div
               v-for="(tire, index) in item.tires"
               :key="index">
-              <tire-measurement-info :item="tire" @change="addArrayObject(tire, item.tires, 18, {
+              <truck-tire-measurement-info :item="tire" @change="addArrayObject(tire, item.tires, 18, {
                 width: '',
                 profile: '',
                 diameter: '',
@@ -643,8 +642,8 @@
 import moment from 'moment';
 import rules from '@/misc/rules';
 import vehicleType from '@/enums/vehicleType';
-import tireLocation from '@/enums/tireLocation';
-import TireMeasurementInfo from '@/components/TireMeasurementInfo.vue';
+import tireLocation from '@/enums/truckTireLocation';
+import TruckTireMeasurementInfo from '@/components/TruckTireMeasurementInfo.vue';
 import ServiceAction from '@/components/ServiceAction.vue';
 import TireBrandInfo from '@/components/TireBrandInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
@@ -653,7 +652,7 @@ import Mechanic from '@/components/Mechanic.vue';
 export default {
   name: 'OrderForm',
   components: {
-    TireMeasurementInfo,
+    TruckTireMeasurementInfo,
     ServiceAction,
     TireBrandInfo,
     SignatureField,
@@ -673,9 +672,12 @@ export default {
       date: new Date(),
       companyName: '',
       city: '',
-      vehicleName: '',
-      registrationNumber: '',
-      mileage: 0,
+      vehicle: {
+        name: '',
+        type: '',
+        registrationNumber: '',
+        mileage: '',
+      },
       description: '',
       tires: [
         {
@@ -755,99 +757,99 @@ export default {
       tireInspection: {
         isChecked: false,
         text: 'Inspekcja stanu ogumienia',
-        count: 0,
+        count: '',
         info: '',
       },
       pressureRegulation: {
         isChecked: false,
         text: 'Regulacja ciśnienia',
-        count: 0,
+        count: '',
         info: '',
       },
       wheelWashing: {
         isChecked: false,
         text: 'Mycie koła',
-        count: 0,
+        count: '',
         info: '',
         extraInfo: '',
       },
       wheelUnscrewing: {
         isChecked: false,
         text: 'Odkręcanie koła',
-        count: 0,
+        count: '',
         info: '',
         extraInfo: '',
       },
       tireInstallation: {
         isChecked: false,
         text: 'Demontaż / montaż opony',
-        count: 0,
+        count: '',
         info: '',
         extraInfo: '',
       },
       wheelBalancing: {
         isChecked: false,
         text: 'Wyważanie',
-        count: 0,
+        count: '',
         info: '',
         extraInfo: '',
       },
       wheelWeights: {
         isChecked: false,
         text: 'Ciężarki',
-        count: 0,
+        count: '',
         info: '',
         extraInfo: '',
       },
       wheelCentering: {
         isChecked: false,
         text: 'Centrowanie koła',
-        count: 0,
+        count: '',
         info: '',
       },
       pinsCleaning: {
         isChecked: false,
         text: 'Czyszczenie / smarowanie szpilek',
-        count: 0,
+        count: '',
         info: '',
       },
       tighteningWithTorqueWrench: {
         isChecked: false,
         text: 'Dokręcanie kluczem dynamometrycznym',
-        count: 0,
+        count: '',
         info: '',
       },
       handingOverTighteningCard: {
         isChecked: false,
         text: 'Przekazanie karty dokręceń',
-        count: 0,
+        count: '',
         info: '',
       },
       pumping: {
         isChecked: false,
         text: 'Pompowanie',
-        count: 0,
+        count: '',
         info: '',
         extraInfo: '',
       },
       valveChange: {
         isChecked: false,
         text: 'Montaż / wymiana zaworu',
-        count: 0,
+        count: '',
         info: '',
         extraInfo: '',
       },
       extensionInstallation: {
         isChecked: false,
         text: 'Montaż przedłużki',
-        count: 0,
+        count: '',
         info: '',
         extraInfo: '',
       },
       deepening: {
         isChecked: false,
         text: 'Pogłębianie',
-        count: 0,
+        count: '',
         info: '',
         F: false,
         D: false,
@@ -856,28 +858,28 @@ export default {
       coldHotRepair: {
         isChecked: false,
         text: 'Naprawa na zimno / gorąco',
-        count: 0,
+        count: '',
         info: '',
         extraInfo: '',
       },
       utilization: {
         isChecked: false,
         text: 'Utylizacja',
-        count: 0,
+        count: '',
         info: '',
         extraInfo: '',
       },
       drive: {
         isChecked: false,
         text: 'Dojazd',
-        count: 0,
+        count: '',
         info: '',
         extraInfo: '',
       },
       other: {
         isChecked: false,
         text: 'Inne',
-        count: 0,
+        count: '',
         info: '',
         extraInfo: '',
       },

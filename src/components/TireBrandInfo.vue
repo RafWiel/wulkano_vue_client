@@ -66,7 +66,7 @@
 </template>
 <script>
 import rules from '@/misc/rules';
-import tireLocation from '@/enums/tireLocation';
+import tireLocation from '@/enums/truckTireLocation';
 
 export default
 {

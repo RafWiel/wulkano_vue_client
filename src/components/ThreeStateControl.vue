@@ -1,0 +1,67 @@
+<template>
+  <v-row class="no-gutters">
+    <v-col>
+      <v-row class="no-gutters ma-0 pa-0">
+        <v-col>
+          <p class="ma-0 pa-0 caption grey--text text--darken-2" >Stan</p>
+        </v-col>
+      </v-row>
+      <v-row class="no-gutters">
+        <v-col>
+          <v-btn
+            class="state-button"
+            depressed
+            block
+            small
+            :color="value == threeState.ok ? 'green lighten-2' : 'grey darken-1'"
+            :outlined="value != threeState.ok"
+            @click="value = threeState.ok">
+          </v-btn>
+        </v-col>
+        <v-col class="ml-1">
+          <v-btn
+            class="state-button"
+            depressed
+            block
+            small
+            :color="value == threeState.avg ? 'yellow darken-1' : 'grey darken-1'"
+            :outlined="value != threeState.avg"
+            @click="value = threeState.avg">
+          </v-btn>
+        </v-col>
+        <v-col class="ml-1">
+          <v-btn
+            class="state-button"
+            depressed
+            block
+            small
+            :color="value == threeState.bad ? 'red darken-1' : 'grey darken-1'"
+            :outlined="value != threeState.bad"
+            @click="value = threeState.bad">
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
+</template>
+<script>
+import threeState from '@/enums/threeState';
+
+export default {
+  name: 'ThreeStateControl',
+  props: {
+    value: Number,
+  },
+  data: () => ({
+    threeState,
+  }),
+};
+
+</script>
+<style lang="scss" scoped>
+  .state-button {
+    min-height: 29px !important;
+    height:29px !important;
+    width:29px !important;
+  }
+</style>

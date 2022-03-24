@@ -1,14 +1,25 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import OrderForm from '../views/OrderForm.vue';
+import TruckServiceForm from '../views/TruckServiceForm.vue';
+import CarServiceForm from '../views/CarServiceForm.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    name: 'OrderForm',
-    component: OrderForm,
+    name: 'CarServiceForm',
+    component: CarServiceForm,
+  },
+  {
+    path: '/services/car/',
+    name: 'CarServiceForm',
+    component: CarServiceForm,
+  },
+  {
+    path: '/services/truck/',
+    name: 'TruckServiceForm',
+    component: TruckServiceForm,
   },
   // {
   //   path: '/',
