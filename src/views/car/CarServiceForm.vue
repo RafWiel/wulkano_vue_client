@@ -178,22 +178,145 @@
             <div
               v-for="(tire, index) in item.tires"
               :key="index">
-              <car-tire-measurement-info :item="tire" @change="addArrayObject(tire, item.tires, 18, {
+              <tire-measurement-info :item="tire" @change="addArrayObject(tire, item.tires, 5, {
                 width: '',
                 profile: '',
                 diameter: '',
                 pressure: '',
                 tread: '' })"/>
             </div>
-            <!-- Diagnostics -->
-            <v-textarea
-              label="Diagnostyka / zalecenia"
-              hide-details="auto"
-              validate-on-blur
-              auto-grow
-              class="mt-2"
-              rows="4"
-              v-model.lazy="item.tireDiagnostics"/>
+            <v-row class="no-gutters mt-2">
+              <!-- Incorrect tire wear -->
+              <v-col cols="6" sm="4" md="3" lg="2">
+                <v-select
+                  v-model="item.incorrectTireWearLocation"
+                  :items="axleLocationItems"
+                  item-value="id"
+                  hide-details="auto"
+                  label="Nieprawidłowe zużycie opon"/>
+              </v-col>
+              <!-- Geometry -->
+              <v-col class="pl-2">
+                <v-select
+                  v-model="item.isGeometryRequired"
+                  :items="boolItems"
+                  item-value="id"
+                  hide-details="auto"
+                  label="Konieczna geometria"/>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+      <!-- Installed tires -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
+        <v-row class="no-gutters">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
+            <v-row class="no-gutters">
+              <v-col>
+                <h3 class="primary--text text--darken-1">
+                  Opony założone
+                </h3>
+              </v-col>
+            </v-row>
+            <div
+              v-for="(tire, index) in item.installedTires"
+              :key="index">
+              <tire-brand-info :item="tire" @change="addArrayObject(tire, item.installedTires, 4, {
+                width: '',
+                profile: '',
+                diameter: '',
+                brand: '',
+                tread: '',
+                serial: ''
+              })"/>
+            </div>
+            <v-row class="no-gutters mt-4">
+              <!-- Change -->
+              <v-col>
+                <v-select
+                  v-model="item.tireChange"
+                  :items="tireChangeItems"
+                  item-value="id"
+                  hide-details="auto"
+                  label="Wymiana"/>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+      <!-- Deposit -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
+        <v-row class="no-gutters">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
+            <v-row class="no-gutters">
+              <v-col>
+                <h3 class="primary--text text--darken-1">
+                  Depozyt
+                </h3>
+              </v-col>
+            </v-row>
+            <div
+              v-for="(tire, index) in item.installedTires"
+              :key="index">
+              <tire-brand-info :item="tire" @change="addArrayObject(tire, item.installedTires, 4, {
+                width: '',
+                profile: '',
+                diameter: '',
+                brand: '',
+                tread: '',
+                serial: ''
+              })"/>
+            </div>
+            <v-row class="no-gutters mt-4">
+              <v-col cols="12" sm="auto">
+                <v-checkbox
+                  v-model="item.deposit.tires"
+                  label="Opony"
+                  hide-details
+                  class="shrink mt-0"/>
+              </v-col>
+              <v-col cols="12" sm="auto">
+                <v-checkbox
+                  v-model="item.deposit.alloys"
+                  label="Koła alu"
+                  hide-details
+                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
+                  class="shrink mt-0"/>
+              </v-col>
+              <v-col cols="12" sm="auto">
+                <v-checkbox
+                  v-model="item.deposit.steels"
+                  label="Koła stalowe"
+                  hide-details
+                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
+                  class="shrink mt-0"/>
+              </v-col>
+              <v-col cols="12" sm="auto">
+                <v-checkbox
+                  v-model="item.deposit.screws"
+                  label="Śruby"
+                  hide-details
+                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
+                  class="shrink mt-0"/>
+              </v-col>
+              <v-col cols="12" sm="auto">
+                <v-checkbox
+                  v-model="item.deposit.hubcups"
+                  label="Kołpaki"
+                  hide-details
+                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
+                  class="shrink mt-0"/>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-card>
@@ -347,36 +470,6 @@
                   label=""/>
               </template>
             </service-action>
-          </v-col>
-        </v-row>
-      </v-card>
-      <!-- Installed tires -->
-      <v-card
-        flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters">
-          <!-- Content column -->
-          <v-col cols="12" class="pa-0">
-            <!-- Title -->
-            <v-row class="no-gutters">
-              <v-col>
-                <h3 class="primary--text text--darken-1">
-                  Opony założone
-                </h3>
-              </v-col>
-            </v-row>
-            <div
-              v-for="(tire, index) in item.installedTires"
-              :key="index">
-              <tire-brand-info :item="tire" @change="addArrayObject(tire, item.installedTires, 18, {
-                width: '',
-                profile: '',
-                diameter: '',
-                brand: '',
-                tread: '',
-                serial: ''
-              })"/>
-            </div>
           </v-col>
         </v-row>
       </v-card>
@@ -632,17 +725,20 @@
 <script>
 import moment from 'moment';
 import rules from '@/misc/rules';
-import tireLocation from '@/enums/carTireLocation';
-import CarTireMeasurementInfo from '@/components/CarTireMeasurementInfo.vue';
+import tireLocation from '@/enums/car/tireLocation';
+import axleLocation from '@/enums/axleLocation';
+import bool from '@/enums/bool';
+import tireChangeType from '@/enums/car/tireChangeType';
+import TireMeasurementInfo from '@/components/car/TireMeasurementInfo.vue';
 import ServiceAction from '@/components/ServiceAction.vue';
-import TireBrandInfo from '@/components/TireBrandInfo.vue';
+import TireBrandInfo from '@/components/car/TireBrandInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
 import Mechanic from '@/components/Mechanic.vue';
 
 export default {
   name: 'OrderForm',
   components: {
-    CarTireMeasurementInfo,
+    TireMeasurementInfo,
     ServiceAction,
     TireBrandInfo,
     SignatureField,
@@ -695,17 +791,25 @@ export default {
           tread: '',
         },
       ],
-      tireDiagnostics: '',
+      incorrectTireWearLocation: 0,
+      isGeometryRequired: false,
       installedTires: [
         {
           width: '',
           profile: '',
           diameter: '',
+          dot: '',
           brand: '',
-          tread: '',
-          serial: '',
         },
       ],
+      deposit: {
+        tires: false,
+        alloys: false,
+        steels: false,
+        screws: false,
+        hubcups: false,
+      },
+      tireChange: tireChangeType.none,
       materials: [
         {
           item: '',
@@ -870,6 +974,9 @@ export default {
       required: rules.required,
       integer: rules.integer,
     },
+    axleLocationItems: axleLocation.items,
+    boolItems: bool.items,
+    tireChangeItems: tireChangeType.items,
   }),
   methods: {
     addArrayObject(item, array, maxCount, newItem) {

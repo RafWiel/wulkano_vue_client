@@ -6,7 +6,7 @@
           <p class="ma-0 pa-0 caption grey--text text--darken-2" >Stan</p>
         </v-col>
       </v-row>
-      <v-row class="no-gutters">
+      <v-row class="no-gutters" justify="center" align="center">
         <v-col>
           <v-btn
             class="state-button"

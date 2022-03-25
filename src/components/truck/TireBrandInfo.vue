@@ -54,7 +54,7 @@
         hide-details="auto"
         validate-on-blur/>
     </v-col>
-    <v-col md="4" lg="5" class="pl-2">
+    <v-col class="pl-2">
       <v-text-field
         v-model.lazy="item.serial"
         label="Nr. fabryczny"
@@ -66,7 +66,7 @@
 </template>
 <script>
 import rules from '@/misc/rules';
-import tireLocation from '@/enums/truckTireLocation';
+import tireLocation from '@/enums/truck/tireLocation';
 
 export default
 {

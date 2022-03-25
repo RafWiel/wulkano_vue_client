@@ -187,7 +187,7 @@
             <div
               v-for="(tire, index) in item.tires"
               :key="index">
-              <truck-tire-measurement-info :item="tire" @change="addArrayObject(tire, item.tires, 18, {
+              <tire-measurement-info :item="tire" @change="addArrayObject(tire, item.tires, 18, {
                 width: '',
                 profile: '',
                 diameter: '',
@@ -642,17 +642,17 @@
 import moment from 'moment';
 import rules from '@/misc/rules';
 import vehicleType from '@/enums/vehicleType';
-import tireLocation from '@/enums/truckTireLocation';
-import TruckTireMeasurementInfo from '@/components/TruckTireMeasurementInfo.vue';
+import tireLocation from '@/enums/truck/tireLocation';
+import TireMeasurementInfo from '@/components/truck/TireMeasurementInfo.vue';
 import ServiceAction from '@/components/ServiceAction.vue';
-import TireBrandInfo from '@/components/TireBrandInfo.vue';
+import TireBrandInfo from '@/components/truck/TireBrandInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
 import Mechanic from '@/components/Mechanic.vue';
 
 export default {
   name: 'OrderForm',
   components: {
-    TruckTireMeasurementInfo,
+    TireMeasurementInfo,
     ServiceAction,
     TireBrandInfo,
     SignatureField,

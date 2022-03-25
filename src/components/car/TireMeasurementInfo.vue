@@ -1,6 +1,6 @@
 <template>
   <v-row class="no-gutters mt-2">
-    <v-col md="1">
+    <v-col cols="2" sm="1">
       <v-select
         v-model="item.location"
         :items="tireLocationItems"
@@ -8,7 +8,7 @@
         hide-details="auto"
         label="Pozycja"/>
     </v-col>
-    <v-col cols="auto" class="mt-0 ml-2">
+    <v-col cols="4" sm="3" md="2" lg="1" class="mt-0 pl-2">
       <three-state-control
         :value="item.status"/>
     </v-col>
@@ -22,7 +22,7 @@
         validate-on-blur
         :rules="[rules.float, rules.required]"/>
     </v-col>
-    <v-col lg="7" md="6" class="pl-2">
+    <v-col class="pl-2">
       <v-text-field
         v-model.number="item.tread"
         label="Bieżnik [mm]"
@@ -36,7 +36,7 @@
 </template>
 <script>
 import rules from '@/misc/rules';
-import tireLocation from '@/enums/carTireLocation';
+import tireLocation from '@/enums/car/tireLocation';
 import ThreeStateControl from '@/components/ThreeStateControl.vue';
 
 export default
