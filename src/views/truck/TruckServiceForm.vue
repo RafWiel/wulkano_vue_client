@@ -644,7 +644,7 @@ import rules from '@/misc/rules';
 import vehicleType from '@/enums/vehicleType';
 import tireLocation from '@/enums/truck/tireLocation';
 import TireMeasurementInfo from '@/components/truck/TireMeasurementInfo.vue';
-import ServiceAction from '@/components/ServiceAction.vue';
+import ServiceAction from '@/components/truck/ServiceAction.vue';
 import TireBrandInfo from '@/components/truck/TireBrandInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
 import Mechanic from '@/components/Mechanic.vue';

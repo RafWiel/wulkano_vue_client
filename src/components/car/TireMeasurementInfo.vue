@@ -9,8 +9,7 @@
         label="Pozycja"/>
     </v-col>
     <v-col cols="4" sm="3" md="2" lg="1" class="mt-0 pl-2">
-      <three-state-control
-        :value="item.status"/>
+      <three-state-control :value="item.status"/>
     </v-col>
     <v-col lg="1" md="2" class="pl-2">
       <v-text-field
@@ -37,7 +36,7 @@
 <script>
 import rules from '@/misc/rules';
 import tireLocation from '@/enums/car/tireLocation';
-import ThreeStateControl from '@/components/ThreeStateControl.vue';
+import ThreeStateControl from '@/components/car/ThreeStateControl.vue';
 
 export default
 {

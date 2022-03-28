@@ -320,7 +320,7 @@
           </v-col>
         </v-row>
       </v-card>
-      <!-- Actions -->
+      <!-- Visual control -->
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
@@ -331,145 +331,39 @@
             <v-row class="no-gutters">
               <v-col>
                 <h3 class="primary--text text--darken-1">
-                  Czynności wykonane
+                  FAST-FIT Kontrola wizualna
                 </h3>
               </v-col>
             </v-row>
-            <!-- Actions -->
-            <service-action :item="actions.tireInspection"/>
-            <service-action :item="actions.pressureRegulation"/>
-            <service-action :item="actions.wheelWashing">
-              <template v-slot:extra-info>
-                <v-text-field
-                  v-model.lazy="actions.wheelWashing.extraInfo"
-                  hide-details
-                  label=""/>
-              </template>
-            </service-action>
-            <service-action :item="actions.wheelUnscrewing">
-              <template v-slot:extra-info>
-                <v-text-field
-                  v-model.lazy="actions.wheelUnscrewing.extraInfo"
-                  hide-details
-                  label=""/>
-              </template>
-            </service-action>
-            <service-action :item="actions.tireInstallation">
-              <template v-slot:extra-info>
-                <v-text-field
-                  v-model.lazy="actions.tireInstallation.extraInfo"
-                  hide-details
-                  label=""/>
-              </template>
-            </service-action>
-            <service-action :item="actions.wheelBalancing">
-              <template v-slot:extra-info>
-                <v-text-field
-                  v-model.lazy="actions.wheelBalancing.extraInfo"
-                  hide-details
-                  label=""/>
-              </template>
-            </service-action>
-            <service-action :item="actions.wheelWeights">
-              <template v-slot:extra-info>
-                <v-text-field
-                  v-model.lazy="actions.wheelWeights.extraInfo"
-                  hide-details
-                  label=""/>
-              </template>
-            </service-action>
-            <service-action :item="actions.wheelCentering"/>
-            <service-action :item="actions.pinsCleaning"/>
-            <service-action :item="actions.tighteningWithTorqueWrench"/>
-            <service-action :item="actions.handingOverTighteningCard"/>
-            <service-action :item="actions.pumping">
-              <template v-slot:extra-info>
-                <v-text-field
-                  v-model.lazy="actions.pumping.extraInfo"
-                  hide-details
-                  label=""/>
-              </template>
-            </service-action>
-            <service-action :item="actions.valveChange">
-              <template v-slot:extra-info>
-                <v-text-field
-                  v-model.lazy="actions.valveChange.extraInfo"
-                  hide-details
-                  label=""/>
-              </template>
-            </service-action>
-            <service-action :item="actions.extensionInstallation">
-              <template v-slot:extra-info>
-                <v-text-field
-                  v-model.lazy="actions.extensionInstallation.extraInfo"
-                  hide-details
-                  label=""/>
-              </template>
-            </service-action>
-            <service-action :item="actions.deepening">
-              <template v-slot:extra-info>
-                <v-row
-                  class="no-gutters"
-                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 110%'">
-                  <v-col cols="auto">
-                    <v-checkbox
-                      v-model="actions.deepening.F"
-                      label="F"
+            <!-- Visual inspection -->
+            <v-row class="no-gutters">
+              <v-col cols="12" md="6" lg="4">
+                <visual-inspection :item="visualInspection.brakePads.front"/>
+                <visual-inspection :item="visualInspection.brakePads.rear"/>
+                <visual-inspection :item="visualInspection.brakeDiscs.front"/>
+                <visual-inspection :item="visualInspection.brakeDiscs.rear"/>
+                <visual-inspection :item="visualInspection.shockAbsorbers"/>
+                <visual-inspection :item="visualInspection.suspension"/>
+              </v-col>
+              <v-col cols="12" md="6" lg="4">
+                <visual-inspection :item="visualInspection.airco"/>
+                <visual-inspection :item="visualInspection.oil"/>
+                <visual-inspection :item="visualInspection.lights"/>
+                <visual-inspection :item="visualInspection.washingFluid"/>
+                <visual-inspection :item="visualInspection.brakeFluid"/>
+                <visual-inspection :item="visualInspection.coolingFluid"/>
+                <visual-inspection :item="visualInspection.wipers"/>
+                <visual-inspection :item="visualInspection.other">
+                  <template v-slot:extra-info>
+                    <v-text-field
+                      v-model.lazy="visualInspection.other.extraInfo"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
-                      class="shrink mt-4"/>
-                  </v-col>
-                  <v-col cols="auto">
-                    <v-checkbox
-                      v-model="actions.deepening.D"
-                      label="D"
-                      hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
-                      class="shrink mt-4"/>
-                  </v-col>
-                  <v-col cols="auto">
-                    <v-checkbox
-                      v-model="actions.deepening.T"
-                      label="T"
-                      hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
-                      class="shrink mt-4"/>
-                  </v-col>
-                </v-row>
-              </template>
-            </service-action>
-            <service-action :item="actions.coldHotRepair">
-              <template v-slot:extra-info>
-                <v-text-field
-                  v-model.lazy="actions.coldHotRepair.extraInfo"
-                  hide-details
-                  label=""/>
-              </template>
-            </service-action>
-            <service-action :item="actions.utilization">
-              <template v-slot:extra-info>
-                <v-text-field
-                  v-model.lazy="actions.utilization.extraInfo"
-                  hide-details
-                  label=""/>
-              </template>
-            </service-action>
-            <service-action :item="actions.drive">
-              <template v-slot:extra-info>
-                <v-text-field
-                  v-model.lazy="actions.drive.extraInfo"
-                  hide-details
-                  label=""/>
-              </template>
-            </service-action>
-            <service-action :item="actions.other">
-              <template v-slot:extra-info>
-                <v-text-field
-                  v-model.lazy="actions.other.extraInfo"
-                  hide-details
-                  label=""/>
-              </template>
-            </service-action>
+                      style="width:80%"
+                      label=""/>
+                  </template>
+                </visual-inspection>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-card>
@@ -719,6 +613,15 @@
         </v-row>
       </v-card>
     </v-form>
+    <!-- RODO -->
+    <p class="px-4 caption"
+      :class="$vuetify.breakpoint.mdAndUp ? '' : 'mt-4'">
+      Zgodnie z art.13 rozporządzenia o ochronie danych osobowych z dn. 27.04.16 (Dz.Urz. UE L 119 z 04.05.16) informujemy,
+      że administratorem danych osobowych kontrahenta jest WULKANO PERFECT SZABAŁA S.J. , 21-040 Świdnik ul. Piasecka 200 kontakt biuro@wulkanoperfect.pl
+      Dane kontrahenta będą przetwarzane w celu realizacji umowy (art.6 ust.1 lit.b) RODO z 27.04.16.
+      Odbiorcami danych będą wyłącznie podmioty uprawnione na pods. przepisów prawa. Dane będą przechowywane przez 5 lat.
+      Kontrahent ma prawo do żądania od adminitratora dostępu, usunięcia, ograniczenia dostępu do danych osobowych.
+      Podanie danych jest dobrowolne, jednakże odmowa może skutkować odmową zawarcia umowy (sprzedaży i wykonania usługi).</p>
   </v-container>
 </template>
 
@@ -730,19 +633,19 @@ import axleLocation from '@/enums/axleLocation';
 import bool from '@/enums/bool';
 import tireChangeType from '@/enums/car/tireChangeType';
 import TireMeasurementInfo from '@/components/car/TireMeasurementInfo.vue';
-import ServiceAction from '@/components/ServiceAction.vue';
 import TireBrandInfo from '@/components/car/TireBrandInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
 import Mechanic from '@/components/Mechanic.vue';
+import VisualInspection from '@/components/car/VisualInspection.vue';
 
 export default {
   name: 'OrderForm',
   components: {
     TireMeasurementInfo,
-    ServiceAction,
     TireBrandInfo,
     SignatureField,
     Mechanic,
+    VisualInspection,
   },
   computed: {
     date() {
@@ -839,134 +742,66 @@ export default {
         { name: '' },
       ],
     },
-    actions: {
-      tireInspection: {
-        isChecked: false,
-        text: 'Inspekcja stanu ogumienia',
-        count: '',
-        info: '',
+    visualInspection: {
+      brakePads: {
+        front: {
+          text: 'Klocki hamulcowe - Przód',
+          status: 0,
+        },
+        rear: {
+          text: 'Klocki hamulcowe - Tył',
+          status: 0,
+        },
       },
-      pressureRegulation: {
-        isChecked: false,
-        text: 'Regulacja ciśnienia',
-        count: '',
-        info: '',
+      brakeDiscs: {
+        front: {
+          text: 'Tarcze hamulcowe - Przód',
+          status: 0,
+        },
+        rear: {
+          text: 'Tarcze hamulcowe - Tył',
+          status: 0,
+        },
       },
-      wheelWashing: {
-        isChecked: false,
-        text: 'Mycie koła',
-        count: '',
-        info: '',
-        extraInfo: '',
+      shockAbsorbers: {
+        text: 'Amortyzatory',
+        status: 0,
       },
-      wheelUnscrewing: {
-        isChecked: false,
-        text: 'Odkręcanie koła',
-        count: '',
-        info: '',
-        extraInfo: '',
+      suspension: {
+        text: 'Zawieszenie',
+        status: 0,
       },
-      tireInstallation: {
-        isChecked: false,
-        text: 'Demontaż / montaż opony',
-        count: '',
-        info: '',
-        extraInfo: '',
+      airco: {
+        text: 'Klimatyzacja',
+        status: 0,
       },
-      wheelBalancing: {
-        isChecked: false,
-        text: 'Wyważanie',
-        count: '',
-        info: '',
-        extraInfo: '',
+      oil: {
+        text: 'Poziom oleju w silniku',
+        status: 0,
       },
-      wheelWeights: {
-        isChecked: false,
-        text: 'Ciężarki',
-        count: '',
-        info: '',
-        extraInfo: '',
+      lights: {
+        text: 'Światła',
+        status: 0,
       },
-      wheelCentering: {
-        isChecked: false,
-        text: 'Centrowanie koła',
-        count: '',
-        info: '',
+      washingFluid: {
+        text: 'Płyn do spryskiwaczy',
+        status: 0,
       },
-      pinsCleaning: {
-        isChecked: false,
-        text: 'Czyszczenie / smarowanie szpilek',
-        count: '',
-        info: '',
+      brakeFluid: {
+        text: 'Płyn hamulcowy',
+        status: 0,
       },
-      tighteningWithTorqueWrench: {
-        isChecked: false,
-        text: 'Dokręcanie kluczem dynamometrycznym',
-        count: '',
-        info: '',
+      coolingFluid: {
+        text: 'Płyn chłodzący',
+        status: 0,
       },
-      handingOverTighteningCard: {
-        isChecked: false,
-        text: 'Przekazanie karty dokręceń',
-        count: '',
-        info: '',
-      },
-      pumping: {
-        isChecked: false,
-        text: 'Pompowanie',
-        count: '',
-        info: '',
-        extraInfo: '',
-      },
-      valveChange: {
-        isChecked: false,
-        text: 'Montaż / wymiana zaworu',
-        count: '',
-        info: '',
-        extraInfo: '',
-      },
-      extensionInstallation: {
-        isChecked: false,
-        text: 'Montaż przedłużki',
-        count: '',
-        info: '',
-        extraInfo: '',
-      },
-      deepening: {
-        isChecked: false,
-        text: 'Pogłębianie',
-        count: '',
-        info: '',
-        F: false,
-        D: false,
-        T: false,
-      },
-      coldHotRepair: {
-        isChecked: false,
-        text: 'Naprawa na zimno / gorąco',
-        count: '',
-        info: '',
-        extraInfo: '',
-      },
-      utilization: {
-        isChecked: false,
-        text: 'Utylizacja',
-        count: '',
-        info: '',
-        extraInfo: '',
-      },
-      drive: {
-        isChecked: false,
-        text: 'Dojazd',
-        count: '',
-        info: '',
-        extraInfo: '',
+      wipers: {
+        text: 'Pióra wycieraczek',
+        status: 0,
       },
       other: {
-        isChecked: false,
         text: 'Inne',
-        count: '',
-        info: '',
+        status: 0,
         extraInfo: '',
       },
     },

@@ -1,5 +1,5 @@
 <template>
-  <v-row class="no-gutters mt-2">
+  <v-row class="no-gutters">
     <v-col cols="9" md="6" lg="4">
       <div class="inline" >
         <v-checkbox
