@@ -1,11 +1,13 @@
-const other = 0;
+const none = 0;
 const tractor = 1;
 const truck = 2;
 const bus = 3;
 const semitrailer = 4;
 const trailer = 5;
+const other = 6;
 
 module.exports = {
+  none,
   other,
   tractor,
   truck,

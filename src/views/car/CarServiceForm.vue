@@ -141,9 +141,19 @@
                   validate-on-blur
                   :rules="[rules.required]"/>
               </v-col>
+              <!-- Vehicle type -->
+              <v-col
+                cols="6" sm="4" md="3" lg="2"
+                :class="$vuetify.breakpoint.mdAndUp ? 'pl-2' : 'mt-2'">
+                <v-select
+                  v-model="item.vehicle.type"
+                  :items="vehicleTypeItems"
+                  item-value="id"
+                  hide-details="auto"
+                  label="Typ pojazdu"/>
+              </v-col>
               <!-- Mileage -->
               <v-col
-                cols="6" sm="4" md="6" lg="8"
                 class="pl-2"
                 :class="$vuetify.breakpoint.smAndUp ? '' : 'mt-2'">
                 <v-text-field
@@ -367,7 +377,7 @@
           </v-col>
         </v-row>
       </v-card>
-      <!-- Other materials -->
+      <!-- Actions -->
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
@@ -378,153 +388,75 @@
             <v-row class="no-gutters">
               <v-col>
                 <h3 class="primary--text text--darken-1">
-                  Inne materiały
+                  Wykonane usługi
                 </h3>
               </v-col>
             </v-row>
-            <div
-              v-for="(material, index) in item.materials"
-              :key="index">
-              <v-row class="no-gutters mt-n4">
-                <v-col>
-                  <v-text-field
-                    v-model.lazy="material.item"
-                    type="input"
-                    hide-details="auto"
-                    validate-on-blur/>
-                </v-col>
-              </v-row>
-            </div>
-          </v-col>
-        </v-row>
-      </v-card>
-      <!-- Deinstalled tires -->
-      <v-card
-        flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters">
-          <!-- Content column -->
-          <v-col cols="12" class="pa-0">
-            <!-- Title -->
-            <v-row class="no-gutters">
-              <v-col>
-                <h3 class="primary--text text--darken-1">
-                  Opony zdemontowane
-                </h3>
-              </v-col>
-            </v-row>
-            <div
-              v-for="(tire, index) in item.deinstalledTires"
-              :key="index">
-              <tire-brand-info :item="tire" @change="addArrayObject(tire, item.deinstalledTires, 18, {
-                width: '',
-                profile: '',
-                diameter: '',
-                brand: '',
-                tread: '',
-                serial: ''
-              })"/>
-            </div>
-          </v-col>
-        </v-row>
-      </v-card>
-      <!-- Recommendations -->
-      <v-card
-        flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters">
-          <!-- Content column -->
-          <v-col cols="12" class="pa-0">
-            <!-- Title -->
-            <v-row class="no-gutters">
-              <v-col>
-                <h3 class="primary--text text--darken-1">
-                  Zalecenia dotyczące pojazdu
-                </h3>
-              </v-col>
-            </v-row>
-            <v-row class="no-gutters mt-2">
-              <v-col cols="12" sm="auto">
-                <v-checkbox
-                  v-model="item.recommendations.geometry"
-                  label="Geometria"
-                  hide-details
-                  class="shrink mt-0"/>
-              </v-col>
-              <v-col cols="12" sm="auto">
-                <v-checkbox
-                  v-model="item.recommendations.shockAbsorbers"
-                  label="Amortyzatory"
-                  hide-details
-                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
-                  class="shrink mt-0"/>
-              </v-col>
-              <v-col cols="12" sm="auto">
-                <v-checkbox
-                  v-model="item.recommendations.brakes"
-                  label="Hamulce"
-                  hide-details
-                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
-                  class="shrink mt-0"/>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-      </v-card>
-      <!-- Next visit -->
-      <v-card
-        flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters">
-          <!-- Content column -->
-          <v-col cols="12" class="pa-0">
-            <!-- Title -->
-            <v-row class="no-gutters">
-              <v-col>
-                <h3 class="primary--text text--darken-1">
-                  Następna wizyta
-                </h3>
-              </v-col>
-            </v-row>
-            <v-row class="no-gutters">
-              <v-col cols="3" md="2" lg="1">
-                <v-menu
-                  v-model="item.nextVisit.isDatePickerVisible"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  class="pa-0"
-                  min-width="auto">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="item.nextVisit.date"
-                      label="Data"
-                      readonly
-                      hide-details="auto"
-                      v-bind="attrs"
-                      v-on="on"/>
-                  </template>
-                  <v-date-picker
-                    v-model="item.nextVisit.date"
-                    no-title
-                    locale="pl-pl"
-                    @input="item.nextVisit.isDatePickerVisible = false"/>
-                </v-menu>
-              </v-col>
-              <v-col class="ml-2">
+            <!-- Actions -->
+            <service-action :item="actions.screwing"/>
+            <service-action :item="actions.installation"/>
+            <service-action :item="actions.wheelBalancing">
+              <template v-slot:extra-info>
+                <v-row class="no-gutters mr-4" justify="end">
+                  <v-col cols="auto">
+                    <v-checkbox
+                      v-model="actions.wheelBalancing.steel"
+                      label="Stal"
+                      hide-details
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
+                      class="shrink mt-4"/>
+                  </v-col>
+                  <v-col cols="auto">
+                    <v-checkbox
+                      v-model="actions.wheelBalancing.alloy"
+                      label="Alu"
+                      hide-details
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
+                      class="shrink mt-4"/>
+                  </v-col>
+                </v-row>
+              </template>
+            </service-action>
+            <service-action :item="actions.tireRepair"/>
+            <service-action :item="actions.rimStraightening">
+              <template v-slot:extra-info>
+                <v-row
+                  class="no-gutters mr-4"
+                  justify="end"
+                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 50%'">
+                  <v-col cols="auto">
+                    <v-checkbox
+                      v-model="actions.rimStraightening.steel"
+                      label="Stal"
+                      hide-details
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
+                      class="shrink mt-4"/>
+                  </v-col>
+                  <v-col cols="auto">
+                    <v-checkbox
+                      v-model="actions.rimStraightening.alloy"
+                      label="Alu"
+                      hide-details
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
+                      class="shrink mt-4"/>
+                  </v-col>
+                </v-row>
+              </template>
+            </service-action>
+            <service-action :item="actions.airValve">
+              <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.nextVisit.purpose"
-                  type="input"
-                  label="Cel"
-                  hide-details="auto"
-                  validate-on-blur/>
-              </v-col>
-            </v-row>
+                  v-model.lazy="actions.airValve.extraInfo"
+                  hide-details
+                  label=""/>
+              </template>
+            </service-action>
+            <service-action :item="actions.nitrogen"/>
+            <service-action :item="actions.utilization"/>
           </v-col>
         </v-row>
       </v-card>
-      <!-- Mechanic -->
+      <!-- Fast-Fit -->
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
@@ -535,20 +467,154 @@
             <v-row class="no-gutters">
               <v-col>
                 <h3 class="primary--text text--darken-1">
-                  Mechanik
+                  FAST-FIT
                 </h3>
               </v-col>
             </v-row>
-            <v-row
-              v-for="(mechanic, index) in item.mechanics"
-              :key="index"
-              class="no-gutters mt-2">
+            <!-- Actions -->
+            <service-action :item="fastFit.brakePads">
+              <template v-slot:extra-info>
+                <v-row
+                  class="no-gutters mr-4"
+                  justify="end"
+                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 55%'">
+                  <v-col cols="auto">
+                    <v-checkbox
+                      v-model="fastFit.brakePads.front"
+                      label="Przód"
+                      hide-details
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
+                      class="shrink mt-4"/>
+                  </v-col>
+                  <v-col cols="auto">
+                    <v-checkbox
+                      v-model="fastFit.brakePads.rear"
+                      label="Tył"
+                      hide-details
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
+                      class="shrink mt-4"/>
+                  </v-col>
+                </v-row>
+              </template>
+            </service-action>
+            <service-action :item="fastFit.brakeDiscs">
+              <template v-slot:extra-info>
+                <v-row
+                  class="no-gutters mr-4"
+                  justify="end"
+                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 55%'">
+                  <v-col cols="auto">
+                    <v-checkbox
+                      v-model="fastFit.brakeDiscs.front"
+                      label="Przód"
+                      hide-details
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
+                      class="shrink mt-4"/>
+                  </v-col>
+                  <v-col cols="auto">
+                    <v-checkbox
+                      v-model="fastFit.brakeDiscs.rear"
+                      label="Tył"
+                      hide-details
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
+                      class="shrink mt-4"/>
+                  </v-col>
+                </v-row>
+              </template>
+            </service-action>
+            <service-action :item="fastFit.shockAbsorbers">
+              <template v-slot:extra-info>
+                <v-row
+                  class="no-gutters mr-4"
+                  justify="end"
+                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 75%'">
+                  <v-col cols="auto">
+                    <v-checkbox
+                      v-model="fastFit.shockAbsorbers.front"
+                      label="Przód"
+                      hide-details
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
+                      class="shrink mt-4"/>
+                  </v-col>
+                  <v-col cols="auto">
+                    <v-checkbox
+                      v-model="fastFit.shockAbsorbers.rear"
+                      label="Tył"
+                      hide-details
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
+                      class="shrink mt-4"/>
+                  </v-col>
+                </v-row>
+              </template>
+            </service-action>
+            <service-action :item="fastFit.geometry"/>
+            <service-action :item="fastFit.fuelFilter"/>
+          </v-col>
+        </v-row>
+      </v-card>
+      <!-- Periodic inspection -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
+        <v-row class="no-gutters">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
+            <v-row class="no-gutters">
               <v-col>
-                <mechanic :item="mechanic" @change="addArrayObject(mechanic, item.mechanics, 5, {
-                  name: '',
-                })"/>
+                <h3 class="primary--text text--darken-1">
+                  Przegląd okresowy
+                </h3>
               </v-col>
             </v-row>
+            <!-- Actions -->
+            <service-action :item="inspection.oil"/>
+            <service-action :item="inspection.oilFilter"/>
+            <service-action :item="inspection.airFilter"/>
+            <service-action :item="inspection.interiorFilter"/>
+            <service-action :item="inspection.airco">
+              <template v-slot:extra-info>
+                <v-row
+                  class="no-gutters"
+                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 50%'">
+                  <v-col cols="12" sm="auto">
+                    <v-checkbox
+                      v-model="inspection.airco.cleaning"
+                      label="Czyszczenie"
+                      hide-details
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
+                      class="shrink mt-4"/>
+                  </v-col>
+                  <v-col cols="12" sm="auto">
+                    <v-checkbox
+                      v-model="inspection.airco.filter"
+                      label="Filtr"
+                      hide-details
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
+                      class="shrink mt-4"/>
+                  </v-col>
+                  <v-col cols="12" sm="auto">
+                    <v-checkbox
+                      v-model="inspection.airco.filling"
+                      label="Napełnianie"
+                      hide-details
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
+                      class="shrink mt-4"/>
+                  </v-col>
+                </v-row>
+              </template>
+            </service-action>
+            <service-action :item="inspection.other">
+              <template v-slot:extra-info>
+                <v-textarea
+                  label=""
+                  hide-details="auto"
+                  validate-on-blur
+                  auto-grow
+                  rows="1"
+                  v-model.lazy="inspection.other.extraInfo"/>
+              </template>
+            </service-action>
           </v-col>
         </v-row>
       </v-card>
@@ -632,11 +698,12 @@ import tireLocation from '@/enums/car/tireLocation';
 import axleLocation from '@/enums/axleLocation';
 import bool from '@/enums/bool';
 import tireChangeType from '@/enums/car/tireChangeType';
+import vehicleType from '@/enums/car/vehicleType';
 import TireMeasurementInfo from '@/components/car/TireMeasurementInfo.vue';
 import TireBrandInfo from '@/components/car/TireBrandInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
-import Mechanic from '@/components/Mechanic.vue';
 import VisualInspection from '@/components/car/VisualInspection.vue';
+import ServiceAction from '@/components/car/ServiceAction.vue';
 
 export default {
   name: 'OrderForm',
@@ -644,8 +711,8 @@ export default {
     TireMeasurementInfo,
     TireBrandInfo,
     SignatureField,
-    Mechanic,
     VisualInspection,
+    ServiceAction,
   },
   computed: {
     date() {
@@ -665,6 +732,7 @@ export default {
       vehicle: {
         name: '',
         registrationNumber: '',
+        type: 0,
         mileage: '',
       },
       description: '',
@@ -713,34 +781,6 @@ export default {
         hubcups: false,
       },
       tireChange: tireChangeType.none,
-      materials: [
-        {
-          item: '',
-        },
-      ],
-      deinstalledTires: [
-        {
-          width: '',
-          profile: '',
-          diameter: '',
-          brand: '',
-          tread: '',
-          serial: '',
-        },
-      ],
-      recommendations: {
-        geometry: false,
-        shockAbsorbers: false,
-        brakes: false,
-      },
-      nextVisit: {
-        isDatePickerVisible: false,
-        date: '',
-        purpose: '',
-      },
-      mechanics: [
-        { name: '' },
-      ],
     },
     visualInspection: {
       brakePads: {
@@ -805,6 +845,141 @@ export default {
         extraInfo: '',
       },
     },
+    actions: {
+      screwing: {
+        isChecked: false,
+        text: 'Odkręcenie / Przykręcenie',
+        count: '',
+        price: '',
+      },
+      installation: {
+        isChecked: false,
+        text: 'Montaż / Demontaż',
+        count: '',
+        price: '',
+      },
+      wheelBalancing: {
+        isChecked: false,
+        text: 'Wyważanie',
+        count: '',
+        price: '',
+        steel: false,
+        alloy: false,
+      },
+      tireRepair: {
+        isChecked: false,
+        text: 'Naprawa opony',
+        count: '',
+        price: '',
+      },
+      rimStraightening: {
+        isChecked: false,
+        text: 'Prostowanie felgi',
+        count: '',
+        price: '',
+        steel: false,
+        alloy: false,
+      },
+      airValve: {
+        isChecked: false,
+        text: 'Zawór do felg',
+        count: '',
+        price: '',
+        extraInfo: '',
+      },
+      nitrogen: {
+        isChecked: false,
+        text: 'Napełnianie azotem',
+        count: '',
+        price: '',
+      },
+      utilization: {
+        isChecked: false,
+        text: 'Utylizacja opony',
+        count: '',
+        price: '',
+      },
+    },
+    fastFit: {
+      brakePads: {
+        isChecked: false,
+        text: 'Montaż klocków',
+        count: '',
+        price: '',
+        front: false,
+        rear: false,
+      },
+      brakeDiscs: {
+        isChecked: false,
+        text: 'Montaż tarcz',
+        count: '',
+        price: '',
+        front: false,
+        rear: false,
+      },
+      shockAbsorbers: {
+        isChecked: false,
+        text: 'Montaż amortyzatorów',
+        count: '',
+        price: '',
+        front: false,
+        rear: false,
+      },
+      geometry: {
+        isChecked: false,
+        text: 'Geometria',
+        count: '',
+        price: '',
+      },
+      fuelFilter: {
+        isChecked: false,
+        text: 'Wymiana filtra paliwa',
+        count: '',
+        price: '',
+      },
+    },
+    inspection: {
+      oil: {
+        isChecked: false,
+        text: 'Wymiana oleju silnikowego',
+        count: '',
+        price: '',
+      },
+      oilFilter: {
+        isChecked: false,
+        text: 'Wymiana filtra oleju',
+        count: '',
+        price: '',
+      },
+      airFilter: {
+        isChecked: false,
+        text: 'Wymiana filtra powietrza',
+        count: '',
+        price: '',
+      },
+      interiorFilter: {
+        isChecked: false,
+        text: 'Wymiana filtra kabiny',
+        count: '',
+        price: '',
+      },
+      airco: {
+        isChecked: false,
+        text: 'Klimatyzacja',
+        count: '',
+        price: '',
+        cleaning: false,
+        filter: false,
+        filling: false,
+      },
+      other: {
+        isChecked: false,
+        text: 'Inne',
+        count: '',
+        price: '',
+        extraInfo: '',
+      },
+    },
     rules: {
       required: rules.required,
       integer: rules.integer,
@@ -812,6 +987,7 @@ export default {
     axleLocationItems: axleLocation.items,
     boolItems: bool.items,
     tireChangeItems: tireChangeType.items,
+    vehicleTypeItems: vehicleType.items,
   }),
   methods: {
     addArrayObject(item, array, maxCount, newItem) {

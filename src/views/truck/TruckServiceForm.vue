@@ -641,7 +641,7 @@
 <script>
 import moment from 'moment';
 import rules from '@/misc/rules';
-import vehicleType from '@/enums/vehicleType';
+import vehicleType from '@/enums/truck/vehicleType';
 import tireLocation from '@/enums/truck/tireLocation';
 import TireMeasurementInfo from '@/components/truck/TireMeasurementInfo.vue';
 import ServiceAction from '@/components/truck/ServiceAction.vue';
