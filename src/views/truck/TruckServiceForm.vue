@@ -6,7 +6,6 @@
     <v-form
       lazy-validation
       v-model="isFormValid"
-      v-formFocusFirstOnLoad="true"
       v-formFocusNextOnEnter>
       <!-- Header -->
       <v-card

@@ -10,14 +10,18 @@
         <v-col>
           <!-- Main workspace -->
           <v-main style="height: 100%">
-            <app-bar />
+            <app-bar @menuClicked="isNavigationBarOpen = !isNavigationBarOpen"/>
             <router-view
               @isProcessing="isProcessing = $event"
               @showMessage="showMessageDialog"
               @closeMessage="closeMessageDialog"
               @showQuestion="showQuestionDialog"
               @closeQuestion="closeQuestionDialog"/>
-            <LoadingIcon v-if="isProcessing" />
+            <side-bar
+              v-model="isNavigationBarOpen"
+              :links="links"
+              @isOpenChanged="setIsNavigationBarOpen"/>
+            <loading-icon v-if="isProcessing" />
           </v-main>
         </v-col>
       </v-row>
@@ -48,6 +52,7 @@ import LoadingIcon from '@/components/LoadingIcon.vue';
 import MessageDialog from '@/components/MessageDialog.vue';
 import QuestionDialog from '@/components/QuestionDialog.vue';
 import AppBar from '@/components/AppBar.vue';
+import SideBar from '@/components/SideBar.vue';
 
 export default {
   name: 'App',
@@ -56,9 +61,15 @@ export default {
     MessageDialog,
     QuestionDialog,
     AppBar,
+    SideBar,
   },
   data: () => ({
     isProcessing: false,
+    isNavigationBarOpen: false,
+    links: [
+      { icon: 'mdi-text-box-outline', text: 'Nowe zlecenie osobowe', route: '/service/car' },
+      { icon: 'mdi-phone', text: 'Nowe zlecenie ciężarowe', route: '/service/truck' },
+    ],
     messageDialog: {
       title: '',
       message: '',
@@ -96,6 +107,9 @@ export default {
     },
     closeQuestionDialog() {
       this.questionDialog.isVisible = false;
+    },
+    setIsNavigationBarOpen(value) {
+      this.isNavigationBarOpen = value;
     },
   },
 };
