@@ -69,6 +69,7 @@ export default {
     links: [
       { icon: 'mdi-car-side', text: 'Nowe zlecenie osobowe', route: '/service/car' },
       { icon: 'mdi-truck', text: 'Nowe zlecenie ciężarowe', route: '/service/truck' },
+      { icon: 'mdi-home-import-outline', text: 'Nowy depozyt', route: '/deposit' },
     ],
     messageDialog: {
       title: '',

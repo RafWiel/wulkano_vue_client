@@ -2,20 +2,16 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import TruckServiceForm from '../views/truck/TruckServiceForm.vue';
 import CarServiceForm from '../views/car/CarServiceForm.vue';
+import DepositForm from '../views/deposit/DepositForm.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    name: 'CarServiceForm',
-    component: CarServiceForm,
+    name: 'DepositForm',
+    component: DepositForm,
   },
-  // {
-  //   path: '/',
-  //   name: 'TruckServiceForm',
-  //   component: TruckServiceForm,
-  // },
   {
     path: '/service/car/',
     name: 'CarServiceForm',
@@ -25,6 +21,11 @@ const routes = [
     path: '/service/truck/',
     name: 'TruckServiceForm',
     component: TruckServiceForm,
+  },
+  {
+    path: '/deposit',
+    name: 'DepositForm',
+    component: DepositForm,
   },
   // {
   //   path: '/',

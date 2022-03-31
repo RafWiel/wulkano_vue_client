@@ -1,14 +1,6 @@
 <template>
   <v-row class="no-gutters">
     <v-col md="1">
-      <v-select
-        v-model="item.location"
-        :items="tireLocationItems"
-        item-value="id"
-        hide-details="auto"
-        label="Pozycja"/>
-    </v-col>
-    <v-col md="1" class="pl-2">
       <v-text-field
         v-model.number="item.width"
         label="Szerokość"
@@ -38,6 +30,14 @@
         validate-on-blur
         :rules="[rules.float, rules.required]"/>
     </v-col>
+    <v-col md="1" class="pl-2">
+      <v-text-field
+        v-model.lazy="item.DOT"
+        label="DOT"
+        type="input"
+        hide-details="auto"
+        validate-on-blur/>
+    </v-col>
     <v-col md="2" lg="1" class="pl-2">
       <v-text-field
         v-model.lazy="item.brand"
@@ -46,36 +46,37 @@
         hide-details="auto"
         validate-on-blur/>
     </v-col>
-    <v-col md="2" lg="1" class="pl-2">
+    <v-col lg="1" md="2" class="pl-2">
       <v-text-field
-        v-model.lazy="item.tread"
-        label="Bieżnik"
-        type="input"
+        v-model.number="item.tread"
+        label="Bieżnik [mm]"
+        type="number"
+        hide-spin-buttons
         hide-details="auto"
-        validate-on-blur/>
+        validate-on-blur
+        :rules="[rules.float, rules.required]"/>
     </v-col>
     <v-col class="pl-2">
-      <v-text-field
-        v-model.lazy="item.serial"
-        label="Nr. fabryczny"
-        type="input"
+      <v-textarea
+        label="Uwagi"
         hide-details="auto"
-        validate-on-blur/>
+        validate-on-blur
+        auto-grow
+        rows="1"
+        v-model.lazy="item.note"/>
     </v-col>
   </v-row>
 </template>
 <script>
 import rules from '@/misc/rules';
-import tireLocation from '@/enums/truck/tireLocation';
 
 export default
 {
-  name: 'TireBrandInfo',
+  name: 'TireInfo',
   props: {
     item: Object,
   },
   data: () => ({
-    tireLocationItems: tireLocation.items,
     rules: {
         required: rules.required,
         integer: rules.integer,
