@@ -143,7 +143,8 @@
               <!-- Vehicle type -->
               <v-col
                 cols="6" sm="4" md="3" lg="2"
-                :class="$vuetify.breakpoint.mdAndUp ? 'pl-2' : 'mt-2'">
+                class="pl-2"
+                :class="$vuetify.breakpoint.smAndUp ? '' : 'mt-2'">
                 <v-select
                   v-model="item.vehicle.type"
                   :items="vehicleTypeItems"
@@ -153,8 +154,8 @@
               </v-col>
               <!-- Mileage -->
               <v-col
-                class="pl-2"
-                :class="$vuetify.breakpoint.smAndUp ? '' : 'mt-2'">
+                cols="12" md="3" lg="6"
+                :class="$vuetify.breakpoint.mdAndUp ? 'pl-2' : 'mt-2'">
                 <v-text-field
                   v-model.number="item.mileage"
                   label="Przebieg"
@@ -396,7 +397,10 @@
             <service-action :item="actions.installation"/>
             <service-action :item="actions.wheelBalancing">
               <template v-slot:extra-info>
-                <v-row class="no-gutters mr-4" justify="end">
+                <v-row
+                  class="no-gutters mr-4"
+                  justify="end"
+                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 110%'">
                   <v-col cols="auto">
                     <v-checkbox
                       v-model="actions.wheelBalancing.steel"
@@ -422,7 +426,7 @@
                 <v-row
                   class="no-gutters mr-4"
                   justify="end"
-                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 50%'">
+                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 110%'">
                   <v-col cols="auto">
                     <v-checkbox
                       v-model="actions.rimStraightening.steel"
@@ -476,7 +480,7 @@
                 <v-row
                   class="no-gutters mr-4"
                   justify="end"
-                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 55%'">
+                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 130%'">
                   <v-col cols="auto">
                     <v-checkbox
                       v-model="fastFit.brakePads.front"
@@ -501,7 +505,7 @@
                 <v-row
                   class="no-gutters mr-4"
                   justify="end"
-                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 55%'">
+                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 130%'">
                   <v-col cols="auto">
                     <v-checkbox
                       v-model="fastFit.brakeDiscs.front"
@@ -526,7 +530,7 @@
                 <v-row
                   class="no-gutters mr-4"
                   justify="end"
-                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 75%'">
+                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 180%'">
                   <v-col cols="auto">
                     <v-checkbox
                       v-model="fastFit.shockAbsorbers.front"

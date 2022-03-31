@@ -67,8 +67,8 @@ export default {
     isProcessing: false,
     isNavigationBarOpen: false,
     links: [
-      { icon: 'mdi-text-box-outline', text: 'Nowe zlecenie osobowe', route: '/service/car' },
-      { icon: 'mdi-phone', text: 'Nowe zlecenie ciężarowe', route: '/service/truck' },
+      { icon: 'mdi-car-side', text: 'Nowe zlecenie osobowe', route: '/service/car' },
+      { icon: 'mdi-truck', text: 'Nowe zlecenie ciężarowe', route: '/service/truck' },
     ],
     messageDialog: {
       title: '',
