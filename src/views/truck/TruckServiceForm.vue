@@ -186,7 +186,10 @@
             <div
               v-for="(tire, index) in item.tires"
               :key="index">
-              <tire-measurement-info :item="tire" @change="addArrayObject(tire, item.tires, 18, {
+              <tire-measurement-info
+                :item="tire"
+                class="mt-2"
+                @change="addArrayObject(tire, item.tires, 18, {
                 width: '',
                 profile: '',
                 diameter: '',
@@ -376,7 +379,10 @@
             <div
               v-for="(tire, index) in item.installedTires"
               :key="index">
-              <tire-brand-info :item="tire" @change="addArrayObject(tire, item.installedTires, 18, {
+              <tire-brand-info
+                :item="tire"
+                class="mt-2"
+                @change="addArrayObject(tire, item.installedTires, 18, {
                 width: '',
                 profile: '',
                 diameter: '',
@@ -437,7 +443,10 @@
             <div
               v-for="(tire, index) in item.deinstalledTires"
               :key="index">
-              <tire-brand-info :item="tire" @change="addArrayObject(tire, item.deinstalledTires, 18, {
+              <tire-brand-info
+                :item="tire"
+                class="mt-2"
+                @change="addArrayObject(tire, item.deinstalledTires, 18, {
                 width: '',
                 profile: '',
                 diameter: '',
@@ -618,6 +627,36 @@
           </v-col>
         </v-row>
       </v-card>
+      <!-- Sale document -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
+        <v-row class="no-gutters">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
+            <v-row class="no-gutters">
+              <v-col>
+                <h3 class="primary--text text--darken-1">
+                  Dokument sprzedaży
+                </h3>
+              </v-col>
+            </v-row>
+            <v-row class="no-gutters">
+              <v-col>
+                <v-text-field
+                  v-model.lazy="item.saleDocument"
+                  label="Numer dokumentu"
+                  type="input"
+                  class="text_ellipsis"
+                  hide-details="auto"
+                  validate-on-blur
+                  :rules="[rules.required]"/>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
       <!-- Apply button -->
       <v-card
         flat
@@ -649,7 +688,7 @@ import SignatureField from '@/components/SignatureField.vue';
 import Mechanic from '@/components/Mechanic.vue';
 
 export default {
-  name: 'OrderForm',
+  name: 'TruckServiceForm',
   components: {
     TireMeasurementInfo,
     ServiceAction,
@@ -667,7 +706,7 @@ export default {
     vehicleTypeItems: vehicleType.items,
     item: {
       id: 1,
-      orderNumber: moment(new Date()).format('1/M/YYYY'),
+      orderNumber: `C/${moment(new Date()).format('1/M/YYYY')}`,
       date: new Date(),
       companyName: '',
       city: '',
@@ -751,6 +790,7 @@ export default {
       mechanics: [
         { name: '' },
       ],
+      saleDocument: '',
     },
     actions: {
       tireInspection: {

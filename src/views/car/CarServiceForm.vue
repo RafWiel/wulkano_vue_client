@@ -235,7 +235,10 @@
             <div
               v-for="(tire, index) in item.installedTires"
               :key="index">
-              <tire-brand-info :item="tire" @change="addArrayObject(tire, item.installedTires, 4, {
+              <tire-brand-info
+                :item="tire"
+                class="mt-2"
+                @change="addArrayObject(tire, item.installedTires, 4, {
                 width: '',
                 profile: '',
                 diameter: '',
@@ -276,7 +279,10 @@
             <div
               v-for="(tire, index) in item.installedTires"
               :key="index">
-              <tire-brand-info :item="tire" @change="addArrayObject(tire, item.installedTires, 4, {
+              <tire-brand-info
+                :item="tire"
+                class="mt-2"
+                @change="addArrayObject(tire, item.installedTires, 4, {
                 width: '',
                 profile: '',
                 diameter: '',
@@ -662,6 +668,36 @@
           </v-col>
         </v-row>
       </v-card>
+      <!-- Sale document -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
+        <v-row class="no-gutters">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
+            <v-row class="no-gutters">
+              <v-col>
+                <h3 class="primary--text text--darken-1">
+                  Dokument sprzedaży
+                </h3>
+              </v-col>
+            </v-row>
+            <v-row class="no-gutters">
+              <v-col>
+                <v-text-field
+                  v-model.lazy="item.saleDocument"
+                  label="Numer dokumentu"
+                  type="input"
+                  class="text_ellipsis"
+                  hide-details="auto"
+                  validate-on-blur
+                  :rules="[rules.required]"/>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
       <!-- Apply button -->
       <v-card
         flat
@@ -705,7 +741,7 @@ import VisualInspection from '@/components/car/VisualInspection.vue';
 import ServiceAction from '@/components/car/ServiceAction.vue';
 
 export default {
-  name: 'OrderForm',
+  name: 'CarServiceForm',
   components: {
     TireMeasurementInfo,
     TireBrandInfo,
@@ -722,7 +758,7 @@ export default {
     isFormValid: false,
     item: {
       id: 1,
-      orderNumber: moment(new Date()).format('1/M/YYYY'),
+      orderNumber: `O/${moment(new Date()).format('1/M/YYYY')}`,
       date: new Date(),
       client: {
         name: '',
@@ -780,6 +816,7 @@ export default {
         hubcups: false,
       },
       tireChange: tireChangeType.none,
+      saleDocument: '',
     },
     visualInspection: {
       brakePads: {

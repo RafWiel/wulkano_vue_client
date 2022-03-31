@@ -1,5 +1,5 @@
 <template>
-  <v-row class="no-gutters mt-2">
+  <v-row class="no-gutters">
     <v-col md="1">
       <v-select
         v-model="item.location"
@@ -38,6 +38,14 @@
         validate-on-blur
         :rules="[rules.float, rules.required]"/>
     </v-col>
+    <v-col md="2" lg="1" class="pl-2">
+      <v-text-field
+        v-model.lazy="item.brand"
+        label="Marka"
+        type="input"
+        hide-details="auto"
+        validate-on-blur/>
+    </v-col>
     <v-col lg="1" md="2" class="pl-2">
       <v-text-field
         v-model.number="item.pressure"
@@ -48,7 +56,7 @@
         validate-on-blur
         :rules="[rules.float, rules.required]"/>
     </v-col>
-    <v-col lg="7" md="6" class="pl-2">
+    <v-col lg="6" md="4" class="pl-2">
       <v-text-field
         v-model.number="item.tread"
         label="Bieżnik [mm]"
