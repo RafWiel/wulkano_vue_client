@@ -278,19 +278,21 @@
               </v-col>
             </v-row>
             <div
-              v-for="(tire, index) in item.installedTires"
+              v-for="(tire, index) in item.depositTires"
               :key="index">
-              <tire-brand-info
+              <tire-info
                 :item="tire"
                 class="mt-2"
-                @change="addArrayObject(tire, item.installedTires, 4, {
-                width: '',
-                profile: '',
-                diameter: '',
-                brand: '',
-                tread: '',
-                serial: ''
-              })"/>
+                @change="addArrayObject(tire, item.depositTires, 5, {
+                  width: '',
+                  profile: '',
+                  diameter: '',
+                  dot: '',
+                  brand: '',
+                  tread: '',
+                  note: ''
+                });
+                isDepositLocationCardVisible = true;"/>
             </div>
             <v-row class="no-gutters mt-4">
               <v-col cols="12" sm="auto">
@@ -333,10 +335,52 @@
                   class="shrink mt-0"/>
               </v-col>
             </v-row>
+            <v-row class="no-gutters mt-2">
+              <v-col>
+                <v-textarea
+                  label="Uwagi"
+                  hide-details="auto"
+                  validate-on-blur
+                  auto-grow
+                  rows="1"
+                  v-model.lazy="item.depositTiresNote"/>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-card>
-      <!-- Visual control -->
+      <!-- Location -->
+      <v-card
+        v-if="isDepositLocationCardVisible"
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
+        <v-row class="no-gutters">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
+            <v-row class="no-gutters">
+              <v-col>
+                <h3 class="primary--text text--darken-1">
+                  Przechowalnia
+                </h3>
+              </v-col>
+            </v-row>
+            <v-row class="no-gutters mt-2">
+              <v-col>
+                <v-text-field
+                  ref="firstControl"
+                  v-model.lazy="item.depositTiresLocation"
+                  label="Położenie opon"
+                  type="input"
+                  class="text_ellipsis"
+                  hide-details="auto"
+                  validate-on-blur/>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+      <!-- Visual inspection -->
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
@@ -740,6 +784,7 @@ import tireChangeType from '@/enums/car/tireChangeType';
 import vehicleType from '@/enums/car/vehicleType';
 import TireMeasurementInfo from '@/components/car/TireMeasurementInfo.vue';
 import TireBrandInfo from '@/components/car/TireBrandInfo.vue';
+import TireInfo from '@/components/deposit/TireInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
 import VisualInspection from '@/components/car/VisualInspection.vue';
 import ServiceAction from '@/components/car/ServiceAction.vue';
@@ -749,6 +794,7 @@ export default {
   components: {
     TireMeasurementInfo,
     TireBrandInfo,
+    TireInfo,
     SignatureField,
     VisualInspection,
     ServiceAction,
@@ -760,6 +806,7 @@ export default {
   },
   data: () => ({
     isFormValid: false,
+    isDepositLocationCardVisible: false,
     item: {
       id: 1,
       orderNumber: `O/${moment(new Date()).format('1/M/YYYY')}`,
@@ -812,6 +859,17 @@ export default {
           brand: '',
         },
       ],
+      depositTires: [
+        {
+          width: '',
+          profile: '',
+          diameter: '',
+          dot: '',
+          brand: '',
+          tread: '',
+          note: '',
+        },
+      ],
       deposit: {
         tires: false,
         alloys: false,
@@ -819,6 +877,8 @@ export default {
         screws: false,
         hubcups: false,
       },
+      depositTiresNote: '',
+      depositTiresLocation: '',
       tireChange: tireChangeType.none,
       saleDocument: '',
     },

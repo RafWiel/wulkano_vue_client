@@ -125,13 +125,14 @@
                 :item="tire"
                 class="mt-2"
                 @change="addArrayObject(tire, item.tires, 5, {
-                width: '',
-                profile: '',
-                diameter: '',
-                dot: '',
-                brand: '',
-                tread: '',
-                note: ''})"/>
+                  width: '',
+                  profile: '',
+                  diameter: '',
+                  dot: '',
+                  brand: '',
+                  tread: '',
+                  note: ''
+                })"/>
             </div>
             <v-row class="no-gutters mt-4">
               <v-col cols="12" sm="auto">
@@ -182,7 +183,7 @@
                   validate-on-blur
                   auto-grow
                   rows="1"
-                  v-model.lazy="item.tiresNnote"/>
+                  v-model.lazy="item.tiresNote"/>
               </v-col>
             </v-row>
           </v-col>
