@@ -97,6 +97,18 @@
                   hide-details="auto"
                   validate-on-blur
                   :rules="[rules.required]"/>
+                <v-autocomplete
+                  v-model="model"
+                  :items="phoneNumbers"
+                  :loading="api.isLoading"
+                  :search-input.sync="api.phoneNumberSearch"
+                  hide-no-data
+                  hide-selected
+                  item-text="Description"
+                  item-value="API"
+                  label="Telefon kontaktowy"
+                  return-object
+                  :rules="[rules.required]"/>
               </v-col>
             </v-row>
           </v-col>
@@ -277,6 +289,7 @@
 </template>
 
 <script>
+import debounce from 'lodash.debounce';
 import moment from 'moment';
 import rules from '@/misc/rules';
 import TireInfo from '@/components/deposit/TireInfo.vue';
@@ -291,6 +304,23 @@ export default {
   computed: {
     date() {
       return moment(this.item.date).format('DD-MM-YYYY');
+    },
+    fields() {
+      if (!this.model) return [];
+
+      return Object.keys(this.model).map((key) => ({
+        key,
+        value: this.model[key] || 'n/a',
+      }));
+    },
+    phoneNumbers() {
+      return this.api.phoneNumbers.map((entry) => {
+        const Description = entry.Description.length > this.api.descriptionLimit
+          ? `${entry.Description.slice(0, this.api.descriptionLimit)}...`
+          : entry.Description;
+
+        return Object.assign(entry, { ...Description });
+      });
     },
   },
   data: () => ({
@@ -331,6 +361,14 @@ export default {
       tiresNote: '',
       tiresLocation: '',
     },
+    model: null,
+    api: {
+      descriptionLimit: 60,
+      phoneNumberSearch: null,
+      phoneNumbers: [],
+      isLoading: false,
+    },
+
     rules: {
       required: rules.required,
       integer: rules.integer,
@@ -347,6 +385,33 @@ export default {
       //add new item
       array.push(newItem);
     },
+  },
+  watch: {
+    'api.phoneNumberSearch': debounce(async function phoneNumberSearch(val) {
+      console.log(val);
+      // Items have already been loaded
+      if (this.api.phoneNumbers.length > 0) return;
+
+      // Items have already been requested
+      if (this.api.isLoading) return;
+
+      this.api.isLoading = true;
+
+      // Lazily load input items
+      fetch('https://api.publicapis.org/entries')
+      .then((res) => res.json())
+      .then((res) => {
+        const { count, entries } = res;
+        this.count = count;
+        this.api.phoneNumbers = entries;
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        this.api.isLoading = false;
+      });
+    }, 500, { maxWait: 5000 }),
   },
 };
 </script>
