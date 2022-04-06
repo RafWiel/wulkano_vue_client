@@ -90,24 +90,16 @@
               <v-col
                 cols="12" sm="4" md="6" lg="8"
                 :class="$vuetify.breakpoint.smAndUp ? 'pl-2' : ''">
-                <v-text-field
-                  v-model.lazy="item.client.phoneNumber"
-                  label="Telefon kontaktowy"
-                  type="input"
-                  hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
-                <v-autocomplete
-                  v-model="model"
-                  :items="phoneNumbers"
+                <v-combobox
+                  v-model="item.client.phoneNumber"
+                  :items="api.phoneNumbers"
                   :loading="api.isLoading"
                   :search-input.sync="api.phoneNumberSearch"
                   hide-no-data
                   hide-selected
-                  item-text="Description"
-                  item-value="API"
+                  no-filter
+                  type="input"
                   label="Telefon kontaktowy"
-                  return-object
                   :rules="[rules.required]"/>
               </v-col>
             </v-row>
@@ -292,6 +284,7 @@
 import debounce from 'lodash.debounce';
 import moment from 'moment';
 import rules from '@/misc/rules';
+import clientService from '@/services/clientService';
 import TireInfo from '@/components/deposit/TireInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
 
@@ -304,23 +297,6 @@ export default {
   computed: {
     date() {
       return moment(this.item.date).format('DD-MM-YYYY');
-    },
-    fields() {
-      if (!this.model) return [];
-
-      return Object.keys(this.model).map((key) => ({
-        key,
-        value: this.model[key] || 'n/a',
-      }));
-    },
-    phoneNumbers() {
-      return this.api.phoneNumbers.map((entry) => {
-        const Description = entry.Description.length > this.api.descriptionLimit
-          ? `${entry.Description.slice(0, this.api.descriptionLimit)}...`
-          : entry.Description;
-
-        return Object.assign(entry, { ...Description });
-      });
     },
   },
   data: () => ({
@@ -361,7 +337,6 @@ export default {
       tiresNote: '',
       tiresLocation: '',
     },
-    model: null,
     api: {
       descriptionLimit: 60,
       phoneNumberSearch: null,
@@ -388,25 +363,16 @@ export default {
   },
   watch: {
     'api.phoneNumberSearch': debounce(async function phoneNumberSearch(val) {
-      console.log(val);
-      // Items have already been loaded
-      if (this.api.phoneNumbers.length > 0) return;
-
-      // Items have already been requested
       if (this.api.isLoading) return;
 
       this.api.isLoading = true;
 
-      // Lazily load input items
-      fetch('https://api.publicapis.org/entries')
-      .then((res) => res.json())
+      clientService.getPhoneNumbers({ filter: val })
       .then((res) => {
-        const { count, entries } = res;
-        this.count = count;
-        this.api.phoneNumbers = entries;
+        this.api.phoneNumbers = res.data;
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       })
       .finally(() => {
         this.api.isLoading = false;
