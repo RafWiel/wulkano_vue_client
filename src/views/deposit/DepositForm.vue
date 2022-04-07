@@ -217,7 +217,8 @@
                   type="input"
                   class="text_ellipsis"
                   hide-details="auto"
-                  validate-on-blur/>
+                  validate-on-blur
+                  :rules="[rules.required]"/>
               </v-col>
             </v-row>
           </v-col>
@@ -238,7 +239,9 @@
                 </h3>
               </v-col>
             </v-row>
-            <signature-field class="mt-2" />
+            <signature-field
+              ref="employeeSignature"
+              class="mt-2" />
           </v-col>
         </v-row>
       </v-card>
@@ -257,7 +260,9 @@
                 </h3>
               </v-col>
             </v-row>
-            <signature-field class="mt-2"/>
+            <signature-field
+              ref="clientSignature"
+              class="mt-2"/>
           </v-col>
         </v-row>
       </v-card>
@@ -270,7 +275,8 @@
             <v-btn
               depressed
               block
-              color="primary">
+              color="primary"
+              @click="save">
               Zapisz
             </v-btn>
           </v-col>
@@ -285,6 +291,7 @@ import debounce from 'lodash.debounce';
 import moment from 'moment';
 import rules from '@/misc/rules';
 import clientService from '@/services/clientService';
+import depositService from '@/services/depositService';
 import TireInfo from '@/components/deposit/TireInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
 
@@ -309,12 +316,6 @@ export default {
         name: '',
         companyName: '',
         phoneNumber: '',
-      },
-      vehicle: {
-        name: '',
-        type: '',
-        registrationNumber: '',
-        mileage: '',
       },
       tires: [
         {
@@ -350,6 +351,30 @@ export default {
     },
   }),
   methods: {
+    async save() {
+      console.log('save');
+      console.log(this.$refs.employeeSignature.getImageData());
+      try {
+        this.$emit('isProcessing', true);
+
+        const response = await depositService.create(this.item);
+
+        if (response.data.result) {
+          this.$emit('isProcessing', false);
+          this.$emit('showMessage', 'Depozyt', 'Zlecenie zapisane');
+
+          return this.item.id > 0;
+        }
+
+        this.$emit('showMessage', 'Depozyt', 'Nieudany zapis');
+      }
+      catch (error) {
+        this.showError(error);
+      }
+
+      this.$emit('isProcessing', false);
+      return false;
+    },
     addArrayObject(item, array, maxCount, newItem) {
       //check if last item in array
       const index = array.indexOf(item);
@@ -359,6 +384,18 @@ export default {
 
       //add new item
       array.push(newItem);
+    },
+    showError(error) {
+      console.log(error);
+      this.$emit('isProcessing', false);
+
+      if (error.response === undefined) {
+        this.$emit('showMessage', 'Depozyt', 'Brak odpowiedzi z serwera');
+        return;
+      }
+
+      console.log(error.response.data);
+      this.$emit('showMessage', 'Depozyt', error.response.data.message);
     },
   },
   watch: {

@@ -19,7 +19,7 @@
           Wyczyść
         </v-btn>
       </v-col>
-      <!-- <v-col cols="2" class="ml-2">
+      <v-col cols="2" class="ml-2">
         <v-btn
           depressed
           block
@@ -27,7 +27,7 @@
           @click="saveImage">
           Zapisz
         </v-btn>
-      </v-col> -->
+      </v-col>
       <!-- <v-col class="ml-2">
         <v-btn
           depressed
@@ -207,6 +207,10 @@ export default
       img.src = dataURL;
 
       // console.log(vm.points);
+    },
+    getImageData: function aa() {
+      const vm = this;
+      return vm.canvas.toDataURL();
     },
     loadFromStorage() {
       const vm = this;
