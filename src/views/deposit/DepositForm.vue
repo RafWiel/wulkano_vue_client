@@ -337,6 +337,10 @@ export default {
       },
       tiresNote: '',
       tiresLocation: '',
+      signature: {
+        employee: null,
+        client: null,
+      },
     },
     api: {
       descriptionLimit: 60,
@@ -352,10 +356,15 @@ export default {
   }),
   methods: {
     async save() {
-      console.log('save');
+      console.log('employee');
       console.log(this.$refs.employeeSignature.getImageData());
+      console.log('client');
+      console.log(this.$refs.clientSignature.getImageData());
       try {
         this.$emit('isProcessing', true);
+
+        this.item.signature.employee = this.$refs.employeeSignature.getImageData();
+        this.item.signature.client = this.$refs.clientSignature.getImageData();
 
         const response = await depositService.create(this.item);
 
