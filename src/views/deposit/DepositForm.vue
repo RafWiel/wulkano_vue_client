@@ -4,8 +4,8 @@
     class="pa-0 d-flex flex-column flex-nowrap"
     style="height: 100%">
     <v-form
+      ref="form"
       lazy-validation
-      v-model="isFormValid"
       v-formFocusNextOnEnter>
       <!-- Header -->
       <v-card
@@ -73,6 +73,7 @@
                   type="input"
                   class="text_ellipsis"
                   hide-details="auto"
+                  :rules="[rules.required]"
                   validate-on-blur/>
               </v-col>
               <!-- Company -->
@@ -127,6 +128,7 @@
               :key="index">
               <tire-info
                 :item="tire"
+                :isValidation="index < item.tires.length - 1"
                 class="mt-2"
                 @change="addArrayObject(tire, item.tires, 5, {
                   width: '',
@@ -307,15 +309,14 @@ export default {
     },
   },
   data: () => ({
-    isFormValid: false,
     item: {
       id: 1,
       orderNumber: `D/${moment(new Date()).format('1/M/YYYY')}`,
       date: new Date(),
       client: {
-        name: '',
+        name: 'Jan Nowak',
         companyName: '',
-        phoneNumber: '',
+        phoneNumber: '501502503',
       },
       tires: [
         {
@@ -336,7 +337,7 @@ export default {
         hubcups: false,
       },
       tiresNote: '',
-      tiresLocation: '',
+      tiresLocation: 'Położenie',
       signature: {
         employee: null,
         client: null,
@@ -356,33 +357,45 @@ export default {
   }),
   methods: {
     async save() {
-      console.log('employee');
-      console.log(this.$refs.employeeSignature.getImageData());
-      console.log('client');
-      console.log(this.$refs.clientSignature.getImageData());
+      const vm = this;
+
+      //validation
+      const v1 = vm.$refs.form.validate();
+      const v2 = vm.$refs.employeeSignature.validate();
+      const v3 = vm.$refs.clientSignature.validate();
+      if (!v1 || !v2 || !v3) {
+        this.$nextTick(() => {
+          const el = this.$el.querySelector('.v-messages.error--text:first-of-type');
+
+          this.$vuetify.goTo(el, { offset: 60 });
+        });
+
+        return;
+      }
+
       try {
-        this.$emit('isProcessing', true);
+        vm.$emit('isProcessing', true);
 
-        this.item.signature.employee = this.$refs.employeeSignature.getImageData();
-        this.item.signature.client = this.$refs.clientSignature.getImageData();
+        vm.item.signature.employee = vm.$refs.employeeSignature.getImageData();
+        vm.item.signature.client = vm.$refs.clientSignature.getImageData();
 
-        const response = await depositService.create(this.item);
+        const response = await depositService.create(vm.item);
 
         if (response.data.result) {
-          this.$emit('isProcessing', false);
-          this.$emit('showMessage', 'Depozyt', 'Zlecenie zapisane');
+          vm.$emit('isProcessing', false);
+          vm.$emit('showMessage', 'Depozyt', 'Zlecenie zapisane');
+          vm.resetForm();
 
-          return this.item.id > 0;
+          return;
         }
 
-        this.$emit('showMessage', 'Depozyt', 'Nieudany zapis');
+        vm.$emit('showMessage', 'Depozyt', 'Nieudany zapis');
       }
       catch (error) {
-        this.showError(error);
+        vm.showError(error);
       }
 
-      this.$emit('isProcessing', false);
-      return false;
+      vm.$emit('isProcessing', false);
     },
     addArrayObject(item, array, maxCount, newItem) {
       //check if last item in array
@@ -405,6 +418,47 @@ export default {
 
       console.log(error.response.data);
       this.$emit('showMessage', 'Depozyt', error.response.data.message);
+    },
+    resetForm() {
+      const vm = this;
+
+      vm.item = {
+        id: 1,
+        orderNumber: `D/${moment(new Date()).format('1/M/YYYY')}`,
+        date: new Date(),
+        client: {
+          name: '',
+          companyName: '',
+          phoneNumber: '',
+        },
+        tires: [
+          {
+            width: '',
+            profile: '',
+            diameter: '',
+            dot: '',
+            brand: '',
+            tread: '',
+            note: '',
+          },
+        ],
+        deposit: {
+          tires: false,
+          alloys: false,
+          steels: false,
+          screws: false,
+          hubcups: false,
+        },
+        tiresNote: '',
+        tiresLocation: '',
+        signature: {
+          employee: null,
+          client: null,
+        },
+      };
+
+      vm.$refs.employeeSignature.resetCanvas();
+      vm.$refs.clientSignature.resetCanvas();
     },
   },
   watch: {

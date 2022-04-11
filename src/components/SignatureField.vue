@@ -5,10 +5,18 @@
       :width="canvasWidth"
       height="200"
       id="drawing-pad"/>
-    <img
+    <!-- <img
       ref="img"
       src=""
-      id="canvas-img"/>
+      id="canvas-img"/> -->
+    <v-slide-y-transition>
+      <v-row
+        v-if="isError"
+        cols="12"
+        class="no-gutters mb-2">
+        <v-col class="v-messages theme--light error--text" role="alert">Podpis wymagany</v-col>
+      </v-row>
+    </v-slide-y-transition>
     <v-row class="no-gutters" justify="start">
       <v-col cols="6" sm="3" md="2" lg="1">
         <v-btn
@@ -19,7 +27,7 @@
           Wyczyść
         </v-btn>
       </v-col>
-      <v-col cols="2" class="ml-2">
+      <!-- <v-col cols="2" class="ml-2">
         <v-btn
           depressed
           block
@@ -27,7 +35,7 @@
           @click="saveImage">
           Zapisz
         </v-btn>
-      </v-col>
+      </v-col> -->
       <!-- <v-col class="ml-2">
         <v-btn
           depressed
@@ -56,6 +64,7 @@ export default
     points: [],
     canvasWidth: 0,
     test: '',
+    isError: false,
   }),
   mounted() {
     const vm = this;
@@ -252,6 +261,12 @@ export default
       vm.context.strokeStyle = 'rgba(0,0,0,1)';
       vm.context.stroke();
     },
+    validate() {
+      const vm = this;
+
+      vm.isError = vm.points.length === 0;
+      return !vm.isError;
+    },
   },
 };
 </script>
@@ -263,6 +278,12 @@ export default
     z-index: 0;
     border: 1px solid grey;
     cursor: crosshair;
+  }
+
+  .error-label {
+    color: rgba(255,40,40);
+    font-size: .8em;
+    line-height: 1.0;
   }
 
 </style>

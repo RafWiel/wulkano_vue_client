@@ -8,7 +8,7 @@
         hide-details="auto"
         hide-spin-buttons
         validate-on-blur
-        :rules="[rules.integer, rules.required]"/>
+        :rules="isValidation ? [rules.integer, rules.required] : []"/>
     </v-col>
     <v-col md="1" class="pl-2">
       <v-text-field
@@ -18,7 +18,7 @@
         hide-details="auto"
         hide-spin-buttons
         validate-on-blur
-        :rules="[rules.integer, rules.required]"/>
+        :rules="isValidation ? [rules.integer, rules.required] : []"/>
     </v-col>
     <v-col md="1" class="pl-2">
       <v-text-field
@@ -28,7 +28,7 @@
         hide-details="auto"
         hide-spin-buttons
         validate-on-blur
-        :rules="[rules.float, rules.required]"/>
+        :rules="isValidation ? [rules.float, rules.required] : []"/>
     </v-col>
     <v-col md="1" class="pl-2">
       <v-text-field
@@ -36,6 +36,7 @@
         label="DOT"
         type="input"
         hide-details="auto"
+        :rules="isValidation ? [rules.required] : []"
         validate-on-blur/>
     </v-col>
     <v-col md="2" lg="1" class="pl-2">
@@ -44,6 +45,7 @@
         label="Marka"
         type="input"
         hide-details="auto"
+        :rules="isValidation ? [rules.required] : []"
         validate-on-blur/>
     </v-col>
     <v-col lg="1" md="2" class="pl-2">
@@ -54,7 +56,7 @@
         hide-spin-buttons
         hide-details="auto"
         validate-on-blur
-        :rules="[rules.float, rules.required]"/>
+        :rules="isValidation ? [rules.float, rules.required] : []"/>
     </v-col>
     <v-col class="pl-2">
       <v-textarea
@@ -75,6 +77,7 @@ export default
   name: 'TireInfo',
   props: {
     item: Object,
+    isValidation: Boolean,
   },
   data: () => ({
     rules: {
