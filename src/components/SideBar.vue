@@ -32,6 +32,7 @@
           </v-list-item>
         </v-list>
       </v-row>
+
       <!-- <v-row class="align-self-end">
         <v-list class="fill-width pa-0">
           <v-list-item @click="$emit('logout', false)">

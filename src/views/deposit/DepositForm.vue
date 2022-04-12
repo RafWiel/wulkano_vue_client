@@ -459,6 +459,7 @@ export default {
 
       vm.$refs.employeeSignature.resetCanvas();
       vm.$refs.clientSignature.resetCanvas();
+      vm.$refs.form.reset();
     },
   },
   watch: {
