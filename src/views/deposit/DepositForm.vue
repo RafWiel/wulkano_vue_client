@@ -292,8 +292,8 @@
 import debounce from 'lodash.debounce';
 import moment from 'moment';
 import rules from '@/misc/rules';
-import clientService from '@/services/clientService';
-import depositService from '@/services/depositService';
+import clientsService from '@/services/clientsService';
+import depositsService from '@/services/depositsService';
 import TireInfo from '@/components/deposit/TireInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
 
@@ -379,7 +379,7 @@ export default {
         vm.item.signature.employee = vm.$refs.employeeSignature.getImageData();
         vm.item.signature.client = vm.$refs.clientSignature.getImageData();
 
-        const response = await depositService.create(vm.item);
+        const response = await depositsService.create(vm.item);
 
         if (response.data.result) {
           vm.$emit('isProcessing', false);
@@ -468,7 +468,7 @@ export default {
 
       this.api.isLoading = true;
 
-      clientService.getPhoneNumbers({ filter: val })
+      clientsService.getPhoneNumbers({ filter: val })
       .then((res) => {
         this.api.phoneNumbers = res.data;
       })

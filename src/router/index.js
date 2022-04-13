@@ -8,16 +8,16 @@ import ServiceRequestsListView from '../views/ServiceRequestsListView.vue';
 Vue.use(VueRouter);
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: 'ServiceRequestsListView',
-  //   component: ServiceRequestsListView,
-  // },
   {
     path: '/',
-    name: 'DepositForm',
-    component: DepositForm,
+    name: 'ServiceRequestsListView',
+    component: ServiceRequestsListView,
   },
+  // {
+  //   path: '/',
+  //   name: 'DepositForm',
+  //   component: DepositForm,
+  // },
   {
     path: '/service/car/',
     name: 'CarServiceForm',

@@ -18,13 +18,13 @@
 </template>
 
 <script>
-import debounce from 'lodash.debounce';
+
 import moment from 'moment';
 import rules from '@/misc/rules';
-import clientService from '@/services/clientService';
-import depositService from '@/services/depositService';
+import serviceRequestsService from '@/services/serviceRequestsService';
 import sortOrder from '@/enums/sortOrder';
 import DataGrid from '@/components/DataGrid.vue';
+import requestType from '@/enums/requestType';
 
 export default {
   name: 'ServiceRequestsListView',
@@ -38,6 +38,7 @@ export default {
   },
   data: () => ({
     items: [],
+    currentPage: 1,
     sorting: {
       column: null,
       order: sortOrder.ascending,
@@ -46,61 +47,43 @@ export default {
       {
         id: 0,
         text: 'Data',
-        value: 'creationDate',
+        value: 'date',
         limitedWidth: 20,
-        fullWidth: 14,
+        fullWidth: 15,
       },
       {
         id: 1,
-        text: 'Numer',
-        value: 'name',
+        text: 'Numer zlecenia',
+        value: 'requestName',
         limitedWidth: 14,
-        fullWidth: 10,
+        fullWidth: 15,
       },
       {
         id: 2,
-        text: 'Temat',
-        value: 'topic',
+        text: 'Osoba',
+        value: 'clientName',
         limitedWidth: 26,
         fullWidth: 15,
       },
       {
         id: 3,
-        text: 'Zgłaszający',
-        value: 'customer',
-        fullWidth: 11,
+        text: 'Firma',
+        value: 'companyName',
+        limitedWidth: 20,
+        fullWidth: 15,
       },
       {
         id: 4,
-        text: 'Firma',
-        value: 'company',
-        limitedWidth: 20,
-        fullWidth: 12,
+        text: 'Telefon',
+        value: 'phoneNumber',
+        fullWidth: 15,
       },
       {
         id: 5,
-        text: 'Odpowiedzialny',
-        value: 'employee',
-        fullWidth: 11,
-      },
-      {
-        id: 6,
-        text: 'Typ',
-        value: 'type',
-        fullWidth: 8,
-      },
-      {
-        id: 7,
-        text: 'Źródło',
-        value: 'submitType',
-        fullWidth: 8,
-      },
-      {
-        id: 8,
-        text: 'Status',
-        value: 'status',
-        limitedWidth: 20,
-        fullWidth: 11,
+        text: 'Typ zlecenia',
+        value: 'requestType',
+        limitedWidth: 14,
+        fullWidth: 15,
       },
     ],
     api: {
@@ -115,57 +98,55 @@ export default {
       integer: rules.integer,
     },
   }),
+  mounted() {
+    if (Object.keys(this.$route.query).length === 0) {
+      console.log('MOUNTED fetch');
+      this.fetch();
+    }
+  },
   methods: {
-    async save() {
-      const vm = this;
+    fetch() {
+      console.log('fetch');
+      // set loading icon
+      this.$emit('isProcessing', true);
 
-      //validation
-      const v1 = vm.$refs.form.validate();
-      const v2 = vm.$refs.employeeSignature.validate();
-      const v3 = vm.$refs.clientSignature.validate();
-      if (!v1 || !v2 || !v3) {
-        this.$nextTick(() => {
-          const el = this.$el.querySelector('.v-messages.error--text:first-of-type');
+      serviceRequestsService.get({
+        page: this.currentPage,
+        'sort-column': this.sorting.column !== null ? this.sorting.column : null,
+        'sort-order': this.sorting.column !== null ? this.sorting.order : null,
+      })
+      .then((response) => {
+        this.$emit('isProcessing', false);
 
-          this.$vuetify.goTo(el, { offset: 60 });
-        });
+        console.log('currentPage', this.currentPage);
+        console.log(response.data);
 
-        return;
-      }
+        if (response.data.requests.length) {
+          // format values
+          response.data.requests.forEach((element) => {
+            const item = element;
+            item.date = moment(item.date, 'YYYY-MM-DD hh:mm:ss.SSS Z').format('YYYY-MM-DD HH:mm');
+            item.requestType = requestType.getText(item.requestType);
+            //item.submitType = serviceRequestSubmitType.getText(item.submitType);
+            //item.status = requestStatus.getText(item.status, this.$vuetify.breakpoint.xs);
+            this.items.push(item);
+          });
+          // increment page number for next fetch
+          this.currentPage += 1;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this.$emit('isProcessing', false);
 
-      try {
-        vm.$emit('isProcessing', true);
-
-        vm.item.signature.employee = vm.$refs.employeeSignature.getImageData();
-        vm.item.signature.client = vm.$refs.clientSignature.getImageData();
-
-        const response = await depositService.create(vm.item);
-
-        if (response.data.result) {
-          vm.$emit('isProcessing', false);
-          vm.$emit('showMessage', 'Depozyt', 'Zlecenie zapisane');
-          vm.resetForm();
-
+        if (error.response === undefined) {
+          this.$emit('showMessage', 'Zlecenia serwisowe', 'Brak odpowiedzi z serwera');
           return;
         }
 
-        vm.$emit('showMessage', 'Depozyt', 'Nieudany zapis');
-      }
-      catch (error) {
-        vm.showError(error);
-      }
-
-      vm.$emit('isProcessing', false);
-    },
-    addArrayObject(item, array, maxCount, newItem) {
-      //check if last item in array
-      const index = array.indexOf(item);
-      if (array.length >= maxCount || index < array.length - 1) {
-        return;
-      }
-
-      //add new item
-      array.push(newItem);
+        console.log(error.response.data);
+        this.$emit('showMessage', 'Zlecenia serwisowe', error.response.data.message);
+      });
     },
     showError(error) {
       console.log(error);
@@ -179,66 +160,15 @@ export default {
       console.log(error.response.data);
       this.$emit('showMessage', 'Depozyt', error.response.data.message);
     },
-    resetForm() {
-      const vm = this;
+    sortData(sorting) {
+      this.items = [];
+      this.currentPage = 1;
+      this.sorting.column = sorting.column;
+      this.sorting.order = sorting.order;
 
-      vm.item = {
-        id: 1,
-        orderNumber: `D/${moment(new Date()).format('1/M/YYYY')}`,
-        date: new Date(),
-        client: {
-          name: '',
-          companyName: '',
-          phoneNumber: '',
-        },
-        tires: [
-          {
-            width: '',
-            profile: '',
-            diameter: '',
-            dot: '',
-            brand: '',
-            tread: '',
-            note: '',
-          },
-        ],
-        deposit: {
-          tires: false,
-          alloys: false,
-          steels: false,
-          screws: false,
-          hubcups: false,
-        },
-        tiresNote: '',
-        tiresLocation: '',
-        signature: {
-          employee: null,
-          client: null,
-        },
-      };
-
-      vm.$refs.employeeSignature.resetCanvas();
-      vm.$refs.clientSignature.resetCanvas();
-      vm.$refs.form.reset();
+      // refresh with new sorting
+      this.fetch();
     },
-  },
-  watch: {
-    'api.phoneNumberSearch': debounce(async function phoneNumberSearch(val) {
-      if (this.api.isLoading) return;
-
-      this.api.isLoading = true;
-
-      clientService.getPhoneNumbers({ filter: val })
-      .then((res) => {
-        this.api.phoneNumbers = res.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        this.api.isLoading = false;
-      });
-    }, 500, { maxWait: 5000 }),
   },
 };
 </script>
