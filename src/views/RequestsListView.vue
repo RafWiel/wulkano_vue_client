@@ -3,16 +3,20 @@
     fluid
     class="pa-0 d-flex flex-column flex-nowrap"
     style="height: 100%">
+    <!-- Filter -->
+    <requests-filter
+      :class="$vuetify.breakpoint.mdAndUp ? 'px-4 pt-4' : 'px-3 py-2'"
+      @filter="filterData"/>
     <!-- Portrait sorting -->
     <requests-mobile-sorting
       v-if="$vuetify.breakpoint.xs"
-      class="px-3 pt-2"
+      class="px-3 py-2"
       :columns="portraitColumns"
       @sort="sortData"/>
     <v-card
       flat
       class="grow"
-      :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
+      :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'px-3 py-2'">
       <data-grid
         :columns="columns"
         :items="items"
@@ -32,12 +36,14 @@ import sortOrder from '@/enums/sortOrder';
 import DataGrid from '@/components/DataGrid.vue';
 import requestType from '@/enums/requestType';
 import RequestsMobileSorting from '@/components/requests/RequestsMobileSorting.vue';
+import RequestsFilter from '@/components/requests/RequestsFilter.vue';
 
 export default {
   name: 'RequestsListView',
   components: {
     DataGrid,
     RequestsMobileSorting,
+    RequestsFilter,
   },
   computed: {
     date() {
