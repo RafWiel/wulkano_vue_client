@@ -3,6 +3,12 @@
     fluid
     class="pa-0 d-flex flex-column flex-nowrap"
     style="height: 100%">
+    <!-- Portrait sorting -->
+    <requests-mobile-sorting
+      v-if="$vuetify.breakpoint.xs"
+      class="px-3 pt-2"
+      :columns="portraitColumns"
+      @sort="sortData"/>
     <v-card
       flat
       class="grow"
@@ -10,7 +16,7 @@
       <data-grid
         :columns="columns"
         :items="items"
-        :portraitCols="2"
+        :portraitCols="4"
         @itemClick="goToItem"
         @sort="sortData"/>
     </v-card>
@@ -21,19 +27,25 @@
 
 import moment from 'moment';
 import rules from '@/misc/rules';
-import serviceRequestsService from '@/services/serviceRequestsService';
+import requestsService from '@/services/requestsService';
 import sortOrder from '@/enums/sortOrder';
 import DataGrid from '@/components/DataGrid.vue';
 import requestType from '@/enums/requestType';
+import RequestsMobileSorting from '@/components/requests/RequestsMobileSorting.vue';
 
 export default {
-  name: 'ServiceRequestsListView',
+  name: 'RequestsListView',
   components: {
     DataGrid,
+    RequestsMobileSorting,
   },
   computed: {
     date() {
       return moment(this.item.date).format('DD-MM-YYYY');
+    },
+    portraitColumns() {
+      // filter headers for mobile portrait view
+      return this.columns.filter((item) => item.limitedWidth !== undefined);
     },
   },
   data: () => ({
@@ -110,7 +122,7 @@ export default {
       // set loading icon
       this.$emit('isProcessing', true);
 
-      serviceRequestsService.get({
+      requestsService.get({
         page: this.currentPage,
         'sort-column': this.sorting.column !== null ? this.sorting.column : null,
         'sort-order': this.sorting.column !== null ? this.sorting.order : null,
@@ -127,7 +139,7 @@ export default {
             const item = element;
             item.date = moment(item.date, 'YYYY-MM-DD hh:mm:ss.SSS Z').format('YYYY-MM-DD HH:mm');
             item.requestType = requestType.getText(item.requestType);
-            //item.submitType = serviceRequestSubmitType.getText(item.submitType);
+            //item.submitType = requestSubmitType.getText(item.submitType);
             //item.status = requestStatus.getText(item.status, this.$vuetify.breakpoint.xs);
             this.items.push(item);
           });
