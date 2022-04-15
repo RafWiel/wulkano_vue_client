@@ -143,10 +143,6 @@
 
 <script>
 import debounce from 'lodash.debounce'; // debounce - opoznienie
-//import serviceRequestType from '@/enums/serviceRequestType';
-//import serviceRequestSubmitType from '@/enums/serviceRequestSubmitType';
-//import requestStatus from '@/enums/requestStatus';
-//import serviceRequestSimpleStatus from '@/enums/serviceRequestSimpleStatus';
 import timePeriod from '@/enums/timePeriod';
 import requestType from '@/enums/requestType';
 
@@ -167,11 +163,8 @@ export default {
     },
     isStartDatePickerVisible: false,
     isStopDatePickerVisible: false,
-    //ownershipItems: ownership.items,
     timePeriodItems: timePeriod.items,
-    //simpleStatusItems: serviceRequestSimpleStatus.items,
     typeItems: requestType.items,
-    //statusItems: requestStatus.items,
   }),
   watch: {
     '$route.query': {
@@ -194,37 +187,15 @@ export default {
            isRefresh = this.filter.type !== requestType.all;
         }
 
-        // if (!!value.ownership && this.filter.ownership !== parseInt(value.ownership, 10)) {
-        //   this.filter.ownership = parseInt(value.ownership, 10);
-        //   isRefresh = this.filter.ownership !== ownership.all;
-        // }
+        if (!!value['start-date'] && this.filter.startDate !== value['start-date']) {
+          this.filter.startDate = value['start-date'];
+          isRefresh = !!this.filter.startDate;
+        }
 
-        // if (!!value['simple-status'] && this.filter.simpleStatus !== parseInt(value['simple-status'], 10)) {
-        //   this.filter.simpleStatus = parseInt(value['simple-status'], 10);
-        //   isRefresh = this.filter.simpleStatus !== serviceRequestSimpleStatus.all;
-        // }
-
-        // if (!!value['start-date'] && this.filter.startDate !== value['start-date']) {
-        //   this.filter.startDate = value['start-date'];
-        //   isRefresh = !!this.filter.startDate;
-        // }
-
-        // if (!!value['stop-date'] && this.filter.stopDate !== value['stop-date']) {
-        //   this.filter.stopDate = value['stop-date'];
-        //   isRefresh = !!this.filter.stopDate;
-        // }
-
-
-
-        // if (!!value['submit-type'] && this.filter.submitType !== parseInt(value['submit-type'], 10)) {
-        //   this.filter.submitType = parseInt(value['submit-type'], 10);
-        //   isRefresh = this.filter.submitType !== serviceRequestSubmitType.all;
-        // }
-
-        // if (!!value.status && this.filter.status !== parseInt(value.status, 10)) {
-        //   this.filter.status = parseInt(value.status, 10);
-        //   isRefresh = this.filter.status !== requestStatus.all;
-        // }
+        if (!!value['stop-date'] && this.filter.stopDate !== value['stop-date']) {
+          this.filter.stopDate = value['stop-date'];
+          isRefresh = !!this.filter.stopDate;
+        }
 
         if (isRefresh) {
           this.$emit('filter', this.filter);
@@ -254,31 +225,13 @@ export default {
         route.query.type = this.filter.type;
       }
 
-      // if (this.filter.ownership !== ownership.all) {
-      //   route.query.ownership = this.filter.ownership;
-      // }
+      if (this.filter.startDate) {
+        route.query['start-date'] = this.filter.startDate;
+      }
 
-      // if (this.filter.simpleStatus !== serviceRequestSimpleStatus.all) {
-      //   route.query['simple-status'] = this.filter.simpleStatus;
-      // }
-
-      // if (this.filter.startDate) {
-      //   route.query['start-date'] = this.filter.startDate;
-      // }
-
-      // if (this.filter.stopDate) {
-      //   route.query['stop-date'] = this.filter.stopDate;
-      // }
-
-
-
-      // if (this.filter.submitType !== serviceRequestSubmitType.all) {
-      //   route.query['submit-type'] = this.filter.submitType;
-      // }
-
-      // if (this.filter.status !== requestStatus.all) {
-      //   route.query.status = this.filter.status;
-      // }
+      if (this.filter.stopDate) {
+        route.query['stop-date'] = this.filter.stopDate;
+      }
 
       this.$router.push(route);
       this.$emit('filter', this.filter);
