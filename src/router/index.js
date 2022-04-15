@@ -10,14 +10,15 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
-    name: 'RequestsListView',
-    component: RequestsListView,
+    name: 'Main',
+    redirect: {
+      name: 'RequestsListView',
+    },
   },
-  // {
-  //   path: '/',
-  //   name: 'DepositForm',
-  //   component: DepositForm,
-  // },
+  {
+    path: '*',
+    redirect: '/',
+  },
   {
     path: '/service/car/',
     name: 'CarServiceForm',
@@ -49,6 +50,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
+  mode: 'history',
   routes,
 });
 

@@ -54,6 +54,7 @@
                 item-value="id"
                 hide-details="auto"
                 label="Typ"
+                @click.stop
                 @change="emitEvent"/>
             </v-col>
           </v-row>
@@ -147,6 +148,7 @@ import debounce from 'lodash.debounce'; // debounce - opoznienie
 //import requestStatus from '@/enums/requestStatus';
 //import serviceRequestSimpleStatus from '@/enums/serviceRequestSimpleStatus';
 import timePeriod from '@/enums/timePeriod';
+import requestType from '@/enums/requestType';
 
 
 export default {
@@ -168,8 +170,7 @@ export default {
     //ownershipItems: ownership.items,
     timePeriodItems: timePeriod.items,
     //simpleStatusItems: serviceRequestSimpleStatus.items,
-    //submitTypeItems: serviceRequestSubmitType.items,
-    typeItems: timePeriod.items,
+    typeItems: requestType.items,
     //statusItems: requestStatus.items,
   }),
   watch: {
@@ -186,6 +187,11 @@ export default {
         if (!!value['time-period'] && this.filter.timePeriod !== parseInt(value['time-period'], 10)) {
           this.filter.timePeriod = parseInt(value['time-period'], 10);
           isRefresh = this.filter.timePeriod !== timePeriod.all;
+        }
+
+        if (!!value.type && this.filter.type !== parseInt(value.type, 10)) {
+           this.filter.type = parseInt(value.type, 10);
+           isRefresh = this.filter.type !== requestType.all;
         }
 
         // if (!!value.ownership && this.filter.ownership !== parseInt(value.ownership, 10)) {
@@ -208,10 +214,7 @@ export default {
         //   isRefresh = !!this.filter.stopDate;
         // }
 
-        // if (!!value.type && this.filter.type !== parseInt(value.type, 10)) {
-        //   this.filter.type = parseInt(value.type, 10);
-        //   isRefresh = this.filter.type !== serviceRequestType.all;
-        // }
+
 
         // if (!!value['submit-type'] && this.filter.submitType !== parseInt(value['submit-type'], 10)) {
         //   this.filter.submitType = parseInt(value['submit-type'], 10);
@@ -235,7 +238,7 @@ export default {
     }, 500),
     emitEvent() {
       const route = {
-        name: 'ServiceRequests',
+        name: 'RequestsListView',
         query: {},
       };
 
@@ -245,6 +248,10 @@ export default {
 
       if (this.filter.timePeriod !== timePeriod.all) {
         route.query['time-period'] = this.filter.timePeriod;
+      }
+
+      if (this.filter.type !== requestType.all) {
+        route.query.type = this.filter.type;
       }
 
       // if (this.filter.ownership !== ownership.all) {
@@ -263,9 +270,7 @@ export default {
       //   route.query['stop-date'] = this.filter.stopDate;
       // }
 
-      // if (this.filter.type !== serviceRequestType.all) {
-      //   route.query.type = this.filter.type;
-      // }
+
 
       // if (this.filter.submitType !== serviceRequestSubmitType.all) {
       //   route.query['submit-type'] = this.filter.submitType;
@@ -275,15 +280,8 @@ export default {
       //   route.query.status = this.filter.status;
       // }
 
-      //this.$router.push(route);
-      //this.$emit('filter', this.filter);
-    },
-    todoEnterSpacja() {
-      alert('TODO: Zablokuj rozwijanie panelu na Enter i Spację');
-    },
-    todoEnterSpacja2(event) {
-      console.log('spacja');
-      event.stopPropagation();
+      this.$router.push(route);
+      this.$emit('filter', this.filter);
     },
   },
 };

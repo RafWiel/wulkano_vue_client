@@ -33,8 +33,9 @@ import moment from 'moment';
 import rules from '@/misc/rules';
 import requestsService from '@/services/requestsService';
 import sortOrder from '@/enums/sortOrder';
-import DataGrid from '@/components/DataGrid.vue';
+import timePeriod from '@/enums/timePeriod';
 import requestType from '@/enums/requestType';
+import DataGrid from '@/components/DataGrid.vue';
 import RequestsMobileSorting from '@/components/requests/RequestsMobileSorting.vue';
 import RequestsFilter from '@/components/requests/RequestsFilter.vue';
 
@@ -57,6 +58,7 @@ export default {
   data: () => ({
     items: [],
     currentPage: 1,
+    filter: null,
     sorting: {
       column: null,
       order: sortOrder.ascending,
@@ -110,7 +112,6 @@ export default {
       phoneNumbers: [],
       isLoading: false,
     },
-
     rules: {
       required: rules.required,
       integer: rules.integer,
@@ -130,6 +131,11 @@ export default {
 
       requestsService.get({
         page: this.currentPage,
+        search: this.filter && this.filter.search ? this.filter.search : null,
+        'start-date': this.filter && this.filter.startDate ? moment(this.filter.startDate).utc().format('YYYY-MM-DD HH:mm:ss.SSS Z') : null,
+        'stop-date': this.filter && this.filter.stopDate ? moment(this.filter.stopDate).add(1, 'd').utc().format('YYYY-MM-DD HH:mm:ss.SSS Z') : null,
+        'time-period': this.filter && this.filter.timePeriod !== timePeriod.all ? this.filter.timePeriod : null,
+        type: this.filter && this.filter.type !== requestType.all ? this.filter.type : null,
         'sort-column': this.sorting.column !== null ? this.sorting.column : null,
         'sort-order': this.sorting.column !== null ? this.sorting.order : null,
       })
@@ -166,6 +172,28 @@ export default {
         this.$emit('showMessage', 'Zlecenia serwisowe', error.response.data.message);
       });
     },
+    goToItem(id) {
+      alert(`todo ${id}`);
+      //this.$router.push({ name: 'ServiceRequest', params: { id } });
+    },
+    filterData(filter) {
+      // reset items
+      this.items = [];
+      this.currentPage = 1;
+      this.filter = filter;
+
+      // refresh with new filter
+      this.fetch();
+    },
+    sortData(sorting) {
+      this.items = [];
+      this.currentPage = 1;
+      this.sorting.column = sorting.column;
+      this.sorting.order = sorting.order;
+
+      // refresh with new sorting
+      this.fetch();
+    },
     showError(error) {
       console.log(error);
       this.$emit('isProcessing', false);
@@ -177,15 +205,6 @@ export default {
 
       console.log(error.response.data);
       this.$emit('showMessage', 'Depozyt', error.response.data.message);
-    },
-    sortData(sorting) {
-      this.items = [];
-      this.currentPage = 1;
-      this.sorting.column = sorting.column;
-      this.sorting.order = sorting.order;
-
-      // refresh with new sorting
-      this.fetch();
     },
   },
 };
