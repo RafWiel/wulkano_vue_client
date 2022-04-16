@@ -79,12 +79,11 @@
               <!-- Company -->
               <v-col cols="6" sm="4" md="3" lg="2" class="pl-2">
                 <v-text-field
-                  ref="firstControl"
                   v-model.lazy="item.client.companyName"
                   label="Firma"
                   type="input"
-                  class="text_ellipsis"
                   hide-details="auto"
+                  class="text_ellipsis"
                   validate-on-blur/>
               </v-col>
               <!-- Phone number -->
@@ -213,7 +212,6 @@
             <v-row class="no-gutters mt-2">
               <v-col>
                 <v-text-field
-                  ref="firstControl"
                   v-model.lazy="item.tiresLocation"
                   label="Położenie opon"
                   type="input"
@@ -298,7 +296,7 @@ import TireInfo from '@/components/deposit/TireInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
 
 export default {
-  name: 'DepositForm',
+  name: 'DepositEditForm',
   components: {
     TireInfo,
     SignatureField,
@@ -311,7 +309,7 @@ export default {
   data: () => ({
     item: {
       id: 1,
-      orderNumber: `D/${moment(new Date()).format('1/M/YYYY')}`,
+      orderNumber: 'Nowe zlecenie',
       date: new Date(),
       client: {
         name: 'Jan Nowak',
@@ -385,6 +383,7 @@ export default {
           vm.$emit('isProcessing', false);
           vm.$emit('showMessage', 'Depozyt', 'Zlecenie zapisane');
           vm.resetForm();
+          vm.$vuetify.goTo(0);
 
           return;
         }

@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import TruckServiceForm from '../views/truck/TruckServiceForm.vue';
 import CarServiceForm from '../views/car/CarServiceForm.vue';
-import DepositForm from '../views/deposit/DepositForm.vue';
+import DepositEditForm from '../views/deposit/DepositEditForm.vue';
 import RequestsListView from '../views/RequestsListView.vue';
 
 Vue.use(VueRouter);
@@ -31,8 +31,8 @@ const routes = [
   },
   {
     path: '/deposit',
-    name: 'DepositForm',
-    component: DepositForm,
+    name: 'DepositEditForm',
+    component: DepositEditForm,
   },
   {
     path: '/requests',
