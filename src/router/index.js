@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import TruckServiceForm from '../views/truck/TruckServiceForm.vue';
 import CarServiceForm from '../views/car/CarServiceForm.vue';
 import DepositEditForm from '../views/deposit/DepositEditForm.vue';
+import DepositViewForm from '../views/deposit/DepositViewForm.vue';
 import RequestsListView from '../views/RequestsListView.vue';
 
 Vue.use(VueRouter);
@@ -20,25 +21,44 @@ const routes = [
     redirect: '/',
   },
   {
+    path: '/requests',
+    name: 'RequestsListView',
+    component: RequestsListView,
+  },
+  {
+    path: '/requests/:id',
+    name: 'DepositViewForm',
+    component: DepositViewForm,
+    props: true,
+    meta: {
+      isBackButton: true,
+    },
+  },
+  {
     path: '/service/car/',
     name: 'CarServiceForm',
     component: CarServiceForm,
+    meta: {
+      isBackButton: true,
+    },
   },
   {
     path: '/service/truck/',
     name: 'TruckServiceForm',
     component: TruckServiceForm,
+    meta: {
+      isBackButton: true,
+    },
   },
   {
     path: '/deposit',
     name: 'DepositEditForm',
     component: DepositEditForm,
+    meta: {
+      isBackButton: true,
+    },
   },
-  {
-    path: '/requests',
-    name: 'RequestsListView',
-    component: RequestsListView,
-  },
+
   // {
   //   path: '/',
   //   name: 'About',

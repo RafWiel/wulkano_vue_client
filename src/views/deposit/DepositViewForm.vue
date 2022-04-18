@@ -31,7 +31,7 @@
                 md="4"
                 class="text-center">
                 <p class="white--text text-h4 ma-0 semibold">
-                  {{ item.orderNumber }}
+                  {{ item.requestName }}
                 </p>
               </v-col>
               <v-col
@@ -73,7 +73,6 @@
                   type="input"
                   class="text_ellipsis"
                   hide-details="auto"
-                  :rules="[rules.required]"
                   validate-on-blur/>
               </v-col>
               <!-- Company -->
@@ -90,17 +89,13 @@
               <v-col
                 cols="12" sm="4" md="6" lg="8"
                 :class="$vuetify.breakpoint.smAndUp ? 'pl-2' : ''">
-                <v-combobox
-                  v-model="item.client.phoneNumber"
-                  :items="api.phoneNumbers"
-                  :loading="api.isLoading"
-                  :search-input.sync="api.phoneNumberSearch"
-                  hide-no-data
-                  hide-selected
-                  no-filter
-                  type="input"
+                <v-text-field
+                  v-model.lazy="item.client.phoneNumber"
                   label="Telefon kontaktowy"
-                  :rules="[rules.required]"/>
+                  type="input"
+                  class="text_ellipsis"
+                  hide-details="auto"
+                  validate-on-blur/>
               </v-col>
             </v-row>
           </v-col>
@@ -142,14 +137,14 @@
             <v-row class="no-gutters mt-4">
               <v-col cols="12" sm="auto">
                 <v-checkbox
-                  v-model="item.deposit.tires"
+                  v-model="item.isTires"
                   label="Opony"
                   hide-details
                   class="shrink mt-0"/>
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
-                  v-model="item.deposit.alloys"
+                  v-model="item.isAlloys"
                   label="Koła alu"
                   hide-details
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
@@ -157,7 +152,7 @@
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
-                  v-model="item.deposit.steels"
+                  v-model="item.isSteels"
                   label="Koła stalowe"
                   hide-details
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
@@ -165,7 +160,7 @@
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
-                  v-model="item.deposit.screws"
+                  v-model="item.isScrews"
                   label="Śruby"
                   hide-details
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
@@ -173,7 +168,7 @@
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
-                  v-model="item.deposit.hubcups"
+                  v-model="item.isHubcups"
                   label="Kołpaki"
                   hide-details
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
@@ -217,8 +212,7 @@
                   type="input"
                   class="text_ellipsis"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
             </v-row>
           </v-col>
@@ -239,9 +233,12 @@
                 </h3>
               </v-col>
             </v-row>
-            <signature-field
+            <v-img
               ref="employeeSignature"
-              class="mt-2" />
+              src=""
+              width="100%"
+              height="200px"
+              class="mt-2 signature-image"/>
           </v-col>
         </v-row>
       </v-card>
@@ -266,37 +263,19 @@
           </v-col>
         </v-row>
       </v-card>
-      <!-- Apply button -->
-      <v-card
-        flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters" justify="end">
-          <v-col cols="12" sm="6" md="4" lg="2">
-            <v-btn
-              depressed
-              block
-              color="primary"
-              @click="save">
-              Zapisz
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-card>
     </v-form>
   </v-container>
 </template>
 
 <script>
-import debounce from 'lodash.debounce';
 import moment from 'moment';
-import rules from '@/misc/rules';
-import clientsService from '@/services/clientsService';
 import depositsService from '@/services/depositsService';
 import TireInfo from '@/components/deposit/TireInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
 
 export default {
   name: 'DepositViewForm',
+  props: { id: [String, Number] },
   components: {
     TireInfo,
     SignatureField,
@@ -308,102 +287,60 @@ export default {
   },
   data: () => ({
     item: {
-      id: 1,
-      orderNumber: 'Nowe zlecenie',
-      date: new Date(),
-      client: {
-        name: 'Jan Nowak',
-        companyName: '',
-        phoneNumber: '501502503',
-      },
-      tires: [
-        {
-          width: '',
-          profile: '',
-          diameter: '',
-          dot: '',
-          brand: '',
-          tread: '',
-          note: '',
-        },
-      ],
-      deposit: {
-        tires: false,
-        alloys: false,
-        steels: false,
-        screws: false,
-        hubcups: false,
-      },
-      tiresNote: '',
-      tiresLocation: 'Położenie',
-      signature: {
-        employee: null,
-        client: null,
-      },
+      client: {},
+      tires: [],
     },
-    api: {
-      descriptionLimit: 60,
-      phoneNumberSearch: null,
-      phoneNumbers: [],
-      isLoading: false,
-    },
-    rules: {
-      required: rules.required,
-      integer: rules.integer,
-    },
+    signatureWidth: 0,
   }),
+  mounted() {
+    this.fetch();
+
+    //adjust image width
+    window.addEventListener('resize', this.resize);
+    this.resize();
+  },
   methods: {
-    async save() {
-      const vm = this;
+    fetch() {
+      // set loading icon
+      this.$emit('isProcessing', true);
 
-      //validation
-      const v1 = vm.$refs.form.validate();
-      const v2 = vm.$refs.employeeSignature.validate();
-      const v3 = vm.$refs.clientSignature.validate();
-      if (!v1 || !v2 || !v3) {
-        this.$nextTick(() => {
-          const el = this.$el.querySelector('.v-messages.error--text:first-of-type');
+      // get deposit
+      depositsService.getOne(this.id)
+      .then((response) => {
+        this.item = response.data.deposit;
 
-          this.$vuetify.goTo(el, { offset: 60 });
-        });
+        console.log(this.item);
 
-        return;
-      }
+        this.item.client = this.item.client || {};
 
-      try {
-        vm.$emit('isProcessing', true);
+        this.item.date = moment(this.item.date, 'YYYY-MM-DD hh:mm:ss.SSS Z').format('YYYY-MM-DD HH:mm');
 
-        vm.item.signature.employee = vm.$refs.employeeSignature.getImageData();
-        vm.item.signature.client = vm.$refs.clientSignature.getImageData();
+        // this.item.typeText = serviceRequestType.getText(this.item.type);
+        // this.item.submitTypeText = serviceRequestSubmitType.getText(this.item.submitType);
+        // this.item.statusText = requestStatus.getText(this.item.status);
 
-        const response = await depositsService.create(vm.item);
+        // if (Object.keys(this.item.software).length) {
+        //   this.item.software.product = softwareProduct.getText(this.item.software.product);
+        //   this.item.software.module = softwareModule.getText(this.item.software.module);
+        //   this.item.software.operatingSystem = operatingSystem.getText(this.item.software.operatingSystem);
+        // }
 
-        if (response.data.result) {
-          vm.$emit('isProcessing', false);
-          vm.$emit('showMessage', 'Depozyt', 'Zlecenie zapisane');
-          vm.resetForm();
-          vm.$vuetify.goTo(0);
+        // if (Object.keys(this.item.hardware).length) {
+        //   this.item.hardware.type = hardwareType.getText(this.item.hardware.type);
+        //   this.item.hardware.operatingSystem = operatingSystem.getText(this.item.hardware.operatingSystem);
+        //   this.item.hardware.isWarrantyService = bool.getText(this.item.hardware.isWarrantyService);
+        // }
+      }).catch((error) => {
+        this.showError(error);
+      });
 
-          return;
-        }
-
-        vm.$emit('showMessage', 'Depozyt', 'Nieudany zapis');
-      }
-      catch (error) {
-        vm.showError(error);
-      }
-
-      vm.$emit('isProcessing', false);
+      this.$emit('isProcessing', false);
     },
-    addArrayObject(item, array, maxCount, newItem) {
-      //check if last item in array
-      const index = array.indexOf(item);
-      if (array.length >= maxCount || index < array.length - 1) {
-        return;
-      }
-
-      //add new item
-      array.push(newItem);
+    resize() {
+      this.signatureWidth = this.getSignatureWidth();
+    },
+    getSignatureWidth() {
+      return document.documentElement.clientWidth - (this.$vuetify.breakpoint.mdAndUp ? 68 : 0);
     },
     showError(error) {
       console.log(error);
@@ -417,66 +354,6 @@ export default {
       console.log(error.response.data);
       this.$emit('showMessage', 'Depozyt', error.response.data.message);
     },
-    resetForm() {
-      const vm = this;
-
-      vm.item = {
-        id: 1,
-        orderNumber: `D/${moment(new Date()).format('1/M/YYYY')}`,
-        date: new Date(),
-        client: {
-          name: '',
-          companyName: '',
-          phoneNumber: '',
-        },
-        tires: [
-          {
-            width: '',
-            profile: '',
-            diameter: '',
-            dot: '',
-            brand: '',
-            tread: '',
-            note: '',
-          },
-        ],
-        deposit: {
-          tires: false,
-          alloys: false,
-          steels: false,
-          screws: false,
-          hubcups: false,
-        },
-        tiresNote: '',
-        tiresLocation: '',
-        signature: {
-          employee: null,
-          client: null,
-        },
-      };
-
-      vm.$refs.employeeSignature.resetCanvas();
-      vm.$refs.clientSignature.resetCanvas();
-      vm.$refs.form.reset();
-    },
-  },
-  watch: {
-    'api.phoneNumberSearch': debounce(async function phoneNumberSearch(val) {
-      if (this.api.isLoading) return;
-
-      this.api.isLoading = true;
-
-      clientsService.getPhoneNumbers({ filter: val })
-      .then((res) => {
-        this.api.phoneNumbers = res.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        this.api.isLoading = false;
-      });
-    }, 500, { maxWait: 5000 }),
   },
 };
 </script>
@@ -494,6 +371,10 @@ export default {
     display: block;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .signature-image {
+    border: 1px solid #808080;
   }
 
 </style>

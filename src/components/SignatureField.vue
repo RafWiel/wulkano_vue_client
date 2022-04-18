@@ -3,7 +3,7 @@
     <canvas
       ref="canvas"
       :width="canvasWidth"
-      height="200"
+      height="200px"
       id="drawing-pad"/>
     <!-- <img
       ref="img"

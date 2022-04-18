@@ -5,12 +5,13 @@
     dense
     flat
     hide-on-scroll>
-    <!-- <v-btn
+    <v-btn
       icon
+      v-if="$route.meta.isBackButton"
       class="mr-n3"
       @click="$router.go(-1)">
       <v-icon color="grey lighten-2">mdi-chevron-left</v-icon>
-    </v-btn> -->
+    </v-btn>
     <v-btn icon @click="$emit('menuClicked')">
       <v-icon color="grey lighten-2">mdi-menu</v-icon>
     </v-btn>

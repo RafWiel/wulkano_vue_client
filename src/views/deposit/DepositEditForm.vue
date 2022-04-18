@@ -142,14 +142,14 @@
             <v-row class="no-gutters mt-4">
               <v-col cols="12" sm="auto">
                 <v-checkbox
-                  v-model="item.deposit.tires"
+                  v-model="item.isTires"
                   label="Opony"
                   hide-details
                   class="shrink mt-0"/>
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
-                  v-model="item.deposit.alloys"
+                  v-model="item.isAlloys"
                   label="Koła alu"
                   hide-details
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
@@ -157,7 +157,7 @@
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
-                  v-model="item.deposit.steels"
+                  v-model="item.isSteels"
                   label="Koła stalowe"
                   hide-details
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
@@ -165,7 +165,7 @@
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
-                  v-model="item.deposit.screws"
+                  v-model="item.isScrews"
                   label="Śruby"
                   hide-details
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
@@ -173,7 +173,7 @@
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
-                  v-model="item.deposit.hubcups"
+                  v-model="item.isHubcups"
                   label="Kołpaki"
                   hide-details
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
@@ -275,7 +275,7 @@
             <v-btn
               depressed
               block
-              color="primary"
+              class="save-btn"
               @click="save">
               Zapisz
             </v-btn>
@@ -307,8 +307,8 @@ export default {
     },
   },
   data: () => ({
-    item: {
-      id: 1,
+    item: null,
+    newItem: {
       orderNumber: 'Nowe zlecenie',
       date: new Date(),
       client: {
@@ -327,13 +327,11 @@ export default {
           note: '',
         },
       ],
-      deposit: {
-        tires: false,
-        alloys: false,
-        steels: false,
-        screws: false,
-        hubcups: false,
-      },
+      isTires: false,
+      isAlloys: false,
+      isSteels: false,
+      isScrews: false,
+      isHubcups: false,
       tiresNote: '',
       tiresLocation: 'Położenie',
       signature: {
@@ -353,6 +351,9 @@ export default {
       integer: rules.integer,
     },
   }),
+  mounted() {
+    this.resetForm();
+  },
   methods: {
     async save() {
       const vm = this;
@@ -421,40 +422,7 @@ export default {
     resetForm() {
       const vm = this;
 
-      vm.item = {
-        id: 1,
-        orderNumber: `D/${moment(new Date()).format('1/M/YYYY')}`,
-        date: new Date(),
-        client: {
-          name: '',
-          companyName: '',
-          phoneNumber: '',
-        },
-        tires: [
-          {
-            width: '',
-            profile: '',
-            diameter: '',
-            dot: '',
-            brand: '',
-            tread: '',
-            note: '',
-          },
-        ],
-        deposit: {
-          tires: false,
-          alloys: false,
-          steels: false,
-          screws: false,
-          hubcups: false,
-        },
-        tiresNote: '',
-        tiresLocation: '',
-        signature: {
-          employee: null,
-          client: null,
-        },
-      };
+      vm.item = vm.newItem;
 
       vm.$refs.employeeSignature.resetCanvas();
       vm.$refs.clientSignature.resetCanvas();

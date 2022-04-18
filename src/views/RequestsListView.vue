@@ -173,8 +173,7 @@ export default {
       });
     },
     goToItem(id) {
-      alert(`todo ${id}`);
-      //this.$router.push({ name: 'ServiceRequest', params: { id } });
+      this.$router.push({ name: 'DepositViewForm', params: { id } });
     },
     filterData(filter) {
       // reset items

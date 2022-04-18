@@ -666,7 +666,7 @@
             <v-btn
               depressed
               block
-              color="primary">
+              class="save-btn">
               Zapisz
             </v-btn>
           </v-col>

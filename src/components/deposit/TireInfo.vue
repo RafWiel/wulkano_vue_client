@@ -32,7 +32,7 @@
     </v-col>
     <v-col md="1" class="pl-2">
       <v-text-field
-        v-model.lazy="item.DOT"
+        v-model.lazy="item.dot"
         label="DOT"
         type="input"
         hide-details="auto"
