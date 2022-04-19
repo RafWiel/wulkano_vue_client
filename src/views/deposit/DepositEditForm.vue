@@ -352,7 +352,7 @@ export default {
     },
   }),
   mounted() {
-    this.resetForm();
+    this.item = this.newItem;
   },
   methods: {
     async save() {

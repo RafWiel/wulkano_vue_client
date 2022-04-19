@@ -234,8 +234,7 @@
               </v-col>
             </v-row>
             <v-img
-              ref="employeeSignature"
-              src=""
+              :src="employeeSignature"
               width="100%"
               height="200px"
               class="mt-2 signature-image"/>
@@ -257,9 +256,11 @@
                 </h3>
               </v-col>
             </v-row>
-            <signature-field
-              ref="clientSignature"
-              class="mt-2"/>
+            <v-img
+              :src="clientSignature"
+              width="100%"
+              height="200px"
+              class="mt-2 signature-image"/>
           </v-col>
         </v-row>
       </v-card>
@@ -270,15 +271,14 @@
 <script>
 import moment from 'moment';
 import depositsService from '@/services/depositsService';
+import signaturesService from '@/services/signaturesService';
 import TireInfo from '@/components/deposit/TireInfo.vue';
-import SignatureField from '@/components/SignatureField.vue';
 
 export default {
   name: 'DepositViewForm',
   props: { id: [String, Number] },
   components: {
     TireInfo,
-    SignatureField,
   },
   computed: {
     date() {
@@ -290,6 +290,8 @@ export default {
       client: {},
       tires: [],
     },
+    employeeSignature: '',
+    clientSignature: '',
     signatureWidth: 0,
   }),
   mounted() {
@@ -309,28 +311,36 @@ export default {
       .then((response) => {
         this.item = response.data.deposit;
 
-        console.log(this.item);
+        //console.log(this.item);
 
         this.item.client = this.item.client || {};
-
         this.item.date = moment(this.item.date, 'YYYY-MM-DD hh:mm:ss.SSS Z').format('YYYY-MM-DD HH:mm');
 
-        // this.item.typeText = serviceRequestType.getText(this.item.type);
-        // this.item.submitTypeText = serviceRequestSubmitType.getText(this.item.submitType);
-        // this.item.statusText = requestStatus.getText(this.item.status);
+        //get employee signature
+        signaturesService.get({
+          dir: this.item.directoryId,
+          sig: this.item.employeeSignatureFileName,
+        })
+        .then((res) => {
+          this.employeeSignature = `data:image/png;base64,${res.data}`;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
-        // if (Object.keys(this.item.software).length) {
-        //   this.item.software.product = softwareProduct.getText(this.item.software.product);
-        //   this.item.software.module = softwareModule.getText(this.item.software.module);
-        //   this.item.software.operatingSystem = operatingSystem.getText(this.item.software.operatingSystem);
-        // }
-
-        // if (Object.keys(this.item.hardware).length) {
-        //   this.item.hardware.type = hardwareType.getText(this.item.hardware.type);
-        //   this.item.hardware.operatingSystem = operatingSystem.getText(this.item.hardware.operatingSystem);
-        //   this.item.hardware.isWarrantyService = bool.getText(this.item.hardware.isWarrantyService);
-        // }
-      }).catch((error) => {
+        //get client signature
+        signaturesService.get({
+          dir: this.item.directoryId,
+          sig: this.item.clientSignatureFileName,
+        })
+        .then((res) => {
+          this.clientSignature = `data:image/png;base64,${res.data}`;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      })
+      .catch((error) => {
         this.showError(error);
       });
 

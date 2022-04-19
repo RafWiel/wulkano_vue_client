@@ -5,10 +5,10 @@
       :width="canvasWidth"
       height="200px"
       id="drawing-pad"/>
-    <!-- <img
+    <img
       ref="img"
       src=""
-      id="canvas-img"/> -->
+      id="canvas-img"/>
     <v-slide-y-transition>
       <v-row
         v-if="isError"
@@ -27,7 +27,7 @@
           Wyczyść
         </v-btn>
       </v-col>
-      <!-- <v-col cols="2" class="ml-2">
+      <v-col cols="2" class="ml-2">
         <v-btn
           depressed
           block
@@ -35,7 +35,7 @@
           @click="saveImage">
           Zapisz
         </v-btn>
-      </v-col> -->
+      </v-col>
       <!-- <v-col class="ml-2">
         <v-btn
           depressed
@@ -215,7 +215,7 @@ export default
 
       img.src = dataURL;
 
-      // console.log(vm.points);
+      console.log(dataURL);
     },
     getImageData: function aa() {
       const vm = this;
