@@ -72,8 +72,8 @@
                   label="Imię i Nazwisko"
                   type="input"
                   class="text_ellipsis"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
               <!-- Company -->
               <v-col cols="6" sm="4" md="3" lg="2" class="pl-2">
@@ -82,8 +82,8 @@
                   label="Firma"
                   type="input"
                   class="text_ellipsis"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
               <!-- Phone number -->
               <v-col
@@ -94,8 +94,8 @@
                   label="Telefon kontaktowy"
                   type="input"
                   class="text_ellipsis"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
             </v-row>
           </v-col>
@@ -122,17 +122,9 @@
               :key="index">
               <tire-info
                 :item="tire"
-                :isValidation="index < item.tires.length - 1"
-                class="mt-2"
-                @change="addArrayObject(tire, item.tires, 5, {
-                  width: '',
-                  profile: '',
-                  diameter: '',
-                  dot: '',
-                  brand: '',
-                  tread: '',
-                  note: ''
-                })"/>
+                isValidation="false"
+                isReadonly="true"
+                class="mt-2"/>
             </div>
             <v-row class="no-gutters mt-4">
               <v-col cols="12" sm="auto">
@@ -140,6 +132,7 @@
                   v-model="item.isTires"
                   label="Opony"
                   hide-details
+                  readonly
                   class="shrink mt-0"/>
               </v-col>
               <v-col cols="12" sm="auto">
@@ -147,6 +140,7 @@
                   v-model="item.isAlloys"
                   label="Koła alu"
                   hide-details
+                  readonly
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   class="shrink mt-0"/>
               </v-col>
@@ -155,6 +149,7 @@
                   v-model="item.isSteels"
                   label="Koła stalowe"
                   hide-details
+                  readonly
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   class="shrink mt-0"/>
               </v-col>
@@ -163,6 +158,7 @@
                   v-model="item.isScrews"
                   label="Śruby"
                   hide-details
+                  readonly
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   class="shrink mt-0"/>
               </v-col>
@@ -171,6 +167,7 @@
                   v-model="item.isHubcups"
                   label="Kołpaki"
                   hide-details
+                  readonly
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   class="shrink mt-0"/>
               </v-col>
@@ -179,10 +176,11 @@
               <v-col>
                 <v-textarea
                   label="Uwagi"
-                  hide-details="auto"
+                  hide-details
                   validate-on-blur
                   auto-grow
                   rows="1"
+                  readonly
                   v-model.lazy="item.tiresNote"/>
               </v-col>
             </v-row>
@@ -211,8 +209,8 @@
                   label="Położenie opon"
                   type="input"
                   class="text_ellipsis"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
             </v-row>
           </v-col>
@@ -237,6 +235,7 @@
               :src="employeeSignature"
               width="100%"
               height="200px"
+              contain
               class="mt-2 signature-image"/>
           </v-col>
         </v-row>
@@ -260,6 +259,7 @@
               :src="clientSignature"
               width="100%"
               height="200px"
+              contain
               class="mt-2 signature-image"/>
           </v-col>
         </v-row>

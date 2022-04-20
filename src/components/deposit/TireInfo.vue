@@ -8,6 +8,7 @@
         hide-details="auto"
         hide-spin-buttons
         validate-on-blur
+        :readonly="isReadonly"
         :rules="isValidation ? [rules.integer, rules.required] : []"/>
     </v-col>
     <v-col md="1" class="pl-2">
@@ -18,6 +19,7 @@
         hide-details="auto"
         hide-spin-buttons
         validate-on-blur
+        :readonly="isReadonly"
         :rules="isValidation ? [rules.integer, rules.required] : []"/>
     </v-col>
     <v-col md="1" class="pl-2">
@@ -28,6 +30,7 @@
         hide-details="auto"
         hide-spin-buttons
         validate-on-blur
+        :readonly="isReadonly"
         :rules="isValidation ? [rules.float, rules.required] : []"/>
     </v-col>
     <v-col md="1" class="pl-2">
@@ -36,6 +39,7 @@
         label="DOT"
         type="input"
         hide-details="auto"
+        :readonly="isReadonly"
         :rules="isValidation ? [rules.required] : []"
         validate-on-blur/>
     </v-col>
@@ -45,6 +49,7 @@
         label="Marka"
         type="input"
         hide-details="auto"
+        :readonly="isReadonly"
         :rules="isValidation ? [rules.required] : []"
         validate-on-blur/>
     </v-col>
@@ -55,8 +60,9 @@
         type="number"
         hide-spin-buttons
         hide-details="auto"
-        validate-on-blur
-        :rules="isValidation ? [rules.float, rules.required] : []"/>
+        :readonly="isReadonly"
+        :rules="isValidation ? [rules.float, rules.required] : []"
+        validate-on-blur/>
     </v-col>
     <v-col class="pl-2">
       <v-textarea
@@ -65,6 +71,7 @@
         validate-on-blur
         auto-grow
         rows="1"
+        :readonly="isReadonly"
         v-model.lazy="item.note"/>
     </v-col>
   </v-row>
@@ -78,6 +85,7 @@ export default
   props: {
     item: Object,
     isValidation: Boolean,
+    isReadonly: Boolean,
   },
   data: () => ({
     rules: {
