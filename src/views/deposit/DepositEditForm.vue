@@ -127,7 +127,7 @@
               :key="index">
               <tire-info
                 :item="tire"
-                :isValidation="index < item.tires.length - 1"
+                :isValidation="item.tires.length == 1 || index < item.tires.length - 1"
                 class="mt-2"
                 @change="addArrayObject(tire, item.tires, 5, {
                   width: '',
@@ -312,9 +312,9 @@ export default {
       orderNumber: 'Nowe zlecenie',
       date: new Date(),
       client: {
-        name: 'Jan Nowak',
+        name: '',
         companyName: '',
-        phoneNumber: '501502503',
+        phoneNumber: '',
       },
       tires: [
         {
@@ -333,7 +333,7 @@ export default {
       isScrews: false,
       isHubcups: false,
       tiresNote: '',
-      tiresLocation: 'Położenie',
+      tiresLocation: '',
       signature: {
         employee: null,
         client: null,
