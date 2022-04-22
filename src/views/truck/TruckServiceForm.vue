@@ -202,8 +202,8 @@
               hide-details="auto"
               validate-on-blur
               auto-grow
-              class="mt-2"
-              rows="4"
+              class="mt-4"
+              rows="1"
               v-model.lazy="item.tireDiagnostics"/>
           </v-col>
         </v-row>
@@ -342,10 +342,10 @@
                   label=""/>
               </template>
             </service-action>
-            <service-action :item="actions.drive">
+            <service-action :item="actions.driveToClient">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="actions.drive.extraInfo"
+                  v-model.lazy="actions.driveToClient.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -409,19 +409,18 @@
                 </h3>
               </v-col>
             </v-row>
-            <div
-              v-for="(material, index) in item.materials"
-              :key="index">
-              <v-row class="no-gutters mt-n4">
-                <v-col>
-                  <v-text-field
-                    v-model.lazy="material.item"
-                    type="input"
-                    hide-details="auto"
-                    validate-on-blur/>
-                </v-col>
-              </v-row>
-            </div>
+            <v-row class="no-gutters mt-n4">
+              <v-col>
+                <v-textarea
+                  label=""
+                  hide-details="auto"
+                  validate-on-blur
+                  auto-grow
+                  class="mt-2"
+                  rows="1"
+                  v-model.lazy="item.otherMaterials"/>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-card>
@@ -762,11 +761,7 @@ export default {
           serial: '',
         },
       ],
-      materials: [
-        {
-          item: '',
-        },
-      ],
+      otherMaterials: '',
       deinstalledTires: [
         {
           width: '',
@@ -908,7 +903,7 @@ export default {
         info: '',
         extraInfo: '',
       },
-      drive: {
+      driveToClient: {
         isChecked: false,
         text: 'Dojazd',
         count: '',
