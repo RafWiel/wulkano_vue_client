@@ -424,7 +424,7 @@
           </v-col>
         </v-row>
       </v-card>
-      <!-- Deinstalled tires -->
+      <!-- Dismantled tires -->
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
@@ -440,12 +440,12 @@
               </v-col>
             </v-row>
             <div
-              v-for="(tire, index) in item.deinstalledTires"
+              v-for="(tire, index) in item.dismantledTires"
               :key="index">
               <tire-brand-info
                 :item="tire"
                 class="mt-2"
-                @change="addArrayObject(tire, item.deinstalledTires, 18, {
+                @change="addArrayObject(tire, item.dismantledTires, 18, {
                 width: '',
                 profile: '',
                 diameter: '',
@@ -762,7 +762,7 @@ export default {
         },
       ],
       otherMaterials: '',
-      deinstalledTires: [
+      dismantledTires: [
         {
           width: '',
           profile: '',
