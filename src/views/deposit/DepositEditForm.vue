@@ -92,9 +92,9 @@
                 :class="$vuetify.breakpoint.smAndUp ? 'pl-2' : ''">
                 <v-combobox
                   v-model="item.client.phoneNumber"
-                  :items="api.phoneNumbers"
+                  :items="api.values"
                   :loading="api.isLoading"
-                  :search-input.sync="api.phoneNumberSearch"
+                  :search-input.sync="api.searchInput"
                   hide-no-data
                   hide-selected
                   no-filter
@@ -341,17 +341,16 @@ export default {
     },
     api: {
       descriptionLimit: 60,
-      phoneNumberSearch: null,
-      phoneNumbers: [],
+      searchInput: null,
+      values: [],
       isLoading: false,
     },
-
     rules: {
       required: rules.required,
       integer: rules.integer,
     },
   }),
-  mounted() {
+  created() {
     this.item = this.newItem;
   },
   methods: {
@@ -430,14 +429,14 @@ export default {
     },
   },
   watch: {
-    'api.phoneNumberSearch': debounce(async function phoneNumberSearch(val) {
+    'api.searchInput': debounce(async function searchInput(val) {
       if (this.api.isLoading) return;
 
       this.api.isLoading = true;
 
       clientsService.getPhoneNumbers({ filter: val })
       .then((res) => {
-        this.api.phoneNumbers = res.data;
+        this.api.values = res.data;
       })
       .catch((error) => {
         console.log(error);
