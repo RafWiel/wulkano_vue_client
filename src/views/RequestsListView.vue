@@ -172,8 +172,12 @@ export default {
         this.$emit('showMessage', 'Zlecenia serwisowe', error.response.data.message);
       });
     },
-    goToItem(id) {
-      this.$router.push({ name: 'DepositViewForm', params: { id } });
+    goToItem(idConcat) {
+      const type = parseInt(idConcat.split('_')[0], 10);
+      const id = idConcat.split('_')[1];
+
+      if (type === requestType.truckService) this.$router.push({ name: 'TruckServiceViewForm', params: { id } });
+      if (type === requestType.deposit) this.$router.push({ name: 'DepositViewForm', params: { id } });
     },
     filterData(filter) {
       // reset items
