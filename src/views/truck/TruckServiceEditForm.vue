@@ -337,7 +337,7 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 110%'">
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="item.actions.deepening.F"
+                      v-model="item.actions.deepening.f"
                       label="F"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -345,7 +345,7 @@
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="item.actions.deepening.D"
+                      v-model="item.actions.deepening.d"
                       label="D"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -353,7 +353,7 @@
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="item.actions.deepening.T"
+                      v-model="item.actions.deepening.t"
                       label="T"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -731,7 +731,7 @@ import Mechanic from '@/components/Mechanic.vue';
 import companiesService from '@/services/companiesService';
 
 export default {
-  name: 'TruckServiceForm',
+  name: 'TruckServiceEditForm',
   components: {
     TireMeasurementInfo,
     ServiceAction,
@@ -758,7 +758,6 @@ export default {
     },
   },
   data: () => ({
-    isFormValid: false,
     vehicleTypeItems: vehicleType.items,
     item: null,
     newItem: {

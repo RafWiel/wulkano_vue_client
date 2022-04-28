@@ -47,6 +47,7 @@ const routes = [
     path: '/requests/truck-service/:id',
     name: 'TruckServiceViewForm',
     component: TruckServiceViewForm,
+    props: true,
     meta: {
       isBackButton: true,
     },

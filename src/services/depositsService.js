@@ -5,6 +5,6 @@ export default {
     return api().post('deposits', request);
   },
   getOne(id) {
-    return api().get(`requests/${id}`);
+    return api().get(`deposits/${id}`);
   },
 };

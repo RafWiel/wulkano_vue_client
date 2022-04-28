@@ -122,8 +122,8 @@
               :key="index">
               <tire-info
                 :item="tire"
-                isValidation="false"
-                isReadonly="true"
+                :isValidation="false"
+                :isReadonly="true"
                 class="mt-2"/>
             </div>
             <v-row class="no-gutters mt-4">
@@ -306,12 +306,12 @@ export default {
       // set loading icon
       this.$emit('isProcessing', true);
 
-      // get deposit
+      // get item
       depositsService.getOne(this.id)
       .then((response) => {
-        this.item = response.data.deposit;
+        this.item = response.data.item;
 
-        //console.log(this.item);
+        console.log(this.item);
 
         this.item.client = this.item.client || {};
         this.item.date = moment(this.item.date, 'YYYY-MM-DD hh:mm:ss.SSS Z').format('YYYY-MM-DD HH:mm');
@@ -381,10 +381,6 @@ export default {
     display: block;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .signature-image {
-    border: 1px solid #808080;
   }
 
 </style>

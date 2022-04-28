@@ -73,42 +73,31 @@
                   type="input"
                   class="text_ellipsis"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
               <!-- Tax Id number -->
               <v-col
                 cols="6" sm="4" md="3" lg="2"
                 class="pl-2">
-                <v-combobox
-                  v-model="item.company.taxId"
-                  :items="taxIdApi.values"
-                  :loading="taxIdApi.isLoading"
-                  :search-input.sync="taxIdApi.searchInput"
-                  hide-details="auto"
-                  hide-no-data
-                  hide-selected
-                  no-filter
+                <v-text-field
+                  v-model.lazy="item.company.taxId"
+                  label="Telefon kontaktowy"
                   type="input"
-                  label="NIP"
-                  :rules="[rules.required]"/>
+                  class="text_ellipsis"
+                  hide-details
+                  readonly/>
               </v-col>
               <!-- Phone number -->
               <v-col
                 cols="6" sm="4" md="3" lg="2"
                 :class="$vuetify.breakpoint.smAndUp ? 'pl-2' : 'mt-2'">
-                <v-combobox
-                  v-model="item.company.phoneNumber"
-                  :items="phoneApi.values"
-                  :loading="phoneApi.isLoading"
-                  :search-input.sync="phoneApi.searchInput"
-                  hide-details="auto"
-                  hide-no-data
-                  hide-selected
-                  no-filter
-                  type="input"
+                 <v-text-field
+                  v-model.lazy="item.company.phoneNumber"
                   label="Telefon kontaktowy"
-                  :rules="[rules.required]"/>
+                  type="input"
+                  class="text_ellipsis"
+                  hide-details
+                  readonly/>
               </v-col>
               <!-- City -->
               <v-col
@@ -119,8 +108,7 @@
                   label="Miasto"
                   type="input"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
               <!-- Description -->
               <v-col
@@ -131,8 +119,7 @@
                   label="Cel wizyty"
                   type="input"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
             </v-row>
           </v-col>
@@ -161,8 +148,7 @@
                   label="Marka pojazdu"
                   type="input"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
               <!-- Registration number -->
               <v-col cols="6" sm="8" md="3" lg="2" class="pl-2">
@@ -171,19 +157,18 @@
                   label="Numer rejestracyjny"
                   type="input"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
               <!-- Vehicle type -->
               <v-col
                 cols="6" sm="4" md="3" lg="2"
                 :class="$vuetify.breakpoint.mdAndUp ? 'pl-2' : 'mt-2'">
-                <v-select
-                  v-model="item.vehicle.type"
-                  :items="vehicleTypeItems"
-                  item-value="id"
+                <v-text-field
+                  v-model.lazy="item.vehicle.type"
+                  label="Typ pojazdu"
+                  type="input"
                   hide-details="auto"
-                  label="Typ pojazdu"/>
+                  validate-on-blur/>
               </v-col>
               <!-- Mileage -->
               <v-col
@@ -196,8 +181,7 @@
                   type="number"
                   hide-spin-buttons
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.integer, rules.required]"/>
+                  validate-on-blur/>
               </v-col>
             </v-row>
           </v-col>
@@ -337,7 +321,7 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 110%'">
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="item.actions.deepening.F"
+                      v-model="item.actions.deepening.f"
                       label="F"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -345,7 +329,7 @@
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="item.actions.deepening.D"
+                      v-model="item.actions.deepening.d"
                       label="D"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -353,7 +337,7 @@
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="item.actions.deepening.T"
+                      v-model="item.actions.deepening.t"
                       label="T"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -632,9 +616,12 @@
                 </h3>
               </v-col>
             </v-row>
-            <signature-field
-              ref="employeeSignature"
-              class="mt-2" />
+            <v-img
+              :src="employeeSignature"
+              width="100%"
+              height="200px"
+              contain
+              class="mt-2 signature-image"/>
           </v-col>
         </v-row>
       </v-card>
@@ -660,9 +647,12 @@
                 </p>
               </v-col>
             </v-row>
-            <signature-field
-              ref="clientSignature"
-              class="mt-2"/>
+            <v-img
+              :src="clientSignature"
+              width="100%"
+              height="200px"
+              contain
+              class="mt-2 signature-image"/>
           </v-col>
         </v-row>
       </v-card>
@@ -689,26 +679,9 @@
                   type="input"
                   class="text_ellipsis"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
             </v-row>
-          </v-col>
-        </v-row>
-      </v-card>
-      <!-- Apply button -->
-      <v-card
-        flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters" justify="end">
-          <v-col cols="12" sm="6" md="4" lg="2">
-            <v-btn
-              depressed
-              block
-              class="save-btn"
-              @click="save">
-              Zapisz
-            </v-btn>
           </v-col>
         </v-row>
       </v-card>
@@ -717,26 +690,22 @@
 </template>
 
 <script>
-import debounce from 'lodash.debounce';
 import moment from 'moment';
-import rules from '@/misc/rules';
-import vehicleType from '@/enums/truck/vehicleType';
-import tireLocation from '@/enums/truck/tireLocation';
 import trucksService from '@/services/trucksService';
+import signaturesService from '@/services/signaturesService';
+import vehicleType from '@/enums/truck/vehicleType';
 import TireMeasurementInfo from '@/components/truck/TireMeasurementInfo.vue';
 import ServiceAction from '@/components/truck/ServiceAction.vue';
 import TireBrandInfo from '@/components/truck/TireBrandInfo.vue';
-import SignatureField from '@/components/SignatureField.vue';
 import Mechanic from '@/components/Mechanic.vue';
-import companiesService from '@/services/companiesService';
 
 export default {
-  name: 'TruckServiceForm',
+  name: 'TruckServiceViewForm',
+  props: { id: [String, Number] },
   components: {
     TireMeasurementInfo,
     ServiceAction,
     TireBrandInfo,
-    SignatureField,
     Mechanic,
   },
   computed: {
@@ -758,369 +727,121 @@ export default {
     },
   },
   data: () => ({
-    isFormValid: false,
-    vehicleTypeItems: vehicleType.items,
-    item: null,
-    newItem: {
-      orderNumber: 'Nowe zlecenie',
-      date: new Date(),
-      company: {
-        name: 'Firma 2',
-        taxId: '1231231231',
-        phoneNumber: '601234234',
-        city: 'Miasto 2',
-      },
-      vehicle: {
-        name: 'Skania',
-        type: 1,
-        registrationNumber: 'LPU 12345',
-        mileage: 1234567890,
-      },
-      description: 'Opis',
-      sizeTires: [
-        {
-          location: tireLocation.leftAxle1,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-        },
-        {
-          location: tireLocation.rightAxle1,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-        },
-        {
-          location: tireLocation.leftOutsideAxle2,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-        },
-        {
-          location: tireLocation.rightOutsideAxle2,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-        },
-      ],
-      tireDiagnostics: 'Zalecenia',
+    item: {
+      company: {},
+      vehicle: {},
       actions: {
-        tiresInspection: {
-          isChecked: false,
-          text: 'Inspekcja stanu ogumienia',
-          count: '',
-          info: '',
-        },
-        pressureRegulation: {
-          isChecked: false,
-          text: 'Regulacja ciśnienia',
-          count: '',
-          info: '',
-        },
-        wheelWashing: {
-          isChecked: false,
-          text: 'Mycie koła',
-          count: '',
-          info: '',
-          extraInfo: '',
-        },
-        wheelUnscrewing: {
-          isChecked: false,
-          text: 'Odkręcanie koła',
-          count: '',
-          info: '',
-          extraInfo: '',
-        },
-        tireInstallation: {
-          isChecked: false,
-          text: 'Demontaż / montaż opony',
-          count: '',
-          info: '',
-          extraInfo: '',
-        },
-        wheelBalancing: {
-          isChecked: false,
-          text: 'Wyważanie',
-          count: '',
-          info: '',
-          extraInfo: '',
-        },
-        wheelWeights: {
-          isChecked: false,
-          text: 'Ciężarki',
-          count: '',
-          info: '',
-          extraInfo: '',
-        },
-        wheelCentering: {
-          isChecked: false,
-          text: 'Centrowanie koła',
-          count: '',
-          info: '',
-        },
-        pinsCleaning: {
-          isChecked: false,
-          text: 'Czyszczenie / smarowanie szpilek',
-          count: '',
-          info: '',
-        },
-        tighteningWithTorqueWrench: {
-          isChecked: false,
-          text: 'Dokręcanie kluczem dynamometrycznym',
-          count: '',
-          info: '',
-        },
-        handingOverTighteningCard: {
-          isChecked: false,
-          text: 'Przekazanie karty dokręceń',
-          count: '',
-          info: '',
-        },
-        pumping: {
-          isChecked: false,
-          text: 'Pompowanie',
-          count: '',
-          info: '',
-          extraInfo: '',
-        },
-        valveChange: {
-          isChecked: false,
-          text: 'Montaż / wymiana zaworu',
-          count: '',
-          info: '',
-          extraInfo: '',
-        },
-        extensionInstallation: {
-          isChecked: false,
-          text: 'Montaż przedłużki',
-          count: '',
-          info: '',
-          extraInfo: '',
-        },
-        deepening: {
-          isChecked: false,
-          text: 'Pogłębianie',
-          count: '',
-          info: '',
-          F: false,
-          D: false,
-          T: false,
-        },
-        coldHotRepair: {
-          isChecked: false,
-          text: 'Naprawa na zimno / gorąco',
-          count: '',
-          info: '',
-          extraInfo: '',
-        },
-        utilization: {
-          isChecked: false,
-          text: 'Utylizacja',
-          count: '',
-          info: '',
-          extraInfo: '',
-        },
-        driveToClient: {
-          isChecked: false,
-          text: 'Dojazd',
-          count: '',
-          info: '',
-          extraInfo: '',
-        },
-        other: {
-          isChecked: false,
-          text: 'Inne',
-          count: '',
-          info: '',
-          extraInfo: '',
-        },
+        tiresInspection: {},
+        pressureRegulation: {},
+        wheelWashing: {},
+        wheelUnscrewing: {},
+        tireInstallation: {},
+        wheelBalancing: {},
+        wheelWeights: {},
+        wheelCentering: {},
+        pinsCleaning: {},
+        tighteningWithTorqueWrench: {},
+        handingOverTighteningCard: {},
+        pumping: {},
+        valveChange: {},
+        extensionInstallation: {},
+        deepening: {},
+        coldHotRepair: {},
+        utilization: {},
+        driveToClient: {},
+        other: {},
       },
-      installedTires: [
-        {
-          location: tireLocation.leftAxle1,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-          brand: 'Yokohama',
-          serial: '123456',
-        },
-        {
-          location: tireLocation.rightAxle1,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-          brand: 'Yokohama',
-          serial: '123456',
-        },
-        {
-          location: tireLocation.leftOutsideAxle2,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-          brand: 'Yokohama',
-          serial: '123456',
-        },
-        {
-          location: tireLocation.rightOutsideAxle2,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-          brand: 'Fulda',
-          serial: '123456',
-        },
-      ],
-      otherMaterials: 'Inne materiały opis',
-      dismantledTires: [
-        {
-          location: tireLocation.leftAxle1,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-          brand: 'Fulda',
-          serial: '123456',
-        },
-        {
-          location: tireLocation.rightAxle1,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-          brand: 'Fulda',
-          serial: '123456',
-        },
-        {
-          location: tireLocation.leftOutsideAxle2,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-          brand: 'Fulda',
-          serial: '123456',
-        },
-        {
-          location: tireLocation.rightOutsideAxle2,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-          brand: 'Fulda',
-          serial: '123456',
-        },
-      ],
-      recommendations: {
-        geometry: true,
-        shockAbsorbers: true,
-        brakes: true,
-      },
-      nextVisit: {
-        isDatePickerVisible: false,
-        date: '2023-07-01',
-        description: 'Wymiana opon',
-      },
-      mechanics: [
-        { name: 'Staszek' },
-        { name: 'Zbyszek' },
-        { name: 'Pankracy' },
-      ],
-      saleDocument: 'Dokument sprzedaży',
-      signature: {
-        employee: null,
-        client: null,
-      },
+      recommendations: {},
+      nextVisit: {},
+      signature: {},
     },
-    phoneApi: {
-      descriptionLimit: 60,
-      searchInput: null,
-      values: [],
-      isLoading: false,
+    actionsText: {
+      tiresInspection: { text: 'Inspekcja stanu ogumienia' },
+      pressureRegulation: { text: 'Regulacja ciśnienia' },
+      wheelWashing: { text: 'Mycie koła' },
+      wheelUnscrewing: { text: 'Odkręcanie koła' },
+      tireInstallation: { text: 'Demontaż / montaż opony' },
+      wheelBalancing: { text: 'Wyważanie' },
+      wheelWeights: { text: 'Ciężarki' },
+      wheelCentering: { text: 'Centrowanie koła' },
+      pinsCleaning: { text: 'Czyszczenie / smarowanie szpilek' },
+      tighteningWithTorqueWrench: { text: 'Dokręcanie kluczem dynamometrycznym' },
+      handingOverTighteningCard: { text: 'Przekazanie karty dokręceń' },
+      pumping: { text: 'Pompowanie' },
+      valveChange: { text: 'Montaż / wymiana zaworu' },
+      extensionInstallation: { text: 'Montaż przedłużki' },
+      deepening: { text: 'Pogłębianie' },
+      coldHotRepair: { text: 'Naprawa na zimno / gorąco' },
+      utilization: { text: 'Utylizacja' },
+      driveToClient: { text: 'Dojazd' },
+      other: { text: 'Inne' },
     },
-    taxIdApi: {
-      descriptionLimit: 60,
-      searchInput: null,
-      values: [],
-      isLoading: false,
-    },
-    rules: {
-      required: rules.required,
-      integer: rules.integer,
-    },
+    employeeSignature: '',
+    clientSignature: '',
+    signatureWidth: 0,
   }),
-  created() {
-    this.item = this.newItem;
+  mounted() {
+    this.fetch();
+
+    //adjust image width
+    window.addEventListener('resize', this.resize);
+    this.resize();
   },
   methods: {
-    async save() {
-      const vm = this;
+    fetch() {
+      // set loading icon
+      this.$emit('isProcessing', true);
 
-      //validation
-      const v1 = vm.$refs.form.validate();
-      const v2 = vm.$refs.employeeSignature.validate();
-      const v3 = vm.$refs.clientSignature.validate();
-      if (!v1 || !v2 || !v3) {
-        this.$nextTick(() => {
-          const el = this.$el.querySelector('.v-messages.error--text:first-of-type');
+      // get item
+      trucksService.getOne(this.id)
+      .then((response) => {
+        this.item = response.data.item;
 
-          this.$vuetify.goTo(el, { offset: 60 });
+        this.item.company = this.item.company || {};
+        this.item.date = moment(this.item.date, 'YYYY-MM-DD hh:mm:ss.SSS Z').format('YYYY-MM-DD HH:mm');
+        this.item.nextVisit.date = moment(this.item.nextVisit.date, 'YYYY-MM-DD hh:mm:ss.SSS Z').format('YYYY-MM-DD');
+        this.item.vehicle.type = vehicleType.getText(this.item.vehicle.type);
+
+        // copy actions text
+        Object.entries(this.actionsText).forEach(([key, value]) => {
+          this.item.actions[key].text = value.text;
         });
 
-        return;
-      }
+        //get employee signature
+        signaturesService.get({
+          dir: this.item.directoryId,
+          sig: this.item.employeeSignatureFileName,
+        })
+        .then((res) => {
+          this.employeeSignature = `data:image/png;base64,${res.data}`;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
-      try {
-        vm.$emit('isProcessing', true);
+        //get client signature
+        signaturesService.get({
+          dir: this.item.directoryId,
+          sig: this.item.clientSignatureFileName,
+        })
+        .then((res) => {
+          this.clientSignature = `data:image/png;base64,${res.data}`;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      })
+      .catch((error) => {
+        this.showError(error);
+      });
 
-        vm.item.signature.employee = vm.$refs.employeeSignature.getImageData();
-        vm.item.signature.client = vm.$refs.clientSignature.getImageData();
-
-        const response = await trucksService.create(vm.item);
-
-        if (response.data.result) {
-          vm.$emit('isProcessing', false);
-          vm.$emit('showMessage', 'Zlecenie ciężarowe', 'Zlecenie zapisane');
-          vm.resetForm();
-          vm.$vuetify.goTo(0);
-
-          return;
-        }
-
-        vm.$emit('showMessage', 'Zlecenie ciężarowe', 'Nieudany zapis');
-      }
-      catch (error) {
-        vm.showError(error);
-      }
-
-      vm.$emit('isProcessing', false);
+      this.$emit('isProcessing', false);
     },
-    addArrayObject(item, array, maxCount, newItem) {
-      //check if last item in array
-      const index = array.indexOf(item);
-      if (array.length >= maxCount || index < array.length - 1) {
-        return;
-      }
-
-      //add new item
-      array.push(newItem);
+    resize() {
+      this.signatureWidth = this.getSignatureWidth();
+    },
+    getSignatureWidth() {
+      return document.documentElement.clientWidth - (this.$vuetify.breakpoint.mdAndUp ? 68 : 0);
     },
     showError(error) {
       console.log(error);
@@ -1134,49 +855,6 @@ export default {
       console.log(error.response.data);
       this.$emit('showMessage', 'Zlecenie ciężarowe', error.response.data.message);
     },
-    resetForm() {
-      const vm = this;
-
-      vm.item = vm.newItem;
-
-      vm.$refs.employeeSignature.resetCanvas();
-      vm.$refs.clientSignature.resetCanvas();
-      vm.$refs.form.reset();
-    },
-  },
-  watch: {
-    'phoneApi.searchInput': debounce(async function searchInput(val) {
-      if (this.phoneApi.isLoading) return;
-
-      this.phoneApi.isLoading = true;
-
-      companiesService.getPhoneNumbers({ filter: val })
-      .then((res) => {
-        this.phoneApi.values = res.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        this.phoneApi.isLoading = false;
-      });
-    }, 500, { maxWait: 5000 }),
-    'taxIdApi.searchInput': debounce(async function searchInput(val) {
-      if (this.taxIdApi.isLoading) return;
-
-      this.taxIdApi.isLoading = true;
-
-      companiesService.getTaxIdNumbers({ filter: val })
-      .then((res) => {
-        this.taxIdApi.values = res.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        this.taxIdApi.isLoading = false;
-      });
-    }, 500, { maxWait: 5000 }),
   },
 };
 </script>
