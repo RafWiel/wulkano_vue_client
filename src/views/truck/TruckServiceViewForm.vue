@@ -31,7 +31,7 @@
                 md="4"
                 class="text-center">
                 <p class="white--text text-h4 ma-0 semibold">
-                  {{ item.orderNumber }}
+                  {{ item.requestName }}
                 </p>
               </v-col>
               <v-col
@@ -780,6 +780,12 @@ export default {
     clientSignature: '',
     signatureWidth: 0,
   }),
+  created() {
+    // copy actions text
+    Object.entries(this.actionsText).forEach(([key, value]) => {
+      this.item.actions[key].text = value.text;
+    });
+  },
   mounted() {
     this.fetch();
 
