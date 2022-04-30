@@ -68,7 +68,7 @@
               <v-col cols="6" sm="4" md="3" lg="2">
                 <v-text-field
                   ref="firstControl"
-                  v-model.lazy="item.client.name"
+                  v-model="item.client.name"
                   label="Imię i Nazwisko"
                   type="input"
                   class="text_ellipsis"
@@ -78,7 +78,7 @@
               <!-- Company -->
               <v-col cols="6" sm="4" md="3" lg="2" class="pl-2">
                 <v-text-field
-                  v-model.lazy="item.client.companyName"
+                  v-model="item.client.companyName"
                   label="Firma"
                   type="input"
                   class="text_ellipsis"
@@ -90,7 +90,7 @@
                 cols="12" sm="4" md="6" lg="8"
                 :class="$vuetify.breakpoint.smAndUp ? 'pl-2' : ''">
                 <v-text-field
-                  v-model.lazy="item.client.phoneNumber"
+                  v-model="item.client.phoneNumber"
                   label="Telefon kontaktowy"
                   type="input"
                   class="text_ellipsis"
@@ -181,7 +181,7 @@
                   auto-grow
                   rows="1"
                   readonly
-                  v-model.lazy="item.tiresNote"/>
+                  v-model="item.tiresNote"/>
               </v-col>
             </v-row>
           </v-col>
@@ -205,7 +205,7 @@
             <v-row class="no-gutters mt-2">
               <v-col>
                 <v-text-field
-                  v-model.lazy="item.tiresLocation"
+                  v-model="item.tiresLocation"
                   label="Położenie opon"
                   type="input"
                   class="text_ellipsis"
@@ -270,8 +270,8 @@
 
 <script>
 import moment from 'moment';
-import depositsService from '@/services/depositsService';
-import signaturesService from '@/services/signaturesService';
+import depositsService from '@/services/deposits';
+import signaturesService from '@/services/signatures';
 import TireInfo from '@/components/deposit/TireInfo.vue';
 
 export default {
@@ -292,14 +292,9 @@ export default {
     },
     employeeSignature: '',
     clientSignature: '',
-    signatureWidth: 0,
   }),
   mounted() {
     this.fetch();
-
-    //adjust image width
-    window.addEventListener('resize', this.resize);
-    this.resize();
   },
   methods: {
     fetch() {
@@ -345,12 +340,6 @@ export default {
       });
 
       this.$emit('isProcessing', false);
-    },
-    resize() {
-      this.signatureWidth = this.getSignatureWidth();
-    },
-    getSignatureWidth() {
-      return document.documentElement.clientWidth - (this.$vuetify.breakpoint.mdAndUp ? 68 : 0);
     },
     showError(error) {
       console.log(error);

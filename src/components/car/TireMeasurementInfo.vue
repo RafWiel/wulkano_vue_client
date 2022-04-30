@@ -13,7 +13,7 @@
     </v-col>
     <v-col lg="1" md="2" class="pl-2">
       <v-text-field
-        v-model.number="item.pressure"
+        v-model.number.lazy.trim="item.pressure"
         label="Ciśnienie [bar]"
         type="number"
         hide-details="auto"
@@ -23,7 +23,7 @@
     </v-col>
     <v-col class="pl-2">
       <v-text-field
-        v-model.number="item.tread"
+        v-model.number.lazy.trim="item.tread"
         label="Bieżnik [mm]"
         type="number"
         hide-spin-buttons

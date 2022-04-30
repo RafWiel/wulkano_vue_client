@@ -10,7 +10,7 @@
     </v-col>
     <v-col md="1" class="pl-2">
       <v-text-field
-        v-model.number="item.width"
+        v-model.number.lazy.trim="item.width"
         label="Szerokość"
         type="number"
         hide-details="auto"
@@ -20,7 +20,7 @@
     </v-col>
     <v-col md="1" class="pl-2">
       <v-text-field
-        v-model.number="item.profile"
+        v-model.number.lazy.trim="item.profile"
         label="Profil"
         type="number"
         hide-details="auto"
@@ -30,7 +30,7 @@
     </v-col>
     <v-col md="1" class="pl-2">
       <v-text-field
-        v-model.number="item.diameter"
+        v-model.number.lazy.trim="item.diameter"
         label="Średnica"
         type="number"
         hide-details="auto"
@@ -40,7 +40,7 @@
     </v-col>
     <v-col md="1" class="pl-2">
       <v-text-field
-        v-model.lazy="item.DOT"
+        v-model.lazy.trim="item.DOT"
         label="DOT"
         type="input"
         hide-details="auto"
@@ -48,7 +48,7 @@
     </v-col>
     <v-col md="2" class="pl-2">
       <v-text-field
-        v-model.lazy="item.brand"
+        v-model.lazy.trim="item.brand"
         label="Marka"
         type="input"
         hide-details="auto"
@@ -56,7 +56,7 @@
     </v-col>
     <v-col class="pl-2">
       <v-text-field
-        v-model.lazy="item.serial"
+        v-model.lazy.trim="item.serial"
         label="Nr. fabryczny"
         type="input"
         hide-details="auto"

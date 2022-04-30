@@ -2,7 +2,7 @@
   <v-row class="no-gutters">
     <v-col md="1">
       <v-text-field
-        v-model.number="item.width"
+        v-model.number.lazy.trim="item.width"
         label="Szerokość"
         type="number"
         hide-details="auto"
@@ -13,7 +13,7 @@
     </v-col>
     <v-col md="1" class="pl-2">
       <v-text-field
-        v-model.number="item.profile"
+        v-model.number.lazy.trim="item.profile"
         label="Profil"
         type="number"
         hide-details="auto"
@@ -24,7 +24,7 @@
     </v-col>
     <v-col md="1" class="pl-2">
       <v-text-field
-        v-model.number="item.diameter"
+        v-model.number.lazy.trim="item.diameter"
         label="Średnica"
         type="number"
         hide-details="auto"
@@ -35,7 +35,7 @@
     </v-col>
     <v-col md="1" class="pl-2">
       <v-text-field
-        v-model.lazy="item.dot"
+        v-model.lazy.trim="item.dot"
         label="DOT"
         type="input"
         hide-details="auto"
@@ -45,7 +45,7 @@
     </v-col>
     <v-col md="2" lg="1" class="pl-2">
       <v-text-field
-        v-model.lazy="item.brand"
+        v-model.lazy.trim="item.brand"
         label="Marka"
         type="input"
         hide-details="auto"
@@ -55,7 +55,7 @@
     </v-col>
     <v-col lg="1" md="2" class="pl-2">
       <v-text-field
-        v-model.number="item.tread"
+        v-model.number.lazy.trim="item.tread"
         label="Bieżnik [mm]"
         type="number"
         hide-spin-buttons

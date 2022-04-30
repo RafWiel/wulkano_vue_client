@@ -68,7 +68,7 @@
               <v-col cols="6" sm="4" md="3" lg="2">
                 <v-text-field
                   ref="firstControl"
-                  v-model.lazy="item.company.name"
+                  v-model.lazy.trim="item.company.name"
                   label="Firma"
                   type="input"
                   class="text_ellipsis"
@@ -115,7 +115,7 @@
                 cols="6" sm="4" md="3" lg="2"
                 :class="companyCityClass">
                 <v-text-field
-                  v-model.lazy="item.company.city"
+                  v-model.lazy.trim="item.company.city"
                   label="Miasto"
                   type="input"
                   hide-details="auto"
@@ -127,7 +127,7 @@
                 cols="12" sm="8" md="12" lg="4"
                 :class="companyDescriptionClass">
                 <v-text-field
-                  v-model.lazy="item.description"
+                  v-model.lazy.trim="item.description"
                   label="Cel wizyty"
                   type="input"
                   hide-details="auto"
@@ -157,7 +157,7 @@
             <v-row class="no-gutters">
               <v-col cols="6" sm="4" md="3" lg="2">
                 <v-text-field
-                  v-model.lazy="item.vehicle.name"
+                  v-model.lazy.trim="item.vehicle.name"
                   label="Marka pojazdu"
                   type="input"
                   hide-details="auto"
@@ -167,7 +167,7 @@
               <!-- Registration number -->
               <v-col cols="6" sm="8" md="3" lg="2" class="pl-2">
                 <v-text-field
-                  v-model.lazy="item.vehicle.registrationNumber"
+                  v-model.lazy.trim="item.vehicle.registrationNumber"
                   label="Numer rejestracyjny"
                   type="input"
                   hide-details="auto"
@@ -240,7 +240,7 @@
               auto-grow
               class="mt-4"
               rows="1"
-              v-model.lazy="item.tireDiagnostics"/>
+              v-model.lazy.trim="item.tireDiagnostics"/>
           </v-col>
         </v-row>
       </v-card>
@@ -265,7 +265,7 @@
             <service-action :item="item.actions.wheelWashing">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.wheelWashing.extraInfo"
+                  v-model.lazy.trim="item.actions.wheelWashing.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -273,7 +273,7 @@
             <service-action :item="item.actions.wheelUnscrewing">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.wheelUnscrewing.extraInfo"
+                  v-model.lazy.trim="item.actions.wheelUnscrewing.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -281,7 +281,7 @@
             <service-action :item="item.actions.tireInstallation">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.tireInstallation.extraInfo"
+                  v-model.lazy.trim="item.actions.tireInstallation.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -289,7 +289,7 @@
             <service-action :item="item.actions.wheelBalancing">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.wheelBalancing.extraInfo"
+                  v-model.lazy.trim="item.actions.wheelBalancing.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -297,7 +297,7 @@
             <service-action :item="item.actions.wheelWeights">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.wheelWeights.extraInfo"
+                  v-model.lazy.trim="item.actions.wheelWeights.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -309,7 +309,7 @@
             <service-action :item="item.actions.pumping">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.pumping.extraInfo"
+                  v-model.lazy.trim="item.actions.pumping.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -317,7 +317,7 @@
             <service-action :item="item.actions.valveChange">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.valveChange.extraInfo"
+                  v-model.lazy.trim="item.actions.valveChange.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -325,7 +325,7 @@
             <service-action :item="item.actions.extensionInstallation">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.extensionInstallation.extraInfo"
+                  v-model.lazy.trim="item.actions.extensionInstallation.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -365,7 +365,7 @@
             <service-action :item="item.actions.coldHotRepair">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.coldHotRepair.extraInfo"
+                  v-model.lazy.trim="item.actions.coldHotRepair.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -373,7 +373,7 @@
             <service-action :item="item.actions.utilization">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.utilization.extraInfo"
+                  v-model.lazy.trim="item.actions.utilization.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -381,7 +381,7 @@
             <service-action :item="item.actions.driveToClient">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.driveToClient.extraInfo"
+                  v-model.lazy.trim="item.actions.driveToClient.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -389,7 +389,7 @@
             <service-action :item="item.actions.other">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.other.extraInfo"
+                  v-model.lazy.trim="item.actions.other.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -454,7 +454,7 @@
                   auto-grow
                   class="mt-2"
                   rows="1"
-                  v-model.lazy="item.otherMaterials"/>
+                  v-model.lazy.trim="item.otherMaterials"/>
               </v-col>
             </v-row>
           </v-col>
@@ -579,7 +579,7 @@
               </v-col>
               <v-col class="ml-2">
                 <v-text-field
-                  v-model.lazy="item.nextVisit.description"
+                  v-model.lazy.trim="item.nextVisit.description"
                   type="input"
                   label="Cel"
                   hide-details="auto"
@@ -684,7 +684,7 @@
             <v-row class="no-gutters">
               <v-col>
                 <v-text-field
-                  v-model.lazy="item.saleDocument"
+                  v-model.lazy.trim="item.saleDocument"
                   label="Numer dokumentu"
                   type="input"
                   class="text_ellipsis"
@@ -722,13 +722,13 @@ import moment from 'moment';
 import rules from '@/misc/rules';
 import vehicleType from '@/enums/truck/vehicleType';
 import tireLocation from '@/enums/truck/tireLocation';
-import trucksService from '@/services/trucksService';
+import companiesService from '@/services/companies';
+import trucksService from '@/services/trucks';
 import TireMeasurementInfo from '@/components/truck/TireMeasurementInfo.vue';
 import ServiceAction from '@/components/truck/ServiceAction.vue';
 import TireBrandInfo from '@/components/truck/TireBrandInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
 import Mechanic from '@/components/Mechanic.vue';
-import companiesService from '@/services/companiesService';
 
 export default {
   name: 'TruckServiceEditForm',
@@ -1049,13 +1049,11 @@ export default {
       },
     },
     phoneApi: {
-      descriptionLimit: 60,
       searchInput: null,
       values: [],
       isLoading: false,
     },
     taxIdApi: {
-      descriptionLimit: 60,
       searchInput: null,
       values: [],
       isLoading: false,

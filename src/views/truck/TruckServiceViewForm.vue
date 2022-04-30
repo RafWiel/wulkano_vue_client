@@ -68,19 +68,19 @@
               <v-col cols="6" sm="4" md="3" lg="2">
                 <v-text-field
                   ref="firstControl"
-                  v-model.lazy="item.company.name"
+                  v-model="item.company.name"
                   label="Firma"
                   type="input"
                   class="text_ellipsis"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
               <!-- Tax Id number -->
               <v-col
                 cols="6" sm="4" md="3" lg="2"
                 class="pl-2">
                 <v-text-field
-                  v-model.lazy="item.company.taxId"
+                  v-model="item.company.taxId"
                   label="Telefon kontaktowy"
                   type="input"
                   class="text_ellipsis"
@@ -92,7 +92,7 @@
                 cols="6" sm="4" md="3" lg="2"
                 :class="$vuetify.breakpoint.smAndUp ? 'pl-2' : 'mt-2'">
                  <v-text-field
-                  v-model.lazy="item.company.phoneNumber"
+                  v-model="item.company.phoneNumber"
                   label="Telefon kontaktowy"
                   type="input"
                   class="text_ellipsis"
@@ -104,22 +104,22 @@
                 cols="6" sm="4" md="3" lg="2"
                 :class="companyCityClass">
                 <v-text-field
-                  v-model.lazy="item.company.city"
+                  v-model="item.company.city"
                   label="Miasto"
                   type="input"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
               <!-- Description -->
               <v-col
                 cols="12" sm="8" md="12" lg="4"
                 :class="companyDescriptionClass">
                 <v-text-field
-                  v-model.lazy="item.description"
+                  v-model="item.description"
                   label="Cel wizyty"
                   type="input"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
             </v-row>
           </v-col>
@@ -144,31 +144,31 @@
             <v-row class="no-gutters">
               <v-col cols="6" sm="4" md="3" lg="2">
                 <v-text-field
-                  v-model.lazy="item.vehicle.name"
+                  v-model="item.vehicle.name"
                   label="Marka pojazdu"
                   type="input"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
               <!-- Registration number -->
               <v-col cols="6" sm="8" md="3" lg="2" class="pl-2">
                 <v-text-field
-                  v-model.lazy="item.vehicle.registrationNumber"
+                  v-model="item.vehicle.registrationNumber"
                   label="Numer rejestracyjny"
                   type="input"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
               <!-- Vehicle type -->
               <v-col
                 cols="6" sm="4" md="3" lg="2"
                 :class="$vuetify.breakpoint.mdAndUp ? 'pl-2' : 'mt-2'">
                 <v-text-field
-                  v-model.lazy="item.vehicle.type"
+                  v-model="item.vehicle.type"
                   label="Typ pojazdu"
                   type="input"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
               <!-- Mileage -->
               <v-col
@@ -180,8 +180,8 @@
                   label="Przebieg"
                   type="number"
                   hide-spin-buttons
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
             </v-row>
           </v-col>
@@ -208,13 +208,7 @@
               :key="index">
               <tire-measurement-info
                 :item="tire"
-                class="mt-2"
-                @change="addArrayObject(tire, item.sizeTires, 18, {
-                width: '',
-                profile: '',
-                diameter: '',
-                pressure: '',
-                tread: '' })"/>
+                class="mt-2"/>
             </div>
             <!-- Diagnostics -->
             <v-textarea
@@ -224,7 +218,8 @@
               auto-grow
               class="mt-4"
               rows="1"
-              v-model.lazy="item.tireDiagnostics"/>
+              v-model="item.tireDiagnostics"
+              readonly/>
           </v-col>
         </v-row>
       </v-card>
@@ -249,7 +244,7 @@
             <service-action :item="item.actions.wheelWashing">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.wheelWashing.extraInfo"
+                  v-model="item.actions.wheelWashing.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -257,7 +252,7 @@
             <service-action :item="item.actions.wheelUnscrewing">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.wheelUnscrewing.extraInfo"
+                  v-model="item.actions.wheelUnscrewing.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -265,7 +260,7 @@
             <service-action :item="item.actions.tireInstallation">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.tireInstallation.extraInfo"
+                  v-model="item.actions.tireInstallation.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -273,7 +268,7 @@
             <service-action :item="item.actions.wheelBalancing">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.wheelBalancing.extraInfo"
+                  v-model="item.actions.wheelBalancing.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -281,7 +276,7 @@
             <service-action :item="item.actions.wheelWeights">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.wheelWeights.extraInfo"
+                  v-model="item.actions.wheelWeights.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -293,7 +288,7 @@
             <service-action :item="item.actions.pumping">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.pumping.extraInfo"
+                  v-model="item.actions.pumping.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -301,7 +296,7 @@
             <service-action :item="item.actions.valveChange">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.valveChange.extraInfo"
+                  v-model="item.actions.valveChange.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -309,7 +304,7 @@
             <service-action :item="item.actions.extensionInstallation">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.extensionInstallation.extraInfo"
+                  v-model="item.actions.extensionInstallation.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -349,7 +344,7 @@
             <service-action :item="item.actions.coldHotRepair">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.coldHotRepair.extraInfo"
+                  v-model="item.actions.coldHotRepair.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -357,7 +352,7 @@
             <service-action :item="item.actions.utilization">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.utilization.extraInfo"
+                  v-model="item.actions.utilization.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -365,7 +360,7 @@
             <service-action :item="item.actions.driveToClient">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.driveToClient.extraInfo"
+                  v-model="item.actions.driveToClient.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -373,7 +368,7 @@
             <service-action :item="item.actions.other">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="item.actions.other.extraInfo"
+                  v-model="item.actions.other.extraInfo"
                   hide-details
                   label=""/>
               </template>
@@ -401,15 +396,7 @@
               :key="index">
               <tire-brand-info
                 :item="tire"
-                class="mt-2"
-                @change="addArrayObject(tire, item.installedTires, 18, {
-                width: '',
-                profile: '',
-                diameter: '',
-                brand: '',
-                tread: '',
-                serial: ''
-              })"/>
+                class="mt-2"/>
             </div>
           </v-col>
         </v-row>
@@ -438,7 +425,8 @@
                   auto-grow
                   class="mt-2"
                   rows="1"
-                  v-model.lazy="item.otherMaterials"/>
+                  v-model="item.otherMaterials"
+                  readonly/>
               </v-col>
             </v-row>
           </v-col>
@@ -464,15 +452,7 @@
               :key="index">
               <tire-brand-info
                 :item="tire"
-                class="mt-2"
-                @change="addArrayObject(tire, item.dismantledTires, 18, {
-                width: '',
-                profile: '',
-                diameter: '',
-                brand: '',
-                tread: '',
-                serial: ''
-              })"/>
+                class="mt-2"/>
             </div>
           </v-col>
         </v-row>
@@ -498,7 +478,8 @@
                   v-model="item.recommendations.geometry"
                   label="Geometria"
                   hide-details
-                  class="shrink mt-0"/>
+                  class="shrink mt-0"
+                  readonly/>
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
@@ -506,7 +487,8 @@
                   label="Amortyzatory"
                   hide-details
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
-                  class="shrink mt-0"/>
+                  class="shrink mt-0"
+                  readonly/>
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
@@ -514,7 +496,8 @@
                   label="Hamulce"
                   hide-details
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
-                  class="shrink mt-0"/>
+                  class="shrink mt-0"
+                  readonly/>
               </v-col>
             </v-row>
           </v-col>
@@ -537,37 +520,21 @@
             </v-row>
             <v-row class="no-gutters">
               <v-col cols="3" md="2" lg="1">
-                <v-menu
-                  v-model="item.nextVisit.isDatePickerVisible"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  class="pa-0"
-                  min-width="auto">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="item.nextVisit.date"
-                      label="Data"
-                      readonly
-                      hide-details="auto"
-                      v-bind="attrs"
-                      v-on="on"/>
-                  </template>
-                  <v-date-picker
-                    v-model="item.nextVisit.date"
-                    no-title
-                    locale="pl-pl"
-                    @input="item.nextVisit.isDatePickerVisible = false"/>
-                </v-menu>
+                <v-text-field
+                  v-model="item.nextVisit.date"
+                  label="Data"
+                  type="input"
+                  hide-spin-buttons
+                  hide-details
+                  readonly/>
               </v-col>
               <v-col class="ml-2">
                 <v-text-field
-                  v-model.lazy="item.nextVisit.description"
+                  v-model="item.nextVisit.description"
                   type="input"
                   label="Cel"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
             </v-row>
           </v-col>
@@ -593,9 +560,7 @@
               :key="index"
               class="no-gutters mt-2">
               <v-col>
-                <mechanic :item="mechanic" @change="addArrayObject(mechanic, item.mechanics, 5, {
-                  name: '',
-                })"/>
+                <mechanic :item="mechanic"/>
               </v-col>
             </v-row>
           </v-col>
@@ -674,12 +639,12 @@
             <v-row class="no-gutters">
               <v-col>
                 <v-text-field
-                  v-model.lazy="item.saleDocument"
+                  v-model="item.saleDocument"
                   label="Numer dokumentu"
                   type="input"
                   class="text_ellipsis"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
             </v-row>
           </v-col>
@@ -691,8 +656,8 @@
 
 <script>
 import moment from 'moment';
-import trucksService from '@/services/trucksService';
-import signaturesService from '@/services/signaturesService';
+import trucksService from '@/services/trucks';
+import signaturesService from '@/services/signatures';
 import vehicleType from '@/enums/truck/vehicleType';
 import TireMeasurementInfo from '@/components/truck/TireMeasurementInfo.vue';
 import ServiceAction from '@/components/truck/ServiceAction.vue';
@@ -778,7 +743,6 @@ export default {
     },
     employeeSignature: '',
     clientSignature: '',
-    signatureWidth: 0,
   }),
   created() {
     // copy actions text
@@ -788,10 +752,6 @@ export default {
   },
   mounted() {
     this.fetch();
-
-    //adjust image width
-    window.addEventListener('resize', this.resize);
-    this.resize();
   },
   methods: {
     fetch() {
@@ -842,12 +802,6 @@ export default {
       });
 
       this.$emit('isProcessing', false);
-    },
-    resize() {
-      this.signatureWidth = this.getSignatureWidth();
-    },
-    getSignatureWidth() {
-      return document.documentElement.clientWidth - (this.$vuetify.breakpoint.mdAndUp ? 68 : 0);
     },
     showError(error) {
       console.log(error);

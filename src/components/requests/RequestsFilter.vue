@@ -20,7 +20,7 @@
                 clearable
                 hide-details="auto"
                 validate-on-blur
-                v-model.lazy="filter.search"
+                v-model.lazy.trim="filter.search"
                 @click.stop
                 @keydown.enter.prevent
                 @keyup.space.prevent

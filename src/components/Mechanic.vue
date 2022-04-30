@@ -1,18 +1,25 @@
 <template>
   <v-row class="no-gutters mt-2">
     <v-col>
-      <v-text-field
-        v-model.number="item.name"
-        label="Nazwisko"
-        type="input"
+      <v-combobox
+        v-model.lazy.trim="item.name"
+        :items="api.values"
+        :loading="api.isLoading"
+        :search-input.sync="api.searchInput"
         hide-details="auto"
-        validate-on-blur
+        hide-no-data
+        hide-selected
+        no-filter
+        type="input"
+        label="Nazwisko"
         :rules="[rules.required]"/>
     </v-col>
   </v-row>
 </template>
 <script>
+import debounce from 'lodash.debounce';
 import rules from '@/misc/rules';
+import mechanicsService from '@/services/mechanics';
 
 export default
 {
@@ -21,6 +28,11 @@ export default
     item: Object,
   },
   data: () => ({
+    api: {
+      searchInput: null,
+      values: [],
+      isLoading: false,
+    },
     rules: {
         required: rules.required,
       },
@@ -35,6 +47,22 @@ export default
         this.$emit('change', this.item);
       },
     },
+    'api.searchInput': debounce(async function searchInput(val) {
+      if (this.api.isLoading) return;
+
+      this.api.isLoading = true;
+
+      mechanicsService.getNames({ filter: val })
+      .then((res) => {
+        this.api.values = res.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        this.api.isLoading = false;
+      });
+    }, 500, { maxWait: 5000 }),
   },
 };
 </script>

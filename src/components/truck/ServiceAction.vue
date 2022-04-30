@@ -14,7 +14,7 @@
     </v-col>
     <v-col cols="1">
       <v-text-field
-        v-model.lazy="item.count"
+        v-model.lazy.trim="item.count"
         label="Ilość"
         type="number"
         hide-spin-buttons
@@ -23,7 +23,7 @@
     </v-col>
     <v-col cols="2" md="5" lg="7">
       <v-text-field
-        v-model.lazy="item.info"
+        v-model.lazy.trim="item.info"
         label="Info"
         hide-details
         class="ml-2"/>

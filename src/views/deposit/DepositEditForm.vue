@@ -68,7 +68,7 @@
               <v-col cols="6" sm="4" md="3" lg="2">
                 <v-text-field
                   ref="firstControl"
-                  v-model.lazy="item.client.name"
+                  v-model.lazy.trim="item.client.name"
                   label="Imię i Nazwisko"
                   type="input"
                   class="text_ellipsis"
@@ -79,7 +79,7 @@
               <!-- Company -->
               <v-col cols="6" sm="4" md="3" lg="2" class="pl-2">
                 <v-text-field
-                  v-model.lazy="item.client.companyName"
+                  v-model.lazy.trim="item.client.companyName"
                   label="Firma"
                   type="input"
                   hide-details="auto"
@@ -188,7 +188,7 @@
                   validate-on-blur
                   auto-grow
                   rows="1"
-                  v-model.lazy="item.tiresNote"/>
+                  v-model.lazy.trim="item.tiresNote"/>
               </v-col>
             </v-row>
           </v-col>
@@ -212,7 +212,7 @@
             <v-row class="no-gutters mt-2">
               <v-col>
                 <v-text-field
-                  v-model.lazy="item.tiresLocation"
+                  v-model.lazy.trim="item.tiresLocation"
                   label="Położenie opon"
                   type="input"
                   class="text_ellipsis"
@@ -290,8 +290,8 @@
 import debounce from 'lodash.debounce';
 import moment from 'moment';
 import rules from '@/misc/rules';
-import clientsService from '@/services/clientsService';
-import depositsService from '@/services/depositsService';
+import clientsService from '@/services/clients';
+import depositsService from '@/services/deposits';
 import TireInfo from '@/components/deposit/TireInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
 
@@ -340,7 +340,6 @@ export default {
       },
     },
     api: {
-      descriptionLimit: 60,
       searchInput: null,
       values: [],
       isLoading: false,

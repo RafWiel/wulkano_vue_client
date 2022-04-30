@@ -31,7 +31,7 @@
 
 import moment from 'moment';
 import rules from '@/misc/rules';
-import requestsService from '@/services/requestsService';
+import requestsService from '@/services/requests';
 import sortOrder from '@/enums/sortOrder';
 import timePeriod from '@/enums/timePeriod';
 import requestType from '@/enums/requestType';
