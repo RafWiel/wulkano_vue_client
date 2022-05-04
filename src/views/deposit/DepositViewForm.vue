@@ -122,7 +122,6 @@
               :key="index">
               <tire-info
                 :item="tire"
-                :isValidation="false"
                 :isReadonly="true"
                 class="mt-2"/>
             </div>

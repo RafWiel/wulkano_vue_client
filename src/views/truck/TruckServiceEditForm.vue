@@ -224,6 +224,7 @@
               :key="index">
               <tire-measurement-info
                 :item="tire"
+                :isValidation="item.sizeTires.length == 1 || index < item.sizeTires.length - 1"
                 class="mt-2"
                 @change="addArrayObject(tire, item.sizeTires, 18, {
                 width: '',
@@ -417,6 +418,7 @@
               :key="index">
               <tire-brand-info
                 :item="tire"
+                :isValidation="item.installedTires.length == 1 || index < item.installedTires.length - 1"
                 class="mt-2"
                 @change="addArrayObject(tire, item.installedTires, 18, {
                 width: '',
@@ -480,6 +482,7 @@
               :key="index">
               <tire-brand-info
                 :item="tire"
+                :isValidation="item.dismantledTires.length == 1 || index < item.dismantledTires.length - 1"
                 class="mt-2"
                 @change="addArrayObject(tire, item.dismantledTires, 18, {
                 width: '',
@@ -609,7 +612,10 @@
               :key="index"
               class="no-gutters mt-2">
               <v-col>
-                <mechanic :item="mechanic" @change="addArrayObject(mechanic, item.mechanics, 5, {
+                <mechanic
+                  :item="mechanic"
+                  :isValidation="item.mechanics.length == 1 || index < item.mechanics.length - 1"
+                  @change="addArrayObject(mechanic, item.mechanics, 5, {
                   name: '',
                 })"/>
               </v-col>
@@ -721,14 +727,14 @@ import debounce from 'lodash.debounce';
 import moment from 'moment';
 import rules from '@/misc/rules';
 import vehicleType from '@/enums/truck/vehicleType';
-import tireLocation from '@/enums/truck/tireLocation';
+//import tireLocation from '@/enums/truck/tireLocation';
 import companiesService from '@/services/companies';
 import trucksService from '@/services/trucks';
 import TireMeasurementInfo from '@/components/truck/TireMeasurementInfo.vue';
 import ServiceAction from '@/components/truck/ServiceAction.vue';
 import TireBrandInfo from '@/components/truck/TireBrandInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
-import Mechanic from '@/components/Mechanic.vue';
+import Mechanic from '@/components/truck/Mechanic.vue';
 
 export default {
   name: 'TruckServiceEditForm',
@@ -764,53 +770,29 @@ export default {
       requestName: 'Nowe zlecenie',
       date: new Date(),
       company: {
-        name: 'Firma 2',
-        taxId: '1231231231',
-        phoneNumber: '601234234',
-        city: 'Miasto 2',
+        name: '',
+        taxId: '',
+        phoneNumber: '',
+        city: '',
       },
       vehicle: {
-        name: 'Skania',
-        type: 1,
-        registrationNumber: 'LPU 12345',
-        mileage: 1234567890,
+        name: '',
+        type: 0,
+        registrationNumber: '',
+        mileage: '',
       },
       description: 'Opis',
       sizeTires: [
         {
-          location: tireLocation.leftAxle1,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-        },
-        {
-          location: tireLocation.rightAxle1,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-        },
-        {
-          location: tireLocation.leftOutsideAxle2,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-        },
-        {
-          location: tireLocation.rightOutsideAxle2,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
+          location: null,
+          width: '',
+          profile: '',
+          diameter: '',
+          pressure: '',
+          tread: '',
         },
       ],
-      tireDiagnostics: 'Zalecenia',
+      tireDiagnostics: '',
       actions: {
         tiresInspection: {
           isChecked: false,
@@ -944,105 +926,43 @@ export default {
       },
       installedTires: [
         {
-          location: tireLocation.leftAxle1,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-          brand: 'Yokohama',
-          serial: '123456',
-        },
-        {
-          location: tireLocation.rightAxle1,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-          brand: 'Yokohama',
-          serial: '123456',
-        },
-        {
-          location: tireLocation.leftOutsideAxle2,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-          brand: 'Yokohama',
-          serial: '123456',
-        },
-        {
-          location: tireLocation.rightOutsideAxle2,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-          brand: 'Fulda',
-          serial: '123456',
+          location: null,
+          width: '',
+          profile: '',
+          diameter: '',
+          pressure: '',
+          tread: '',
+          brand: '',
+          serial: '',
         },
       ],
-      otherMaterials: 'Inne materiały opis',
+      otherMaterials: '',
       dismantledTires: [
         {
-          location: tireLocation.leftAxle1,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-          brand: 'Fulda',
-          serial: '123456',
-        },
-        {
-          location: tireLocation.rightAxle1,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-          brand: 'Fulda',
-          serial: '123456',
-        },
-        {
-          location: tireLocation.leftOutsideAxle2,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-          brand: 'Fulda',
-          serial: '123456',
-        },
-        {
-          location: tireLocation.rightOutsideAxle2,
-          width: '295',
-          profile: '80',
-          diameter: '22,5',
-          pressure: '3,5',
-          tread: '5,5',
-          brand: 'Fulda',
-          serial: '123456',
+          location: null,
+          width: '',
+          profile: '',
+          diameter: '',
+          pressure: '',
+          tread: '',
+          brand: '',
+          serial: '',
         },
       ],
       recommendations: {
-        geometry: true,
-        shockAbsorbers: true,
-        brakes: true,
+        geometry: false,
+        shockAbsorbers: false,
+        brakes: false,
       },
       nextVisit: {
         isDatePickerVisible: false,
-        date: '2023-07-01',
-        description: 'Wymiana opon',
+        date: '',
+        description: '',
       },
       mechanics: [
-        { name: 'Staszek' },
-        { name: 'Zbyszek' },
-        { name: 'Pankracy' },
+        { name: '' },
       ],
-      saleDocument: 'Dokument sprzedaży',
+      saleDocument: '',
       signature: {
         employee: null,
         client: null,

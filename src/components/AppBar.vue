@@ -9,7 +9,7 @@
       icon
       v-if="$route.meta.isBackButton"
       class="mr-n3"
-      @click="$router.go(-1)">
+      @click="$router.push({ name: 'RequestsListView'})">
       <v-icon color="grey lighten-2">mdi-chevron-left</v-icon>
     </v-btn>
     <v-btn icon @click="$emit('menuClicked')">

@@ -208,6 +208,7 @@
               :key="index">
               <tire-measurement-info
                 :item="tire"
+                :isReadonly="true"
                 class="mt-2"/>
             </div>
             <!-- Diagnostics -->
@@ -239,9 +240,15 @@
               </v-col>
             </v-row>
             <!-- Actions -->
-            <service-action :item="item.actions.tiresInspection"/>
-            <service-action :item="item.actions.pressureRegulation"/>
-            <service-action :item="item.actions.wheelWashing">
+            <service-action
+              :item="item.actions.tiresInspection"
+              :isReadonly="true"/>
+            <service-action
+              :item="item.actions.pressureRegulation"
+              :isReadonly="true"/>
+            <service-action
+              :item="item.actions.wheelWashing"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-text-field
                   v-model="item.actions.wheelWashing.extraInfo"
@@ -249,7 +256,9 @@
                   label=""/>
               </template>
             </service-action>
-            <service-action :item="item.actions.wheelUnscrewing">
+            <service-action
+              :item="item.actions.wheelUnscrewing"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-text-field
                   v-model="item.actions.wheelUnscrewing.extraInfo"
@@ -257,7 +266,9 @@
                   label=""/>
               </template>
             </service-action>
-            <service-action :item="item.actions.tireInstallation">
+            <service-action
+              :item="item.actions.tireInstallation"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-text-field
                   v-model="item.actions.tireInstallation.extraInfo"
@@ -265,7 +276,9 @@
                   label=""/>
               </template>
             </service-action>
-            <service-action :item="item.actions.wheelBalancing">
+            <service-action
+              :item="item.actions.wheelBalancing"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-text-field
                   v-model="item.actions.wheelBalancing.extraInfo"
@@ -273,7 +286,9 @@
                   label=""/>
               </template>
             </service-action>
-            <service-action :item="item.actions.wheelWeights">
+            <service-action
+              :item="item.actions.wheelWeights"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-text-field
                   v-model="item.actions.wheelWeights.extraInfo"
@@ -281,11 +296,21 @@
                   label=""/>
               </template>
             </service-action>
-            <service-action :item="item.actions.wheelCentering"/>
-            <service-action :item="item.actions.pinsCleaning"/>
-            <service-action :item="item.actions.tighteningWithTorqueWrench"/>
-            <service-action :item="item.actions.handingOverTighteningCard"/>
-            <service-action :item="item.actions.pumping">
+            <service-action
+              :item="item.actions.wheelCentering"
+              :isReadonly="true"/>
+            <service-action
+              :item="item.actions.pinsCleaning"
+              :isReadonly="true"/>
+            <service-action
+              :item="item.actions.tighteningWithTorqueWrench"
+              :isReadonly="true"/>
+            <service-action
+              :item="item.actions.handingOverTighteningCard"
+              :isReadonly="true"/>
+            <service-action
+              :item="item.actions.pumping"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-text-field
                   v-model="item.actions.pumping.extraInfo"
@@ -293,7 +318,9 @@
                   label=""/>
               </template>
             </service-action>
-            <service-action :item="item.actions.valveChange">
+            <service-action
+              :item="item.actions.valveChange"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-text-field
                   v-model="item.actions.valveChange.extraInfo"
@@ -301,7 +328,9 @@
                   label=""/>
               </template>
             </service-action>
-            <service-action :item="item.actions.extensionInstallation">
+            <service-action
+              :item="item.actions.extensionInstallation"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-text-field
                   v-model="item.actions.extensionInstallation.extraInfo"
@@ -309,7 +338,9 @@
                   label=""/>
               </template>
             </service-action>
-            <service-action :item="item.actions.deepening">
+            <service-action
+              :item="item.actions.deepening"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-row
                   class="no-gutters"
@@ -341,7 +372,9 @@
                 </v-row>
               </template>
             </service-action>
-            <service-action :item="item.actions.coldHotRepair">
+            <service-action
+              :item="item.actions.coldHotRepair"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-text-field
                   v-model="item.actions.coldHotRepair.extraInfo"
@@ -349,7 +382,9 @@
                   label=""/>
               </template>
             </service-action>
-            <service-action :item="item.actions.utilization">
+            <service-action
+              :item="item.actions.utilization"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-text-field
                   v-model="item.actions.utilization.extraInfo"
@@ -357,7 +392,9 @@
                   label=""/>
               </template>
             </service-action>
-            <service-action :item="item.actions.driveToClient">
+            <service-action
+              :item="item.actions.driveToClient"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-text-field
                   v-model="item.actions.driveToClient.extraInfo"
@@ -365,7 +402,9 @@
                   label=""/>
               </template>
             </service-action>
-            <service-action :item="item.actions.other">
+            <service-action
+              :item="item.actions.other"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-text-field
                   v-model="item.actions.other.extraInfo"
@@ -396,6 +435,7 @@
               :key="index">
               <tire-brand-info
                 :item="tire"
+                :isReadonly="true"
                 class="mt-2"/>
             </div>
           </v-col>
@@ -452,6 +492,7 @@
               :key="index">
               <tire-brand-info
                 :item="tire"
+                :isReadonly="true"
                 class="mt-2"/>
             </div>
           </v-col>
@@ -560,7 +601,9 @@
               :key="index"
               class="no-gutters mt-2">
               <v-col>
-                <mechanic :item="mechanic"/>
+                <mechanic
+                  :item="mechanic"
+                  :isReadonly="true"/>
               </v-col>
             </v-row>
           </v-col>
@@ -662,7 +705,7 @@ import vehicleType from '@/enums/truck/vehicleType';
 import TireMeasurementInfo from '@/components/truck/TireMeasurementInfo.vue';
 import ServiceAction from '@/components/truck/ServiceAction.vue';
 import TireBrandInfo from '@/components/truck/TireBrandInfo.vue';
-import Mechanic from '@/components/Mechanic.vue';
+import Mechanic from '@/components/truck/Mechanic.vue';
 
 export default {
   name: 'TruckServiceViewForm',

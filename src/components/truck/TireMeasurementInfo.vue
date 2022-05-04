@@ -2,44 +2,49 @@
   <v-row class="no-gutters">
     <v-col md="1">
       <v-select
-        v-model.lazy.trim="item.location"
         :items="tireLocationItems"
+        :readonly="isReadonly"
+        v-model.lazy.trim="item.location"
         item-value="id"
         hide-details="auto"
         label="Pozycja"/>
     </v-col>
     <v-col md="1" class="pl-2">
       <v-text-field
+        :readonly="isReadonly"
+        :rules="isValidation ? [rules.integer, rules.required] : []"
         v-model.number.lazy.trim="item.width"
         label="Szerokość"
         type="number"
         hide-details="auto"
         hide-spin-buttons
-        validate-on-blur
-        :rules="[rules.integer, rules.required]"/>
+        validate-on-blur/>
     </v-col>
     <v-col md="1" class="pl-2">
       <v-text-field
+        :readonly="isReadonly"
+        :rules="isValidation ? [rules.integer, rules.required] : []"
         v-model.number.lazy.trim="item.profile"
         label="Profil"
         type="number"
         hide-details="auto"
         hide-spin-buttons
-        validate-on-blur
-        :rules="[rules.integer, rules.required]"/>
+        validate-on-blur/>
     </v-col>
     <v-col md="1" class="pl-2">
       <v-text-field
+        :readonly="isReadonly"
+        :rules="isValidation ? [rules.integer, rules.required] : []"
         v-model.number.lazy.trim="item.diameter"
         label="Średnica"
         type="number"
         hide-details="auto"
         hide-spin-buttons
-        validate-on-blur
-        :rules="[rules.float, rules.required]"/>
+        validate-on-blur/>
     </v-col>
     <v-col md="2" lg="1" class="pl-2">
       <v-text-field
+        :readonly="isReadonly"
         v-model.lazy.trim="item.brand"
         label="Marka"
         type="input"
@@ -48,23 +53,25 @@
     </v-col>
     <v-col lg="1" md="2" class="pl-2">
       <v-text-field
+        :readonly="isReadonly"
+        :rules="isValidation ? [rules.float, rules.required] : []"
         v-model.number.lazy.trim="item.pressure"
         label="Ciśnienie [bar]"
         type="number"
         hide-details="auto"
         hide-spin-buttons
-        validate-on-blur
-        :rules="[rules.float, rules.required]"/>
+        validate-on-blur/>
     </v-col>
     <v-col lg="6" md="4" class="pl-2">
       <v-text-field
+        :readonly="isReadonly"
+        :rules="isValidation ? [rules.float, rules.required] : []"
         v-model.number.lazy.trim="item.tread"
         label="Bieżnik [mm]"
         type="number"
         hide-spin-buttons
         hide-details="auto"
-        validate-on-blur
-        :rules="[rules.float, rules.required]"/>
+        validate-on-blur/>
     </v-col>
   </v-row>
 </template>
@@ -77,6 +84,8 @@ export default
   name: 'TireMeasurementInfo',
   props: {
     item: Object,
+    isReadonly: Boolean,
+    isValidation: Boolean,
   },
   data: () => ({
     tireLocationItems: tireLocation.items,

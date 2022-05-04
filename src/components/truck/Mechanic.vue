@@ -2,17 +2,18 @@
   <v-row class="no-gutters mt-2">
     <v-col>
       <v-combobox
-        v-model.lazy.trim="item.name"
+        :readonly="isReadonly"
+        :rules="isValidation ? [rules.required] : []"
         :items="api.values"
         :loading="api.isLoading"
         :search-input.sync="api.searchInput"
+        v-model.lazy.trim="item.name"
         hide-details="auto"
         hide-no-data
         hide-selected
         no-filter
         type="input"
-        label="Nazwisko"
-        :rules="[rules.required]"/>
+        label="Nazwisko"/>
     </v-col>
   </v-row>
 </template>
@@ -26,6 +27,8 @@ export default
   name: 'Mechanic',
   props: {
     item: Object,
+    isReadonly: Boolean,
+    isValidation: Boolean,
   },
   data: () => ({
     api: {
