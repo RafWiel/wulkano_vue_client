@@ -297,14 +297,14 @@
             <v-row class="no-gutters mt-4">
               <v-col cols="12" sm="auto">
                 <v-checkbox
-                  v-model="item.deposit.tires"
+                  v-model="item.deposit.isTires"
                   label="Opony"
                   hide-details
                   class="shrink mt-0"/>
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
-                  v-model="item.deposit.alloys"
+                  v-model="item.deposit.isAlloys"
                   label="Koła alu"
                   hide-details
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
@@ -312,7 +312,7 @@
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
-                  v-model="item.deposit.steels"
+                  v-model="item.deposit.isSteels"
                   label="Koła stalowe"
                   hide-details
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
@@ -320,7 +320,7 @@
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
-                  v-model="item.deposit.screws"
+                  v-model="item.deposit.isScrews"
                   label="Śruby"
                   hide-details
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
@@ -328,7 +328,7 @@
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
-                  v-model="item.deposit.hubcups"
+                  v-model="item.deposit.isHubcups"
                   label="Kołpaki"
                   hide-details
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
@@ -398,10 +398,10 @@
             <!-- Visual inspection -->
             <v-row class="no-gutters">
               <v-col cols="12" md="6" lg="4">
-                <visual-inspection :item="visualInspection.brakePads.front"/>
-                <visual-inspection :item="visualInspection.brakePads.rear"/>
-                <visual-inspection :item="visualInspection.brakeDiscs.front"/>
-                <visual-inspection :item="visualInspection.brakeDiscs.rear"/>
+                <visual-inspection :item="visualInspection.brakePads.isFront"/>
+                <visual-inspection :item="visualInspection.brakePads.isRear"/>
+                <visual-inspection :item="visualInspection.brakeDiscs.isFront"/>
+                <visual-inspection :item="visualInspection.brakeDiscs.isRear"/>
                 <visual-inspection :item="visualInspection.shockAbsorbers"/>
                 <visual-inspection :item="visualInspection.suspension"/>
               </v-col>
@@ -453,7 +453,7 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 110%'">
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="actions.wheelBalancing.steel"
+                      v-model="actions.wheelBalancing.isSteel"
                       label="Stal"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -461,7 +461,7 @@
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="actions.wheelBalancing.alloy"
+                      v-model="actions.wheelBalancing.isAlloy"
                       label="Alu"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -479,7 +479,7 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 110%'">
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="actions.rimStraightening.steel"
+                      v-model="actions.rimStraightening.isSteel"
                       label="Stal"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -487,7 +487,7 @@
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="actions.rimStraightening.alloy"
+                      v-model="actions.rimStraightening.isAlloy"
                       label="Alu"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -504,7 +504,7 @@
                   label=""/>
               </template>
             </service-action>
-            <service-action :item="actions.nitrogen"/>
+            <service-action :item="actions.nitrogenFill"/>
             <service-action :item="actions.utilization"/>
           </v-col>
         </v-row>
@@ -533,7 +533,7 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 130%'">
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="fastFit.brakePads.front"
+                      v-model="fastFit.brakePads.isFront"
                       label="Przód"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -541,7 +541,7 @@
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="fastFit.brakePads.rear"
+                      v-model="fastFit.brakePads.isRear"
                       label="Tył"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -558,7 +558,7 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 130%'">
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="fastFit.brakeDiscs.front"
+                      v-model="fastFit.brakeDiscs.isFront"
                       label="Przód"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -566,7 +566,7 @@
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="fastFit.brakeDiscs.rear"
+                      v-model="fastFit.brakeDiscs.isRear"
                       label="Tył"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -583,7 +583,7 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 180%'">
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="fastFit.shockAbsorbers.front"
+                      v-model="fastFit.shockAbsorbers.isFront"
                       label="Przód"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -591,7 +591,7 @@
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="fastFit.shockAbsorbers.rear"
+                      v-model="fastFit.shockAbsorbers.isRear"
                       label="Tył"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -632,7 +632,7 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 50%'">
                   <v-col cols="12" sm="auto">
                     <v-checkbox
-                      v-model="inspection.airco.cleaning"
+                      v-model="inspection.airco.isCleaning"
                       label="Czyszczenie"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -640,7 +640,7 @@
                   </v-col>
                   <v-col cols="12" sm="auto">
                     <v-checkbox
-                      v-model="inspection.airco.filter"
+                      v-model="inspection.airco.isFilter"
                       label="Filtr"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -648,7 +648,7 @@
                   </v-col>
                   <v-col cols="12" sm="auto">
                     <v-checkbox
-                      v-model="inspection.airco.filling"
+                      v-model="inspection.airco.isFilling"
                       label="Napełnianie"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -871,11 +871,11 @@ export default {
         },
       ],
       deposit: {
-        tires: false,
-        alloys: false,
-        steels: false,
-        screws: false,
-        hubcups: false,
+        isTires: false,
+        isAlloys: false,
+        isSteels: false,
+        isScrews: false,
+        isHubcups: false,
       },
       depositTiresNote: '',
       depositTiresLocation: '',
@@ -963,8 +963,8 @@ export default {
         text: 'Wyważanie',
         count: '',
         price: '',
-        steel: false,
-        alloy: false,
+        isSteel: false,
+        isAlloy: false,
       },
       tireRepair: {
         isChecked: false,
@@ -977,8 +977,8 @@ export default {
         text: 'Prostowanie felgi',
         count: '',
         price: '',
-        steel: false,
-        alloy: false,
+        isSteel: false,
+        isAlloy: false,
       },
       airValve: {
         isChecked: false,
@@ -987,7 +987,7 @@ export default {
         price: '',
         extraInfo: '',
       },
-      nitrogen: {
+      nitrogenFill: {
         isChecked: false,
         text: 'Napełnianie azotem',
         count: '',
@@ -1006,24 +1006,24 @@ export default {
         text: 'Montaż klocków',
         count: '',
         price: '',
-        front: false,
-        rear: false,
+        isFront: false,
+        isRear: false,
       },
       brakeDiscs: {
         isChecked: false,
         text: 'Montaż tarcz',
         count: '',
         price: '',
-        front: false,
-        rear: false,
+        isFront: false,
+        isRear: false,
       },
       shockAbsorbers: {
         isChecked: false,
         text: 'Montaż amortyzatorów',
         count: '',
         price: '',
-        front: false,
-        rear: false,
+        isFront: false,
+        isRear: false,
       },
       geometry: {
         isChecked: false,
@@ -1068,9 +1068,9 @@ export default {
         text: 'Klimatyzacja',
         count: '',
         price: '',
-        cleaning: false,
-        filter: false,
-        filling: false,
+        isCleaning: false,
+        isFilter: false,
+        isFilling: false,
       },
       other: {
         isChecked: false,
