@@ -1,5 +1,6 @@
-const leftAxle1 = 0;
-const rightAxle1 = 1;
+const none = 0;
+const leftAxle1 = 1;
+const rightAxle1 = 2;
 const leftOutsideAxle2 = 3;
 const leftInsideAxle2 = 4;
 const rightOutsideAxle2 = 5;
@@ -20,6 +21,7 @@ const spare1 = 19;
 const spare2 = 20;
 
 module.exports = {
+  none,
   leftAxle1,
   rightAxle1,
   leftOutsideAxle2,

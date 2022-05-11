@@ -1,10 +1,12 @@
-const leftFront = 0;
-const rightFront = 1;
-const leftRear = 2;
-const rightRear = 3;
-const spare = 4;
+const none = 0;
+const leftFront = 1;
+const rightFront = 2;
+const leftRear = 3;
+const rightRear = 4;
+const spare = 5;
 
 module.exports = {
+  none,
   leftFront,
   rightFront,
   leftRear,

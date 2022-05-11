@@ -4,8 +4,8 @@
     class="pa-0 d-flex flex-column flex-nowrap"
     style="height: 100%">
     <v-form
+      ref="form"
       lazy-validation
-      v-model="isFormValid"
       v-formFocusNextOnEnter>
       <!-- Header -->
       <v-card
@@ -78,12 +78,16 @@
               </v-col>
               <!-- Phone number -->
               <v-col cols="6" sm="8" md="3" lg="2" class="pl-2">
-                <v-text-field
-                  v-model.lazy="item.client.phoneNumber"
-                  label="Telefon kontaktowy"
+                <v-combobox
+                  v-model="item.client.phoneNumber"
+                  :items="api.values"
+                  :loading="api.isLoading"
+                  :search-input.sync="api.searchInput"
+                  hide-no-data
+                  hide-selected
+                  no-filter
                   type="input"
-                  hide-details="auto"
-                  validate-on-blur
+                  label="Telefon kontaktowy"
                   :rules="[rules.required]"/>
               </v-col>
               <!-- Description -->
@@ -146,8 +150,9 @@
                 class="pl-2"
                 :class="$vuetify.breakpoint.smAndUp ? '' : 'mt-2'">
                 <v-select
-                  v-model="item.vehicle.type"
                   :items="vehicleTypeItems"
+                  :rules="[rules.required]"
+                  v-model="item.vehicle.type"
                   item-value="id"
                   hide-details="auto"
                   label="Typ pojazdu"/>
@@ -157,7 +162,7 @@
                 cols="12" md="3" lg="6"
                 :class="$vuetify.breakpoint.mdAndUp ? 'pl-2' : 'mt-2'">
                 <v-text-field
-                  v-model.number="item.mileage"
+                  v-model.number="item.vehicle.mileage"
                   label="Przebieg"
                   type="number"
                   hide-spin-buttons
@@ -195,7 +200,7 @@
                 pressure: '',
                 tread: '' })"/>
             </div>
-            <v-row class="no-gutters mt-2">
+            <v-row class="no-gutters mt-4">
               <!-- Incorrect tire wear -->
               <v-col cols="6" sm="4" md="3" lg="2">
                 <v-select
@@ -238,15 +243,16 @@
               :key="index">
               <tire-brand-info
                 :item="tire"
-                class="mt-2"
+                :isValidation="item.installedTires.length == 1 || index < item.installedTires.length - 1"
                 @change="addArrayObject(tire, item.installedTires, 4, {
-                width: '',
-                profile: '',
-                diameter: '',
-                brand: '',
-                tread: '',
-                serial: ''
-              })"/>
+                  width: '',
+                  profile: '',
+                  diameter: '',
+                  brand: '',
+                  tread: '',
+                  serial: ''
+                })"
+              class="mt-2"/>
             </div>
             <v-row class="no-gutters mt-4">
               <!-- Change -->
@@ -282,7 +288,6 @@
               :key="index">
               <tire-info
                 :item="tire"
-                class="mt-2"
                 @change="addArrayObject(tire, item.depositTires, 5, {
                   width: '',
                   profile: '',
@@ -291,8 +296,8 @@
                   brand: '',
                   tread: '',
                   note: ''
-                });
-                isDepositLocationCardVisible = true;"/>
+                }); isDepositLocationCardVisible = true;"
+                class="mt-2"/>
             </div>
             <v-row class="no-gutters mt-4">
               <v-col cols="12" sm="auto">
@@ -398,25 +403,25 @@
             <!-- Visual inspection -->
             <v-row class="no-gutters">
               <v-col cols="12" md="6" lg="4">
-                <visual-inspection :item="visualInspection.brakePads.isFront"/>
-                <visual-inspection :item="visualInspection.brakePads.isRear"/>
-                <visual-inspection :item="visualInspection.brakeDiscs.isFront"/>
-                <visual-inspection :item="visualInspection.brakeDiscs.isRear"/>
-                <visual-inspection :item="visualInspection.shockAbsorbers"/>
-                <visual-inspection :item="visualInspection.suspension"/>
+                <visual-inspection :item="item.visualInspection.brakePads.front"/>
+                <visual-inspection :item="item.visualInspection.brakePads.rear"/>
+                <visual-inspection :item="item.visualInspection.brakeDiscs.front"/>
+                <visual-inspection :item="item.visualInspection.brakeDiscs.rear"/>
+                <visual-inspection :item="item.visualInspection.shockAbsorbers"/>
+                <visual-inspection :item="item.visualInspection.suspension"/>
+                <visual-inspection :item="item.visualInspection.airco"/>
               </v-col>
               <v-col cols="12" md="6" lg="4">
-                <visual-inspection :item="visualInspection.airco"/>
-                <visual-inspection :item="visualInspection.oil"/>
-                <visual-inspection :item="visualInspection.lights"/>
-                <visual-inspection :item="visualInspection.washingFluid"/>
-                <visual-inspection :item="visualInspection.brakeFluid"/>
-                <visual-inspection :item="visualInspection.coolingFluid"/>
-                <visual-inspection :item="visualInspection.wipers"/>
-                <visual-inspection :item="visualInspection.other">
+                <visual-inspection :item="item.visualInspection.oil"/>
+                <visual-inspection :item="item.visualInspection.lights"/>
+                <visual-inspection :item="item.visualInspection.washingFluid"/>
+                <visual-inspection :item="item.visualInspection.brakeFluid"/>
+                <visual-inspection :item="item.visualInspection.coolingFluid"/>
+                <visual-inspection :item="item.visualInspection.wipers"/>
+                <visual-inspection :item="item.visualInspection.other">
                   <template v-slot:extra-info>
                     <v-text-field
-                      v-model.lazy="visualInspection.other.extraInfo"
+                      v-model.lazy="item.visualInspection.other.extraInfo"
                       hide-details
                       style="width:80%"
                       label=""/>
@@ -443,9 +448,9 @@
               </v-col>
             </v-row>
             <!-- Actions -->
-            <service-action :item="actions.screwing"/>
-            <service-action :item="actions.installation"/>
-            <service-action :item="actions.wheelBalancing">
+            <service-action :item="item.actions.screwing"/>
+            <service-action :item="item.actions.installation"/>
+            <service-action :item="item.actions.wheelBalancing">
               <template v-slot:extra-info>
                 <v-row
                   class="no-gutters mr-4"
@@ -453,7 +458,7 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 110%'">
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="actions.wheelBalancing.isSteel"
+                      v-model="item.actions.wheelBalancing.isSteel"
                       label="Stal"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -461,7 +466,7 @@
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="actions.wheelBalancing.isAlloy"
+                      v-model="item.actions.wheelBalancing.isAlloy"
                       label="Alu"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -470,8 +475,8 @@
                 </v-row>
               </template>
             </service-action>
-            <service-action :item="actions.tireRepair"/>
-            <service-action :item="actions.rimStraightening">
+            <service-action :item="item.actions.tireRepair"/>
+            <service-action :item="item.actions.rimStraightening">
               <template v-slot:extra-info>
                 <v-row
                   class="no-gutters mr-4"
@@ -479,7 +484,7 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 110%'">
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="actions.rimStraightening.isSteel"
+                      v-model="item.actions.rimStraightening.isSteel"
                       label="Stal"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -487,7 +492,7 @@
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="actions.rimStraightening.isAlloy"
+                      v-model="item.actions.rimStraightening.isAlloy"
                       label="Alu"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -496,16 +501,16 @@
                 </v-row>
               </template>
             </service-action>
-            <service-action :item="actions.airValve">
+            <service-action :item="item.actions.airValve">
               <template v-slot:extra-info>
                 <v-text-field
-                  v-model.lazy="actions.airValve.extraInfo"
+                  v-model.lazy="item.actions.airValve.extraInfo"
                   hide-details
                   label=""/>
               </template>
             </service-action>
-            <service-action :item="actions.nitrogenFill"/>
-            <service-action :item="actions.utilization"/>
+            <service-action :item="item.actions.nitrogenFill"/>
+            <service-action :item="item.actions.utilization"/>
           </v-col>
         </v-row>
       </v-card>
@@ -525,7 +530,7 @@
               </v-col>
             </v-row>
             <!-- Actions -->
-            <service-action :item="fastFit.brakePads">
+            <service-action :item="item.fastFit.brakePads">
               <template v-slot:extra-info>
                 <v-row
                   class="no-gutters mr-4"
@@ -533,7 +538,7 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 130%'">
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="fastFit.brakePads.isFront"
+                      v-model="item.fastFit.brakePads.isFront"
                       label="Przód"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -541,7 +546,7 @@
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="fastFit.brakePads.isRear"
+                      v-model="item.fastFit.brakePads.isRear"
                       label="Tył"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -550,7 +555,7 @@
                 </v-row>
               </template>
             </service-action>
-            <service-action :item="fastFit.brakeDiscs">
+            <service-action :item="item.fastFit.brakeDiscs">
               <template v-slot:extra-info>
                 <v-row
                   class="no-gutters mr-4"
@@ -558,7 +563,7 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 130%'">
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="fastFit.brakeDiscs.isFront"
+                      v-model="item.fastFit.brakeDiscs.isFront"
                       label="Przód"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -566,7 +571,7 @@
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="fastFit.brakeDiscs.isRear"
+                      v-model="item.fastFit.brakeDiscs.isRear"
                       label="Tył"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -575,7 +580,7 @@
                 </v-row>
               </template>
             </service-action>
-            <service-action :item="fastFit.shockAbsorbers">
+            <service-action :item="item.fastFit.shockAbsorbers">
               <template v-slot:extra-info>
                 <v-row
                   class="no-gutters mr-4"
@@ -583,7 +588,7 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 180%'">
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="fastFit.shockAbsorbers.isFront"
+                      v-model="item.fastFit.shockAbsorbers.isFront"
                       label="Przód"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -591,7 +596,7 @@
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
-                      v-model="fastFit.shockAbsorbers.isRear"
+                      v-model="item.fastFit.shockAbsorbers.isRear"
                       label="Tył"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -600,8 +605,8 @@
                 </v-row>
               </template>
             </service-action>
-            <service-action :item="fastFit.geometry"/>
-            <service-action :item="fastFit.fuelFilter"/>
+            <service-action :item="item.fastFit.geometry"/>
+            <service-action :item="item.fastFit.fuelFilter"/>
           </v-col>
         </v-row>
       </v-card>
@@ -621,18 +626,18 @@
               </v-col>
             </v-row>
             <!-- Actions -->
-            <service-action :item="inspection.oil"/>
-            <service-action :item="inspection.oilFilter"/>
-            <service-action :item="inspection.airFilter"/>
-            <service-action :item="inspection.interiorFilter"/>
-            <service-action :item="inspection.airco">
+            <service-action :item="item.inspection.oil"/>
+            <service-action :item="item.inspection.oilFilter"/>
+            <service-action :item="item.inspection.airFilter"/>
+            <service-action :item="item.inspection.interiorFilter"/>
+            <service-action :item="item.inspection.airco">
               <template v-slot:extra-info>
                 <v-row
                   class="no-gutters"
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 50%'">
                   <v-col cols="12" sm="auto">
                     <v-checkbox
-                      v-model="inspection.airco.isCleaning"
+                      v-model="item.inspection.airco.isCleaning"
                       label="Czyszczenie"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -640,7 +645,7 @@
                   </v-col>
                   <v-col cols="12" sm="auto">
                     <v-checkbox
-                      v-model="inspection.airco.isFilter"
+                      v-model="item.inspection.airco.isFilter"
                       label="Filtr"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -648,7 +653,7 @@
                   </v-col>
                   <v-col cols="12" sm="auto">
                     <v-checkbox
-                      v-model="inspection.airco.isFilling"
+                      v-model="item.inspection.airco.isFilling"
                       label="Napełnianie"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
@@ -657,7 +662,7 @@
                 </v-row>
               </template>
             </service-action>
-            <service-action :item="inspection.other">
+            <service-action :item="item.inspection.other">
               <template v-slot:extra-info>
                 <v-textarea
                   label=""
@@ -665,7 +670,7 @@
                   validate-on-blur
                   auto-grow
                   rows="1"
-                  v-model.lazy="inspection.other.extraInfo"/>
+                  v-model.lazy="item.inspection.other.extraInfo"/>
               </template>
             </service-action>
           </v-col>
@@ -686,7 +691,9 @@
                 </h3>
               </v-col>
             </v-row>
-            <signature-field class="mt-2" />
+            <signature-field
+              ref="employeeSignature"
+              class="mt-2"/>
           </v-col>
         </v-row>
       </v-card>
@@ -712,7 +719,9 @@
                 </p>
               </v-col>
             </v-row>
-            <signature-field class="mt-2"/>
+            <signature-field
+              ref="clientSignature"
+              class="mt-2"/>
           </v-col>
         </v-row>
       </v-card>
@@ -753,9 +762,10 @@
         <v-row class="no-gutters" justify="end">
           <v-col cols="12" sm="6" md="4" lg="2">
             <v-btn
+              @click="save"
+              class="save-btn"
               depressed
-              block
-              class="save-btn">
+              block>
               Zapisz
             </v-btn>
           </v-col>
@@ -775,6 +785,7 @@
 </template>
 
 <script>
+import debounce from 'lodash.debounce';
 import moment from 'moment';
 import rules from '@/misc/rules';
 import tireLocation from '@/enums/car/tireLocation';
@@ -788,9 +799,11 @@ import TireInfo from '@/components/deposit/TireInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
 import VisualInspection from '@/components/car/VisualInspection.vue';
 import ServiceAction from '@/components/car/ServiceAction.vue';
+import carsService from '@/services/cars';
+import clientsService from '@/services/clients';
 
 export default {
-  name: 'CarServiceForm',
+  name: 'CarServiceEditForm',
   components: {
     TireMeasurementInfo,
     TireBrandInfo,
@@ -807,58 +820,65 @@ export default {
   data: () => ({
     isFormValid: false,
     isDepositLocationCardVisible: false,
-    item: {
+    axleLocationItems: axleLocation.items,
+    boolItems: bool.items,
+    tireChangeItems: tireChangeType.items,
+    vehicleTypeItems: vehicleType.items,
+    item: null,
+    newItem: {
       id: 1,
-      orderNumber: `O/${moment(new Date()).format('1/M/YYYY')}`,
+      orderNumber: 'Nowe zlecenie',
       date: new Date(),
       client: {
-        name: '',
-        phoneNumber: '',
+        name: 'aa',
+        phoneNumber: '123123123',
       },
       vehicle: {
-        name: '',
-        registrationNumber: '',
-        type: 0,
-        mileage: '',
+        name: 'aa',
+        registrationNumber: 'aa',
+        type: 1,
+        mileage: '123',
       },
-      description: '',
+      description: 'aa',
       tires: [
         {
           location: tireLocation.leftFront,
           status: 0,
-          pressure: '',
-          tread: '',
+          pressure: '11.1',
+          tread: '11.1',
         },
         {
           location: tireLocation.rightFront,
           status: 0,
-          pressure: '',
-          tread: '',
+          pressure: '11.1',
+          tread: '11.1',
         },
         {
           location: tireLocation.leftRear,
           status: 0,
-          pressure: '',
-          tread: '',
+          pressure: '11.1',
+          tread: '11.1',
         },
         {
           location: tireLocation.rightRear,
           status: 0,
-          pressure: '',
-          tread: '',
+          pressure: '11.1',
+          tread: '11.1',
         },
       ],
       incorrectTireWearLocation: 0,
       isGeometryRequired: false,
       installedTires: [
         {
-          width: '',
-          profile: '',
-          diameter: '',
+          location: tireLocation.leftFront,
+          width: '11',
+          profile: '11',
+          diameter: '11',
           dot: '',
           brand: '',
         },
       ],
+      tireChange: tireChangeType.none,
       depositTires: [
         {
           width: '',
@@ -879,217 +899,287 @@ export default {
       },
       depositTiresNote: '',
       depositTiresLocation: '',
-      tireChange: tireChangeType.none,
-      saleDocument: '',
-    },
-    visualInspection: {
-      brakePads: {
-        front: {
-          text: 'Klocki hamulcowe - Przód',
+      visualInspection: {
+        brakePads: {
+          front: {
+            text: 'Klocki hamulcowe - Przód',
+            status: 0,
+          },
+          rear: {
+            text: 'Klocki hamulcowe - Tył',
+            status: 0,
+          },
+        },
+        brakeDiscs: {
+          front: {
+            text: 'Tarcze hamulcowe - Przód',
+            status: 0,
+          },
+          rear: {
+            text: 'Tarcze hamulcowe - Tył',
+            status: 0,
+          },
+        },
+        shockAbsorbers: {
+          text: 'Amortyzatory',
           status: 0,
         },
-        rear: {
-          text: 'Klocki hamulcowe - Tył',
+        suspension: {
+          text: 'Zawieszenie',
           status: 0,
         },
-      },
-      brakeDiscs: {
-        front: {
-          text: 'Tarcze hamulcowe - Przód',
+        airco: {
+          text: 'Klimatyzacja',
           status: 0,
         },
-        rear: {
-          text: 'Tarcze hamulcowe - Tył',
+        oil: {
+          text: 'Poziom oleju w silniku',
           status: 0,
         },
+        lights: {
+          text: 'Światła',
+          status: 0,
+        },
+        washingFluid: {
+          text: 'Płyn do spryskiwaczy',
+          status: 0,
+        },
+        brakeFluid: {
+          text: 'Płyn hamulcowy',
+          status: 0,
+        },
+        coolingFluid: {
+          text: 'Płyn chłodzący',
+          status: 0,
+        },
+        wipers: {
+          text: 'Pióra wycieraczek',
+          status: 0,
+        },
+        other: {
+          text: 'Inne',
+          status: 0,
+          extraInfo: '',
+        },
       },
-      shockAbsorbers: {
-        text: 'Amortyzatory',
-        status: 0,
+      actions: {
+        screwing: {
+          isChecked: false,
+          text: 'Odkręcenie / Przykręcenie',
+          count: '',
+          price: '',
+        },
+        installation: {
+          isChecked: false,
+          text: 'Montaż / Demontaż',
+          count: '',
+          price: '',
+        },
+        wheelBalancing: {
+          isChecked: false,
+          text: 'Wyważanie',
+          count: '',
+          price: '',
+          isSteel: false,
+          isAlloy: false,
+        },
+        tireRepair: {
+          isChecked: false,
+          text: 'Naprawa opony',
+          count: '',
+          price: '',
+        },
+        rimStraightening: {
+          isChecked: false,
+          text: 'Prostowanie felgi',
+          count: '',
+          price: '',
+          isSteel: false,
+          isAlloy: false,
+        },
+        airValve: {
+          isChecked: false,
+          text: 'Zawór do felg',
+          count: '',
+          price: '',
+          extraInfo: '',
+        },
+        nitrogenFill: {
+          isChecked: false,
+          text: 'Napełnianie azotem',
+          count: '',
+          price: '',
+        },
+        utilization: {
+          isChecked: false,
+          text: 'Utylizacja opony',
+          count: '',
+          price: '',
+        },
       },
-      suspension: {
-        text: 'Zawieszenie',
-        status: 0,
+      fastFit: {
+        brakePads: {
+          isChecked: false,
+          text: 'Montaż klocków',
+          count: '',
+          price: '',
+          isFront: false,
+          isRear: false,
+        },
+        brakeDiscs: {
+          isChecked: false,
+          text: 'Montaż tarcz',
+          count: '',
+          price: '',
+          isFront: false,
+          isRear: false,
+        },
+        shockAbsorbers: {
+          isChecked: false,
+          text: 'Montaż amortyzatorów',
+          count: '',
+          price: '',
+          isFront: false,
+          isRear: false,
+        },
+        geometry: {
+          isChecked: false,
+          text: 'Geometria',
+          count: '',
+          price: '',
+        },
+        fuelFilter: {
+          isChecked: false,
+          text: 'Wymiana filtra paliwa',
+          count: '',
+          price: '',
+        },
       },
-      airco: {
-        text: 'Klimatyzacja',
-        status: 0,
+      inspection: {
+        oil: {
+          isChecked: false,
+          text: 'Wymiana oleju silnikowego',
+          count: '',
+          price: '',
+        },
+        oilFilter: {
+          isChecked: false,
+          text: 'Wymiana filtra oleju',
+          count: '',
+          price: '',
+        },
+        airFilter: {
+          isChecked: false,
+          text: 'Wymiana filtra powietrza',
+          count: '',
+          price: '',
+        },
+        interiorFilter: {
+          isChecked: false,
+          text: 'Wymiana filtra kabiny',
+          count: '',
+          price: '',
+        },
+        airco: {
+          isChecked: false,
+          text: 'Klimatyzacja',
+          count: '',
+          price: '',
+          isCleaning: false,
+          isFilter: false,
+          isFilling: false,
+        },
+        other: {
+          isChecked: false,
+          text: 'Inne',
+          count: '',
+          price: '',
+          extraInfo: '',
+        },
       },
-      oil: {
-        text: 'Poziom oleju w silniku',
-        status: 0,
-      },
-      lights: {
-        text: 'Światła',
-        status: 0,
-      },
-      washingFluid: {
-        text: 'Płyn do spryskiwaczy',
-        status: 0,
-      },
-      brakeFluid: {
-        text: 'Płyn hamulcowy',
-        status: 0,
-      },
-      coolingFluid: {
-        text: 'Płyn chłodzący',
-        status: 0,
-      },
-      wipers: {
-        text: 'Pióra wycieraczek',
-        status: 0,
-      },
-      other: {
-        text: 'Inne',
-        status: 0,
-        extraInfo: '',
-      },
-    },
-    actions: {
-      screwing: {
-        isChecked: false,
-        text: 'Odkręcenie / Przykręcenie',
-        count: '',
-        price: '',
-      },
-      installation: {
-        isChecked: false,
-        text: 'Montaż / Demontaż',
-        count: '',
-        price: '',
-      },
-      wheelBalancing: {
-        isChecked: false,
-        text: 'Wyważanie',
-        count: '',
-        price: '',
-        isSteel: false,
-        isAlloy: false,
-      },
-      tireRepair: {
-        isChecked: false,
-        text: 'Naprawa opony',
-        count: '',
-        price: '',
-      },
-      rimStraightening: {
-        isChecked: false,
-        text: 'Prostowanie felgi',
-        count: '',
-        price: '',
-        isSteel: false,
-        isAlloy: false,
-      },
-      airValve: {
-        isChecked: false,
-        text: 'Zawór do felg',
-        count: '',
-        price: '',
-        extraInfo: '',
-      },
-      nitrogenFill: {
-        isChecked: false,
-        text: 'Napełnianie azotem',
-        count: '',
-        price: '',
-      },
-      utilization: {
-        isChecked: false,
-        text: 'Utylizacja opony',
-        count: '',
-        price: '',
-      },
-    },
-    fastFit: {
-      brakePads: {
-        isChecked: false,
-        text: 'Montaż klocków',
-        count: '',
-        price: '',
-        isFront: false,
-        isRear: false,
-      },
-      brakeDiscs: {
-        isChecked: false,
-        text: 'Montaż tarcz',
-        count: '',
-        price: '',
-        isFront: false,
-        isRear: false,
-      },
-      shockAbsorbers: {
-        isChecked: false,
-        text: 'Montaż amortyzatorów',
-        count: '',
-        price: '',
-        isFront: false,
-        isRear: false,
-      },
-      geometry: {
-        isChecked: false,
-        text: 'Geometria',
-        count: '',
-        price: '',
-      },
-      fuelFilter: {
-        isChecked: false,
-        text: 'Wymiana filtra paliwa',
-        count: '',
-        price: '',
-      },
-    },
-    inspection: {
-      oil: {
-        isChecked: false,
-        text: 'Wymiana oleju silnikowego',
-        count: '',
-        price: '',
-      },
-      oilFilter: {
-        isChecked: false,
-        text: 'Wymiana filtra oleju',
-        count: '',
-        price: '',
-      },
-      airFilter: {
-        isChecked: false,
-        text: 'Wymiana filtra powietrza',
-        count: '',
-        price: '',
-      },
-      interiorFilter: {
-        isChecked: false,
-        text: 'Wymiana filtra kabiny',
-        count: '',
-        price: '',
-      },
-      airco: {
-        isChecked: false,
-        text: 'Klimatyzacja',
-        count: '',
-        price: '',
-        isCleaning: false,
-        isFilter: false,
-        isFilling: false,
-      },
-      other: {
-        isChecked: false,
-        text: 'Inne',
-        count: '',
-        price: '',
-        extraInfo: '',
+      saleDocument: 'aa',
+      signature: {
+        employee: null,
+        client: null,
       },
     },
     rules: {
       required: rules.required,
       integer: rules.integer,
     },
-    axleLocationItems: axleLocation.items,
-    boolItems: bool.items,
-    tireChangeItems: tireChangeType.items,
-    vehicleTypeItems: vehicleType.items,
+    api: {
+      searchInput: null,
+      values: [],
+      isLoading: false,
+    },
   }),
+  created() {
+    this.item = this.newItem;
+  },
   methods: {
+    async save() {
+      const vm = this;
+
+      //validation
+      const v1 = vm.$refs.form.validate();
+      const v2 = vm.$refs.employeeSignature.validate();
+      const v3 = vm.$refs.clientSignature.validate();
+      if (!v1 || !v2 || !v3) {
+        this.$nextTick(() => {
+          const el = this.$el.querySelector('.v-messages.error--text:first-of-type');
+
+          this.$vuetify.goTo(el, { offset: 60 });
+        });
+
+        return;
+      }
+
+      try {
+        vm.$emit('isProcessing', true);
+
+        vm.item.signature.employee = vm.$refs.employeeSignature.getImageData();
+        vm.item.signature.client = vm.$refs.clientSignature.getImageData();
+
+        const response = await carsService.create(vm.item);
+
+        if (response.data.result) {
+          vm.$emit('isProcessing', false);
+          vm.$emit('showMessage', 'Zlecenie osobowe', 'Zlecenie zapisane');
+          vm.resetForm();
+          vm.$vuetify.goTo(0);
+
+          return;
+        }
+
+        vm.$emit('showMessage', 'Zlecenie osobowe', 'Nieudany zapis');
+      }
+      catch (error) {
+        vm.showError(error);
+      }
+
+      vm.$emit('isProcessing', false);
+    },
+    showError(error) {
+      console.log(error);
+      this.$emit('isProcessing', false);
+
+      if (error.response === undefined) {
+        this.$emit('showMessage', 'Zlecenie osobowe', 'Brak odpowiedzi z serwera');
+        return;
+      }
+
+      console.log(error.response.data);
+      this.$emit('showMessage', 'Zlecenie osobowe', error.response.data.message);
+    },
+    resetForm() {
+      const vm = this;
+
+      vm.item = vm.newItem;
+
+      vm.$refs.employeeSignature.resetCanvas();
+      vm.$refs.clientSignature.resetCanvas();
+      vm.$refs.form.reset();
+    },
     addArrayObject(item, array, maxCount, newItem) {
       //check if last item in array
       const index = array.indexOf(item);
@@ -1100,6 +1190,24 @@ export default {
       //add new item
       array.push(newItem);
     },
+  },
+  watch: {
+    'api.searchInput': debounce(async function searchInput(val) {
+      if (this.api.isLoading) return;
+
+      this.api.isLoading = true;
+
+      clientsService.getPhoneNumbers({ filter: val })
+      .then((res) => {
+        this.api.values = res.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        this.api.isLoading = false;
+      });
+    }, 500, { maxWait: 5000 }),
   },
 };
 </script>

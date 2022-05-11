@@ -183,7 +183,8 @@
                   :items="vehicleTypeItems"
                   item-value="id"
                   hide-details="auto"
-                  label="Typ pojazdu"/>
+                  label="Typ pojazdu"
+                  :rules="[rules.required]"/>
               </v-col>
               <!-- Mileage -->
               <v-col
@@ -225,13 +226,13 @@
               <tire-measurement-info
                 :item="tire"
                 :isValidation="item.sizeTires.length == 1 || index < item.sizeTires.length - 1"
-                class="mt-2"
                 @change="addArrayObject(tire, item.sizeTires, 18, {
-                width: '',
-                profile: '',
-                diameter: '',
-                pressure: '',
-                tread: '' })"/>
+                  width: '',
+                  profile: '',
+                  diameter: '',
+                  pressure: '',
+                  tread: '' })"
+                class="mt-2"/>
             </div>
             <!-- Diagnostics -->
             <v-textarea
@@ -419,15 +420,15 @@
               <tire-brand-info
                 :item="tire"
                 :isValidation="item.installedTires.length == 1 || index < item.installedTires.length - 1"
-                class="mt-2"
                 @change="addArrayObject(tire, item.installedTires, 18, {
-                width: '',
-                profile: '',
-                diameter: '',
-                brand: '',
-                tread: '',
-                serial: ''
-              })"/>
+                  width: '',
+                  profile: '',
+                  diameter: '',
+                  brand: '',
+                  tread: '',
+                  serial: ''
+                })"
+                class="mt-2"/>
             </div>
           </v-col>
         </v-row>
@@ -592,7 +593,7 @@
           </v-col>
         </v-row>
       </v-card>
-      <!-- Mechanic -->
+      <!-- Mechanics -->
       <v-card
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">

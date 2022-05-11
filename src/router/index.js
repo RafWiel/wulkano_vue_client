@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import TruckServiceEditForm from '../views/truck/TruckServiceEditForm.vue';
 import TruckServiceViewForm from '../views/truck/TruckServiceViewForm.vue';
-import CarServiceForm from '../views/car/CarServiceForm.vue';
+import CarServiceEditForm from '../views/car/CarServiceEditForm.vue';
 import DepositEditForm from '../views/deposit/DepositEditForm.vue';
 import DepositViewForm from '../views/deposit/DepositViewForm.vue';
 import RequestsListView from '../views/RequestsListView.vue';
@@ -29,8 +29,8 @@ const routes = [
 
   {
     path: '/service/car/',
-    name: 'CarServiceForm',
-    component: CarServiceForm,
+    name: 'CarServiceEditForm',
+    component: CarServiceEditForm,
     meta: {
       isBackButton: true,
     },
