@@ -191,14 +191,17 @@
             </v-row>
             <!-- Tires -->
             <div
-              v-for="(tire, index) in item.tires"
+              v-for="(tire, index) in item.inspectedTires"
               :key="index">
-              <tire-measurement-info :item="tire" @change="addArrayObject(tire, item.tires, 5, {
-                width: '',
-                profile: '',
-                diameter: '',
-                pressure: '',
-                tread: '' })"/>
+              <tire-measurement-info
+                :item="tire"
+                @change="addArrayObject(tire, item.tires, 5, {
+                  width: '',
+                  profile: '',
+                  diameter: '',
+                  pressure: '',
+                  tread: '' })"
+                />
             </div>
             <v-row class="no-gutters mt-4">
               <!-- Incorrect tire wear -->
@@ -833,14 +836,14 @@ export default {
         name: 'aa',
         phoneNumber: '123123123',
       },
+      description: 'aa',
       vehicle: {
         name: 'aa',
         registrationNumber: 'aa',
         type: 1,
         mileage: '123',
       },
-      description: 'aa',
-      tires: [
+      inspectedTires: [
         {
           location: tireLocation.leftFront,
           status: 0,
@@ -1136,6 +1139,8 @@ export default {
 
       try {
         vm.$emit('isProcessing', true);
+
+        console.log(this.item.inspectedTires);
 
         vm.item.signature.employee = vm.$refs.employeeSignature.getImageData();
         vm.item.signature.client = vm.$refs.clientSignature.getImageData();
