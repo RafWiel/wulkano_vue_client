@@ -13,9 +13,9 @@
             depressed
             block
             small
-            :color="value == threeState.ok ? 'green lighten-2' : 'grey darken-1'"
-            :outlined="value != threeState.ok"
-            @click="value = threeState.ok">
+            :color="localValue == threeState.ok ? 'green lighten-2' : 'grey darken-1'"
+            :outlined="localValue != threeState.ok"
+            @click="localValue = threeState.ok">
           </v-btn>
         </v-col>
         <v-col class="ml-1">
@@ -24,9 +24,9 @@
             depressed
             block
             small
-            :color="value == threeState.avg ? 'yellow darken-1' : 'grey darken-1'"
-            :outlined="value != threeState.avg"
-            @click="value = threeState.avg">
+            :color="localValue == threeState.avg ? 'yellow darken-1' : 'grey darken-1'"
+            :outlined="localValue != threeState.avg"
+            @click="localValue = threeState.avg">
           </v-btn>
         </v-col>
         <v-col class="ml-1">
@@ -35,9 +35,9 @@
             depressed
             block
             small
-            :color="value == threeState.bad ? 'red darken-1' : 'grey darken-1'"
-            :outlined="value != threeState.bad"
-            @click="value = threeState.bad">
+            :color="localValue == threeState.bad ? 'red darken-1' : 'grey darken-1'"
+            :outlined="localValue != threeState.bad"
+            @click="localValue = threeState.bad">
           </v-btn>
         </v-col>
       </v-row>
@@ -54,7 +54,11 @@ export default {
   },
   data: () => ({
     threeState,
+    localValue: threeState.none,
   }),
+  mounted() {
+    this.localValue = this.value;
+  },
 };
 
 </script>

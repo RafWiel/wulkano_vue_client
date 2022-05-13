@@ -765,7 +765,7 @@
         <v-row class="no-gutters" justify="end">
           <v-col cols="12" sm="6" md="4" lg="2">
             <v-btn
-              @click="save"
+              @click="save1"
               class="save-btn"
               depressed
               block>
@@ -846,13 +846,13 @@ export default {
       inspectedTires: [
         {
           location: tireLocation.leftFront,
-          status: 0,
+          status: 1,
           pressure: '11.1',
           tread: '11.1',
         },
         {
           location: tireLocation.rightFront,
-          status: 0,
+          status: 1,
           pressure: '11.1',
           tread: '11.1',
         },
@@ -906,21 +906,21 @@ export default {
         brakePads: {
           front: {
             text: 'Klocki hamulcowe - Przód',
-            status: 0,
+            status: 1,
           },
           rear: {
             text: 'Klocki hamulcowe - Tył',
-            status: 0,
+            status: 1,
           },
         },
         brakeDiscs: {
           front: {
             text: 'Tarcze hamulcowe - Przód',
-            status: 0,
+            status: 2,
           },
           rear: {
             text: 'Tarcze hamulcowe - Tył',
-            status: 0,
+            status: 2,
           },
         },
         shockAbsorbers: {
@@ -1120,6 +1120,9 @@ export default {
     this.item = this.newItem;
   },
   methods: {
+    async save1() {
+      console.log(this.item.inspectedTires[0].status);
+    },
     async save() {
       const vm = this;
 
