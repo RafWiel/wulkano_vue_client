@@ -15,7 +15,7 @@
             small
             :color="localValue == threeState.ok ? 'green lighten-2' : 'grey darken-1'"
             :outlined="localValue != threeState.ok"
-            @click="localValue = threeState.ok">
+            @click="setValue(threeState.ok)">
           </v-btn>
         </v-col>
         <v-col class="ml-1">
@@ -26,7 +26,7 @@
             small
             :color="localValue == threeState.avg ? 'yellow darken-1' : 'grey darken-1'"
             :outlined="localValue != threeState.avg"
-            @click="localValue = threeState.avg">
+            @click="setValue(threeState.avg)">
           </v-btn>
         </v-col>
         <v-col class="ml-1">
@@ -37,7 +37,7 @@
             small
             :color="localValue == threeState.bad ? 'red darken-1' : 'grey darken-1'"
             :outlined="localValue != threeState.bad"
-            @click="localValue = threeState.bad">
+            @click="setValue(threeState.bad)">
           </v-btn>
         </v-col>
       </v-row>
@@ -58,6 +58,12 @@ export default {
   }),
   mounted() {
     this.localValue = this.value;
+  },
+  methods: {
+    setValue(value) {
+      this.localValue = value;
+      this.$emit('input', value);
+    },
   },
 };
 

@@ -9,7 +9,7 @@
       </div>
     </v-col>
     <v-col cols="4" sm="3" md="3" lg="3" class="pl-2">
-      <three-state-control :value="item.status"/>
+      <three-state-control v-model="item.status"/>
     </v-col>
   </v-row>
 </template>

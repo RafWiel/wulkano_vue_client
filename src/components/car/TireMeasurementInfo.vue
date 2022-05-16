@@ -9,7 +9,7 @@
         label="Pozycja"/>
     </v-col>
     <v-col cols="4" sm="3" md="2" lg="1" class="mt-0 pl-2">
-      <three-state-control :value="item.status"/>
+      <three-state-control v-model="item.status"/>
     </v-col>
     <v-col lg="1" md="2" class="pl-2">
       <v-text-field
@@ -55,16 +55,16 @@ export default
         float: rules.float,
       },
   }),
-  watch: {
-    item: {
-      // This will let Vue know to look inside the array
-      deep: true,
+  // watch: {
+  //   item: {
+  //     // This will let Vue know to look inside the array
+  //     deep: true,
 
-      // We have to move our method to a handler field
-      handler() {
-        this.$emit('change', this.item);
-      },
-    },
-  },
+  //     // We have to move our method to a handler field
+  //     handler() {
+  //       this.$emit('change', this.item);
+  //     },
+  //   },
+  // },
 };
 </script>

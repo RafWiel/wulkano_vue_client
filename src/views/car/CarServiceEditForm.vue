@@ -195,7 +195,7 @@
               :key="index">
               <tire-measurement-info
                 :item="tire"
-                @change="addArrayObject(tire, item.tires, 5, {
+                @change="addArrayObject(tire, item.inspectedTires, 5, {
                   width: '',
                   profile: '',
                   diameter: '',
@@ -765,7 +765,7 @@
         <v-row class="no-gutters" justify="end">
           <v-col cols="12" sm="6" md="4" lg="2">
             <v-btn
-              @click="save1"
+              @click="save"
               class="save-btn"
               depressed
               block>
@@ -1120,9 +1120,6 @@ export default {
     this.item = this.newItem;
   },
   methods: {
-    async save1() {
-      console.log(this.item.inspectedTires[0].status);
-    },
     async save() {
       const vm = this;
 
