@@ -55,16 +55,16 @@ export default
         float: rules.float,
       },
   }),
-  // watch: {
-  //   item: {
-  //     // This will let Vue know to look inside the array
-  //     deep: true,
+  watch: {
+    item: {
+      // This will let Vue know to look inside the array
+      deep: true,
 
-  //     // We have to move our method to a handler field
-  //     handler() {
-  //       this.$emit('change', this.item);
-  //     },
-  //   },
-  // },
+      // We have to move our method to a handler field
+      handler() {
+        this.$emit('change', this.item);
+      },
+    },
+  },
 };
 </script>

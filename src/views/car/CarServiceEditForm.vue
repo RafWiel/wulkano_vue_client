@@ -898,7 +898,7 @@ export default {
         isAlloys: false,
         isSteels: false,
         isScrews: false,
-        isHubcups: false,
+        isHubcubs: false,
       },
       depositTiresNote: '',
       depositTiresLocation: '',
