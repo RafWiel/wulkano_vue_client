@@ -176,6 +176,7 @@ export default {
       const type = parseInt(idConcat.split('_')[0], 10);
       const id = idConcat.split('_')[1];
 
+      if (type === requestType.carService) this.$router.push({ name: 'CarServiceViewForm', params: { id } });
       if (type === requestType.truckService) this.$router.push({ name: 'TruckServiceViewForm', params: { id } });
       if (type === requestType.deposit) this.$router.push({ name: 'DepositViewForm', params: { id } });
     },
@@ -202,12 +203,12 @@ export default {
       this.$emit('isProcessing', false);
 
       if (error.response === undefined) {
-        this.$emit('showMessage', 'Depozyt', 'Brak odpowiedzi z serwera');
+        this.$emit('showMessage', 'Zlecenia serwisowe', 'Brak odpowiedzi z serwera');
         return;
       }
 
       console.log(error.response.data);
-      this.$emit('showMessage', 'Depozyt', error.response.data.message);
+      this.$emit('showMessage', 'Zlecenia serwisowe', error.response.data.message);
     },
   },
 };

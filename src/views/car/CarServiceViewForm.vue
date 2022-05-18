@@ -694,9 +694,12 @@
                 </h3>
               </v-col>
             </v-row>
-            <signature-field
-              ref="employeeSignature"
-              class="mt-2"/>
+            <v-img
+              :src="employeeSignature"
+              width="100%"
+              height="200px"
+              contain
+              class="mt-2 signature-image"/>
           </v-col>
         </v-row>
       </v-card>
@@ -722,9 +725,12 @@
                 </p>
               </v-col>
             </v-row>
-            <signature-field
-              ref="clientSignature"
-              class="mt-2"/>
+            <v-img
+              :src="clientSignature"
+              width="100%"
+              height="200px"
+              contain
+              class="mt-2 signature-image"/>
           </v-col>
         </v-row>
       </v-card>
@@ -758,22 +764,6 @@
           </v-col>
         </v-row>
       </v-card>
-      <!-- Apply button -->
-      <v-card
-        flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
-        <v-row class="no-gutters" justify="end">
-          <v-col cols="12" sm="6" md="4" lg="2">
-            <v-btn
-              @click="save"
-              class="save-btn"
-              depressed
-              block>
-              Zapisz
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-card>
     </v-form>
     <!-- RODO -->
     <p class="px-4 caption"
@@ -791,7 +781,6 @@
 import debounce from 'lodash.debounce';
 import moment from 'moment';
 import rules from '@/misc/rules';
-import tireLocation from '@/enums/car/tireLocation';
 import axleLocation from '@/enums/axleLocation';
 import bool from '@/enums/bool';
 import tireChangeType from '@/enums/car/tireChangeType';
@@ -799,19 +788,17 @@ import vehicleType from '@/enums/car/vehicleType';
 import TireMeasurementInfo from '@/components/car/TireMeasurementInfo.vue';
 import TireBrandInfo from '@/components/car/TireBrandInfo.vue';
 import TireInfo from '@/components/deposit/TireInfo.vue';
-import SignatureField from '@/components/SignatureField.vue';
 import VisualInspection from '@/components/car/VisualInspection.vue';
 import ServiceAction from '@/components/car/ServiceAction.vue';
-import carsService from '@/services/cars';
+//import carsService from '@/services/cars';
 import clientsService from '@/services/clients';
 
 export default {
-  name: 'CarServiceEditForm',
+  name: 'CarServiceViewForm',
   components: {
     TireMeasurementInfo,
     TireBrandInfo,
     TireInfo,
-    SignatureField,
     VisualInspection,
     ServiceAction,
   },
@@ -826,284 +813,56 @@ export default {
     boolItems: bool.items,
     tireChangeItems: tireChangeType.items,
     vehicleTypeItems: vehicleType.items,
-    item: null,
-    newItem: {
-      id: 1,
-      orderNumber: 'Nowe zlecenie',
-      date: new Date(),
-      client: {
-        name: 'aa',
-        phoneNumber: '123123123',
-      },
-      description: 'aa',
-      vehicle: {
-        name: 'aa',
-        registrationNumber: 'aa',
-        type: 1,
-        mileage: '123',
-      },
-      inspectedTires: [
-        {
-          location: tireLocation.leftFront,
-          status: 1,
-          pressure: '11.1',
-          tread: '11.1',
-        },
-        {
-          location: tireLocation.rightFront,
-          status: 1,
-          pressure: '11.1',
-          tread: '11.1',
-        },
-        {
-          location: tireLocation.leftRear,
-          status: 0,
-          pressure: '11.1',
-          tread: '11.1',
-        },
-        {
-          location: tireLocation.rightRear,
-          status: 0,
-          pressure: '11.1',
-          tread: '11.1',
-        },
-      ],
-      incorrectTireWearLocation: 0,
-      isGeometryRequired: false,
-      installedTires: [
-        {
-          location: tireLocation.leftFront,
-          width: '11',
-          profile: '11',
-          diameter: '11',
-          dot: '',
-          brand: '',
-        },
-      ],
-      tireChange: tireChangeType.none,
-      depositTires: [
-        {
-          width: '',
-          profile: '',
-          diameter: '',
-          dot: '',
-          brand: '',
-          tread: '',
-          note: '',
-        },
-      ],
-      deposit: {
-        isTires: false,
-        isAlloys: false,
-        isSteels: false,
-        isScrews: false,
-        isHubcubs: false,
-      },
-      depositTiresNote: '',
-      depositTiresLocation: '',
+    item: {
+      client: {},
+      vehicle: {},
+      deposit: {},
       visualInspection: {
         brakePads: {
-          front: {
-            text: 'Klocki hamulcowe - Przód',
-            status: 1,
-          },
-          rear: {
-            text: 'Klocki hamulcowe - Tył',
-            status: 1,
-          },
+          front: {},
+          rear: {},
         },
         brakeDiscs: {
-          front: {
-            text: 'Tarcze hamulcowe - Przód',
-            status: 2,
-          },
-          rear: {
-            text: 'Tarcze hamulcowe - Tył',
-            status: 2,
-          },
+          front: {},
+          rear: {},
         },
-        shockAbsorbers: {
-          text: 'Amortyzatory',
-          status: 0,
-        },
-        suspension: {
-          text: 'Zawieszenie',
-          status: 0,
-        },
-        airco: {
-          text: 'Klimatyzacja',
-          status: 0,
-        },
-        oil: {
-          text: 'Poziom oleju w silniku',
-          status: 0,
-        },
-        lights: {
-          text: 'Światła',
-          status: 0,
-        },
-        washingFluid: {
-          text: 'Płyn do spryskiwaczy',
-          status: 0,
-        },
-        brakeFluid: {
-          text: 'Płyn hamulcowy',
-          status: 0,
-        },
-        coolingFluid: {
-          text: 'Płyn chłodzący',
-          status: 0,
-        },
-        wipers: {
-          text: 'Pióra wycieraczek',
-          status: 0,
-        },
-        other: {
-          text: 'Inne',
-          status: 0,
-          extraInfo: '',
-        },
+        shockAbsorbers: {},
+        suspension: {},
+        airco: {},
+        oil: {},
+        lights: {},
+        washingFluid: {},
+        brakeFluid: {},
+        coolingFluid: {},
+        wipers: {},
+        other: {},
       },
       actions: {
-        screwing: {
-          isChecked: false,
-          text: 'Odkręcenie / Przykręcenie',
-          count: '',
-          price: '',
-        },
-        installation: {
-          isChecked: false,
-          text: 'Montaż / Demontaż',
-          count: '',
-          price: '',
-        },
-        wheelBalancing: {
-          isChecked: false,
-          text: 'Wyważanie',
-          count: '',
-          price: '',
-          isSteel: false,
-          isAlloy: false,
-        },
-        tireRepair: {
-          isChecked: false,
-          text: 'Naprawa opony',
-          count: '',
-          price: '',
-        },
-        rimStraightening: {
-          isChecked: false,
-          text: 'Prostowanie felgi',
-          count: '',
-          price: '',
-          isSteel: false,
-          isAlloy: false,
-        },
-        airValve: {
-          isChecked: false,
-          text: 'Zawór do felg',
-          count: '',
-          price: '',
-          extraInfo: '',
-        },
-        nitrogenFill: {
-          isChecked: false,
-          text: 'Napełnianie azotem',
-          count: '',
-          price: '',
-        },
-        utilization: {
-          isChecked: false,
-          text: 'Utylizacja opony',
-          count: '',
-          price: '',
-        },
+        screwing: {},
+        installation: {},
+        wheelBalancing: {},
+        tireRepair: {},
+        rimStraightening: {},
+        airValve: {},
+        nitrogenFill: {},
+        utilization: {},
       },
       fastFit: {
-        brakePads: {
-          isChecked: false,
-          text: 'Montaż klocków',
-          count: '',
-          price: '',
-          isFront: false,
-          isRear: false,
-        },
-        brakeDiscs: {
-          isChecked: false,
-          text: 'Montaż tarcz',
-          count: '',
-          price: '',
-          isFront: false,
-          isRear: false,
-        },
-        shockAbsorbers: {
-          isChecked: false,
-          text: 'Montaż amortyzatorów',
-          count: '',
-          price: '',
-          isFront: false,
-          isRear: false,
-        },
-        geometry: {
-          isChecked: false,
-          text: 'Geometria',
-          count: '',
-          price: '',
-        },
-        fuelFilter: {
-          isChecked: false,
-          text: 'Wymiana filtra paliwa',
-          count: '',
-          price: '',
-        },
+        brakePads: {},
+        brakeDiscs: {},
+        shockAbsorbers: {},
+        geometry: {},
+        fuelFilter: {},
       },
       inspection: {
-        oil: {
-          isChecked: false,
-          text: 'Wymiana oleju silnikowego',
-          count: '',
-          price: '',
-        },
-        oilFilter: {
-          isChecked: false,
-          text: 'Wymiana filtra oleju',
-          count: '',
-          price: '',
-        },
-        airFilter: {
-          isChecked: false,
-          text: 'Wymiana filtra powietrza',
-          count: '',
-          price: '',
-        },
-        interiorFilter: {
-          isChecked: false,
-          text: 'Wymiana filtra kabiny',
-          count: '',
-          price: '',
-        },
-        airco: {
-          isChecked: false,
-          text: 'Klimatyzacja',
-          count: '',
-          price: '',
-          isCleaning: false,
-          isFilter: false,
-          isFilling: false,
-        },
-        other: {
-          isChecked: false,
-          text: 'Inne',
-          count: '',
-          price: '',
-          extraInfo: '',
-        },
+        oil: {},
+        oilFilter: {},
+        airFilter: {},
+        interiorFilter: {},
+        airco: {},
+        other: {},
       },
-      saleDocument: 'aa',
-      signature: {
-        employee: null,
-        client: null,
-      },
+      signature: {},
     },
     rules: {
       required: rules.required,
@@ -1116,53 +875,10 @@ export default {
     },
   }),
   created() {
-    this.item = this.newItem;
+
   },
   methods: {
-    async save() {
-      const vm = this;
 
-      //validation
-      const v1 = vm.$refs.form.validate();
-      const v2 = vm.$refs.employeeSignature.validate();
-      const v3 = vm.$refs.clientSignature.validate();
-      if (!v1 || !v2 || !v3) {
-        this.$nextTick(() => {
-          const el = this.$el.querySelector('.v-messages.error--text:first-of-type');
-
-          this.$vuetify.goTo(el, { offset: 60 });
-        });
-
-        return;
-      }
-
-      try {
-        vm.$emit('isProcessing', true);
-
-        console.log(this.item.inspectedTires);
-
-        vm.item.signature.employee = vm.$refs.employeeSignature.getImageData();
-        vm.item.signature.client = vm.$refs.clientSignature.getImageData();
-
-        const response = await carsService.create(vm.item);
-
-        if (response.data.result) {
-          vm.$emit('isProcessing', false);
-          vm.$emit('showMessage', 'Zlecenie osobowe', 'Zlecenie zapisane');
-          vm.resetForm();
-          vm.$vuetify.goTo(0);
-
-          return;
-        }
-
-        vm.$emit('showMessage', 'Zlecenie osobowe', 'Nieudany zapis');
-      }
-      catch (error) {
-        vm.showError(error);
-      }
-
-      vm.$emit('isProcessing', false);
-    },
     showError(error) {
       console.log(error);
       this.$emit('isProcessing', false);
@@ -1175,25 +891,7 @@ export default {
       console.log(error.response.data);
       this.$emit('showMessage', 'Zlecenie osobowe', error.response.data.message);
     },
-    resetForm() {
-      const vm = this;
 
-      vm.item = vm.newItem;
-
-      vm.$refs.employeeSignature.resetCanvas();
-      vm.$refs.clientSignature.resetCanvas();
-      vm.$refs.form.reset();
-    },
-    addArrayObject(item, array, maxCount, newItem) {
-      //check if last item in array
-      const index = array.indexOf(item);
-      if (array.length >= maxCount || index < array.length - 1) {
-        return;
-      }
-
-      //add new item
-      array.push(newItem);
-    },
   },
   watch: {
     'api.searchInput': debounce(async function searchInput(val) {
