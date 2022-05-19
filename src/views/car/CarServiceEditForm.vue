@@ -67,40 +67,40 @@
               <!-- Name -->
               <v-col cols="6" sm="4" md="3" lg="2">
                 <v-text-field
-                  ref="firstControl"
+                  :rules="[rules.required]"
                   v-model.lazy="item.client.name"
                   label="Imię i Nazwisko"
                   type="input"
                   class="text_ellipsis"
                   hide-details="auto"
                   validate-on-blur
-                  :rules="[rules.required]"/>
+                  />
               </v-col>
               <!-- Phone number -->
               <v-col cols="6" sm="8" md="3" lg="2" class="pl-2">
                 <v-combobox
-                  v-model="item.client.phoneNumber"
                   :items="api.values"
                   :loading="api.isLoading"
+                  :rules="[rules.required]"
                   :search-input.sync="api.searchInput"
+                  v-model="item.client.phoneNumber"
                   hide-no-data
                   hide-selected
                   no-filter
                   type="input"
-                  label="Telefon kontaktowy"
-                  :rules="[rules.required]"/>
+                  label="Telefon kontaktowy"/>
               </v-col>
               <!-- Description -->
               <v-col
                 cols="12" md="6" lg="8"
                 :class="$vuetify.breakpoint.mdAndUp ? 'pl-2' : 'mt-2'">
                 <v-text-field
+                  :rules="[rules.required]"
                   v-model.lazy="item.description"
                   label="Cel wizyty"
                   type="input"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
             </v-row>
           </v-col>
@@ -125,24 +125,24 @@
             <v-row class="no-gutters">
               <v-col cols="12" sm="4" md="3" lg="2">
                 <v-text-field
+                  :rules="[rules.required]"
                   v-model.lazy="item.vehicle.name"
                   label="Marka pojazdu"
                   type="input"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
               <!-- Registration number -->
               <v-col
                 cols="6" sm="4" md="3" lg="2"
                 :class="$vuetify.breakpoint.smAndUp ? 'pl-2' : 'mt-2'">
                 <v-text-field
+                  :rules="[rules.required]"
                   v-model.lazy="item.vehicle.registrationNumber"
                   label="Numer rejestracyjny"
                   type="input"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
               <!-- Vehicle type -->
               <v-col
@@ -162,13 +162,13 @@
                 cols="12" md="3" lg="6"
                 :class="$vuetify.breakpoint.mdAndUp ? 'pl-2' : 'mt-2'">
                 <v-text-field
+                  :rules="[rules.integer, rules.required]"
                   v-model.number="item.vehicle.mileage"
                   label="Przebieg"
                   type="number"
                   hide-spin-buttons
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.integer, rules.required]"/>
+                  validate-on-blur/>
               </v-col>
             </v-row>
           </v-col>
@@ -207,8 +207,8 @@
               <!-- Incorrect tire wear -->
               <v-col cols="6" sm="4" md="3" lg="2">
                 <v-select
-                  v-model="item.incorrectTireWearLocation"
                   :items="axleLocationItems"
+                  v-model="item.incorrectTireWearLocation"
                   item-value="id"
                   hide-details="auto"
                   label="Nieprawidłowe zużycie opon"/>
@@ -216,8 +216,8 @@
               <!-- Geometry -->
               <v-col class="pl-2">
                 <v-select
-                  v-model="item.isGeometryRequired"
                   :items="boolItems"
+                  v-model="item.isGeometryRequired"
                   item-value="id"
                   hide-details="auto"
                   label="Konieczna geometria"/>
@@ -261,8 +261,8 @@
               <!-- Change -->
               <v-col>
                 <v-select
-                  v-model="item.tireChange"
                   :items="tireChangeItems"
+                  v-model="item.tireChange"
                   item-value="id"
                   hide-details="auto"
                   label="Wymiana"/>
@@ -312,34 +312,34 @@
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
+                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   v-model="item.deposit.isAlloys"
                   label="Koła alu"
                   hide-details
-                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   class="shrink mt-0"/>
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
+                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   v-model="item.deposit.isSteels"
                   label="Koła stalowe"
                   hide-details
-                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   class="shrink mt-0"/>
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
+                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   v-model="item.deposit.isScrews"
                   label="Śruby"
                   hide-details
-                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   class="shrink mt-0"/>
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
+                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   v-model="item.deposit.isHubcups"
                   label="Kołpaki"
                   hide-details
-                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   class="shrink mt-0"/>
               </v-col>
             </v-row>
@@ -376,7 +376,6 @@
             <v-row class="no-gutters mt-2">
               <v-col>
                 <v-text-field
-                  ref="firstControl"
                   v-model.lazy="item.depositTiresLocation"
                   label="Położenie opon"
                   type="input"
@@ -461,18 +460,18 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 110%'">
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.actions.wheelBalancing.isSteel"
                       label="Stal"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.actions.wheelBalancing.isAlloy"
                       label="Alu"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                 </v-row>
@@ -487,18 +486,18 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 110%'">
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.actions.rimStraightening.isSteel"
                       label="Stal"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.actions.rimStraightening.isAlloy"
                       label="Alu"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                 </v-row>
@@ -541,18 +540,18 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 130%'">
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.brakePads.isFront"
                       label="Przód"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.brakePads.isRear"
                       label="Tył"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                 </v-row>
@@ -561,23 +560,23 @@
             <service-action :item="item.fastFit.brakeDiscs">
               <template v-slot:extra-info>
                 <v-row
+                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 130%'"
                   class="no-gutters mr-4"
-                  justify="end"
-                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 130%'">
+                  justify="end">
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.brakeDiscs.isFront"
                       label="Przód"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.brakeDiscs.isRear"
                       label="Tył"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                 </v-row>
@@ -591,18 +590,18 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 180%'">
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.shockAbsorbers.isFront"
                       label="Przód"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.shockAbsorbers.isRear"
                       label="Tył"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                 </v-row>
@@ -640,26 +639,26 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 50%'">
                   <v-col cols="12" sm="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.inspection.airco.isCleaning"
                       label="Czyszczenie"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                   <v-col cols="12" sm="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.inspection.airco.isFilter"
                       label="Filtr"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                   <v-col cols="12" sm="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.inspection.airco.isFilling"
                       label="Napełnianie"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                 </v-row>
@@ -668,12 +667,12 @@
             <service-action :item="item.inspection.other">
               <template v-slot:extra-info>
                 <v-textarea
+                  v-model.lazy="item.inspection.other.extraInfo"
                   label=""
                   hide-details="auto"
                   validate-on-blur
                   auto-grow
-                  rows="1"
-                  v-model.lazy="item.inspection.other.extraInfo"/>
+                  rows="1"/>
               </template>
             </service-action>
           </v-col>
@@ -746,13 +745,13 @@
             <v-row class="no-gutters">
               <v-col>
                 <v-text-field
+                  :rules="[rules.required]"
                   v-model.lazy="item.saleDocument"
                   label="Numer dokumentu"
                   type="input"
                   class="text_ellipsis"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
             </v-row>
           </v-col>

@@ -67,7 +67,6 @@
               <!-- Company -->
               <v-col cols="6" sm="4" md="3" lg="2">
                 <v-text-field
-                  ref="firstControl"
                   v-model.lazy.trim="item.company.name"
                   label="Firma"
                   type="input"

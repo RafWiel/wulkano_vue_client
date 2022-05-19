@@ -67,28 +67,22 @@
               <!-- Name -->
               <v-col cols="6" sm="4" md="3" lg="2">
                 <v-text-field
-                  ref="firstControl"
                   v-model.lazy="item.client.name"
                   label="Imię i Nazwisko"
                   type="input"
                   class="text_ellipsis"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
               <!-- Phone number -->
               <v-col cols="6" sm="8" md="3" lg="2" class="pl-2">
-                <v-combobox
+               <v-text-field
                   v-model="item.client.phoneNumber"
-                  :items="api.values"
-                  :loading="api.isLoading"
-                  :search-input.sync="api.searchInput"
-                  hide-no-data
-                  hide-selected
-                  no-filter
-                  type="input"
                   label="Telefon kontaktowy"
-                  :rules="[rules.required]"/>
+                  type="input"
+                  class="text_ellipsis"
+                  hide-details
+                  readonly/>
               </v-col>
               <!-- Description -->
               <v-col
@@ -99,8 +93,7 @@
                   label="Cel wizyty"
                   type="input"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
             </v-row>
           </v-col>
@@ -129,8 +122,7 @@
                   label="Marka pojazdu"
                   type="input"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
               <!-- Registration number -->
               <v-col
@@ -141,21 +133,19 @@
                   label="Numer rejestracyjny"
                   type="input"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
               <!-- Vehicle type -->
               <v-col
                 cols="6" sm="4" md="3" lg="2"
                 class="pl-2"
                 :class="$vuetify.breakpoint.smAndUp ? '' : 'mt-2'">
-                <v-select
-                  :items="vehicleTypeItems"
-                  :rules="[rules.required]"
+                <v-text-field
                   v-model="item.vehicle.type"
-                  item-value="id"
-                  hide-details="auto"
-                  label="Typ pojazdu"/>
+                  label="Typ pojazdu"
+                  type="input"
+                  hide-details
+                  readonly/>
               </v-col>
               <!-- Mileage -->
               <v-col
@@ -167,8 +157,7 @@
                   type="number"
                   hide-spin-buttons
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.integer, rules.required]"/>
+                  validate-on-blur/>
               </v-col>
             </v-row>
           </v-col>
@@ -195,32 +184,26 @@
               :key="index">
               <tire-measurement-info
                 :item="tire"
-                @change="addArrayObject(tire, item.inspectedTires, 5, {
-                  width: '',
-                  profile: '',
-                  diameter: '',
-                  pressure: '',
-                  tread: '' })"
-                />
+                :isReadonly="true"/>
             </div>
             <v-row class="no-gutters mt-4">
               <!-- Incorrect tire wear -->
               <v-col cols="6" sm="4" md="3" lg="2">
-                <v-select
+                <v-text-field
                   v-model="item.incorrectTireWearLocation"
-                  :items="axleLocationItems"
-                  item-value="id"
-                  hide-details="auto"
-                  label="Nieprawidłowe zużycie opon"/>
+                  label="Nieprawidłowe zużycie opon"
+                  type="input"
+                  hide-details
+                  readonly/>
               </v-col>
               <!-- Geometry -->
               <v-col class="pl-2">
-                <v-select
+                <v-text-field
                   v-model="item.isGeometryRequired"
-                  :items="boolItems"
-                  item-value="id"
-                  hide-details="auto"
-                  label="Konieczna geometria"/>
+                  label="Konieczna geometria"
+                  type="input"
+                  hide-details
+                  readonly/>
               </v-col>
             </v-row>
           </v-col>
@@ -247,25 +230,17 @@
               <tire-brand-info
                 :item="tire"
                 :isValidation="item.installedTires.length == 1 || index < item.installedTires.length - 1"
-                @change="addArrayObject(tire, item.installedTires, 4, {
-                  width: '',
-                  profile: '',
-                  diameter: '',
-                  brand: '',
-                  tread: '',
-                  serial: ''
-                })"
-              class="mt-2"/>
+                class="mt-2"/>
             </div>
             <v-row class="no-gutters mt-4">
               <!-- Change -->
               <v-col>
-                <v-select
+                <v-text-field
                   v-model="item.tireChange"
-                  :items="tireChangeItems"
-                  item-value="id"
-                  hide-details="auto"
-                  label="Wymiana"/>
+                  label="Wymiana"
+                  type="input"
+                  hide-details
+                  readonly/>
               </v-col>
             </v-row>
           </v-col>
@@ -291,15 +266,6 @@
               :key="index">
               <tire-info
                 :item="tire"
-                @change="addArrayObject(tire, item.depositTires, 5, {
-                  width: '',
-                  profile: '',
-                  diameter: '',
-                  dot: '',
-                  brand: '',
-                  tread: '',
-                  note: ''
-                }); isDepositLocationCardVisible = true;"
                 class="mt-2"/>
             </div>
             <v-row class="no-gutters mt-4">
@@ -312,34 +278,34 @@
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
+                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   v-model="item.deposit.isAlloys"
                   label="Koła alu"
                   hide-details
-                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   class="shrink mt-0"/>
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
+                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   v-model="item.deposit.isSteels"
                   label="Koła stalowe"
                   hide-details
-                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   class="shrink mt-0"/>
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
+                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   v-model="item.deposit.isScrews"
                   label="Śruby"
                   hide-details
-                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   class="shrink mt-0"/>
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
+                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   v-model="item.deposit.isHubcups"
                   label="Kołpaki"
                   hide-details
-                  :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   class="shrink mt-0"/>
               </v-col>
             </v-row>
@@ -376,7 +342,6 @@
             <v-row class="no-gutters mt-2">
               <v-col>
                 <v-text-field
-                  ref="firstControl"
                   v-model.lazy="item.depositTiresLocation"
                   label="Położenie opon"
                   type="input"
@@ -461,18 +426,18 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 110%'">
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.actions.wheelBalancing.isSteel"
                       label="Stal"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.actions.wheelBalancing.isAlloy"
                       label="Alu"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                 </v-row>
@@ -487,18 +452,18 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 110%'">
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.actions.rimStraightening.isSteel"
                       label="Stal"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.actions.rimStraightening.isAlloy"
                       label="Alu"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                 </v-row>
@@ -541,18 +506,18 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 130%'">
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.brakePads.isFront"
                       label="Przód"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.brakePads.isRear"
                       label="Tył"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                 </v-row>
@@ -566,18 +531,18 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 130%'">
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.brakeDiscs.isFront"
                       label="Przód"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.brakeDiscs.isRear"
                       label="Tył"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                 </v-row>
@@ -586,23 +551,23 @@
             <service-action :item="item.fastFit.shockAbsorbers">
               <template v-slot:extra-info>
                 <v-row
+                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 180%'"
                   class="no-gutters mr-4"
-                  justify="end"
-                  :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 180%'">
+                  justify="end">
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.shockAbsorbers.isFront"
                       label="Przód"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.shockAbsorbers.isRear"
                       label="Tył"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                 </v-row>
@@ -640,26 +605,26 @@
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 50%'">
                   <v-col cols="12" sm="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.inspection.airco.isCleaning"
                       label="Czyszczenie"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                   <v-col cols="12" sm="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.inspection.airco.isFilter"
                       label="Filtr"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                   <v-col cols="12" sm="auto">
                     <v-checkbox
+                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.inspection.airco.isFilling"
                       label="Napełnianie"
                       hide-details
-                      :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       class="shrink mt-4"/>
                   </v-col>
                 </v-row>
@@ -757,8 +722,7 @@
                   type="input"
                   class="text_ellipsis"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
             </v-row>
           </v-col>
@@ -780,7 +744,6 @@
 <script>
 import debounce from 'lodash.debounce';
 import moment from 'moment';
-import rules from '@/misc/rules';
 import axleLocation from '@/enums/axleLocation';
 import bool from '@/enums/bool';
 import tireChangeType from '@/enums/car/tireChangeType';
@@ -864,18 +827,61 @@ export default {
       },
       signature: {},
     },
-    rules: {
-      required: rules.required,
-      integer: rules.integer,
+    visualInspectionText: {
+      brakePads: {
+        front: { text: 'Klocki hamulcowe - Przód' },
+        rear: { text: 'Klocki hamulcowe - Tył' },
+      },
+      brakeDiscs: {
+        front: { text: 'Tarcze hamulcowe - Przód' },
+        rear: { text: 'Tarcze hamulcowe - Tył' },
+      },
+      shockAbsorbers: { text: 'Amortyzatory' },
+      suspension: { text: 'Zawieszenie' },
+      airco: { text: 'Klimatyzacja' },
+      oil: { text: 'Poziom oleju w silniku' },
+      lights: { text: 'Światła' },
+      washingFluid: { text: 'Płyn do spryskiwaczy' },
+      brakeFluid: { text: 'Płyn hamulcowy' },
+      coolingFluid: { text: 'Płyn chłodzący' },
+      wipers: { text: 'Pióra wycieraczek' },
+      other: { text: 'Inne' },
     },
-    api: {
-      searchInput: null,
-      values: [],
-      isLoading: false,
+    actionsText: {
+      tiresInspection: { text: 'Inspekcja stanu ogumienia' },
+      pressureRegulation: { text: 'Regulacja ciśnienia' },
+      wheelWashing: { text: 'Mycie koła' },
+      wheelUnscrewing: { text: 'Odkręcanie koła' },
+      tireInstallation: { text: 'Demontaż / montaż opony' },
+      wheelBalancing: { text: 'Wyważanie' },
+      wheelWeights: { text: 'Ciężarki' },
+      wheelCentering: { text: 'Centrowanie koła' },
+      pinsCleaning: { text: 'Czyszczenie / smarowanie szpilek' },
+      tighteningWithTorqueWrench: { text: 'Dokręcanie kluczem dynamometrycznym' },
+      handingOverTighteningCard: { text: 'Przekazanie karty dokręceń' },
+      pumping: { text: 'Pompowanie' },
+      valveChange: { text: 'Montaż / wymiana zaworu' },
+      extensionInstallation: { text: 'Montaż przedłużki' },
+      deepening: { text: 'Pogłębianie' },
+      coldHotRepair: { text: 'Naprawa na zimno / gorąco' },
+      utilization: { text: 'Utylizacja' },
+      driveToClient: { text: 'Dojazd' },
+      other: { text: 'Inne' },
     },
+    employeeSignature: '',
+    clientSignature: '',
   }),
   created() {
-
+    // copy visual inspection text
+    Object.entries(this.visualInspectionText).forEach(([key, value]) => {
+      this.item.visualInspection[key].text = value.text;
+    });
+    Object.entries(this.visualInspectionText.brakePads).forEach(([key, value]) => {
+      this.item.visualInspection.brakePads[key].text = value.text;
+    });
+    Object.entries(this.visualInspectionText.brakeDiscs).forEach(([key, value]) => {
+      this.item.visualInspection.brakeDiscs[key].text = value.text;
+    });
   },
   methods: {
 
