@@ -31,7 +31,7 @@
                 md="4"
                 class="text-center">
                 <p class="white--text text-h4 ma-0 semibold">
-                  {{ item.orderNumber }}
+                  {{ item.requestName }}
                 </p>
               </v-col>
               <v-col
@@ -827,8 +827,7 @@ export default {
     vehicleTypeItems: vehicleType.items,
     item: null,
     newItem: {
-      id: 1,
-      orderNumber: 'Nowe zlecenie',
+      requestName: 'Nowe zlecenie',
       date: new Date(),
       client: {
         name: 'aa',
@@ -896,7 +895,7 @@ export default {
         isAlloys: false,
         isSteels: false,
         isScrews: false,
-        isHubcubs: false,
+        isHubcups: false,
       },
       depositTiresNote: '',
       depositTiresLocation: '',
@@ -1138,7 +1137,7 @@ export default {
       try {
         vm.$emit('isProcessing', true);
 
-        console.log(this.item.inspectedTires);
+        console.log(JSON.stringify(this.item));
 
         vm.item.signature.employee = vm.$refs.employeeSignature.getImageData();
         vm.item.signature.client = vm.$refs.clientSignature.getImageData();

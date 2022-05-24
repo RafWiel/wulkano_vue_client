@@ -46,7 +46,7 @@
     <v-col md="1" class="pl-2">
       <v-text-field
         :readonly="isReadonly"
-        v-model.lazy.trim="item.DOT"
+        v-model.lazy.trim="item.dot"
         label="DOT"
         type="input"
         hide-details="auto"

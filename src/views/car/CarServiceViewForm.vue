@@ -31,7 +31,7 @@
                 md="4"
                 class="text-center">
                 <p class="white--text text-h4 ma-0 semibold">
-                  {{ item.orderNumber }}
+                  {{ item.requestName }}
                 </p>
               </v-col>
               <v-col
@@ -325,7 +325,6 @@
       </v-card>
       <!-- Location -->
       <v-card
-        v-if="isDepositLocationCardVisible"
         flat
         :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
         <v-row class="no-gutters">
@@ -753,11 +752,13 @@ import TireBrandInfo from '@/components/car/TireBrandInfo.vue';
 import TireInfo from '@/components/deposit/TireInfo.vue';
 import VisualInspection from '@/components/car/VisualInspection.vue';
 import ServiceAction from '@/components/car/ServiceAction.vue';
-//import carsService from '@/services/cars';
+import carsService from '@/services/cars';
 import clientsService from '@/services/clients';
+import signaturesService from '@/services/signatures';
 
 export default {
   name: 'CarServiceViewForm',
+  props: { id: [String, Number] },
   components: {
     TireMeasurementInfo,
     TireBrandInfo,
@@ -771,11 +772,6 @@ export default {
     },
   },
   data: () => ({
-    isDepositLocationCardVisible: false,
-    axleLocationItems: axleLocation.items,
-    boolItems: bool.items,
-    tireChangeItems: tireChangeType.items,
-    vehicleTypeItems: vehicleType.items,
     item: {
       client: {},
       vehicle: {},
@@ -848,43 +844,113 @@ export default {
       other: { text: 'Inne' },
     },
     actionsText: {
-      tiresInspection: { text: 'Inspekcja stanu ogumienia' },
-      pressureRegulation: { text: 'Regulacja ciśnienia' },
-      wheelWashing: { text: 'Mycie koła' },
-      wheelUnscrewing: { text: 'Odkręcanie koła' },
-      tireInstallation: { text: 'Demontaż / montaż opony' },
+      screwing: { text: 'Odkręcenie / Przykręcenie' },
+      installation: { text: 'Montaż / Demontaż' },
       wheelBalancing: { text: 'Wyważanie' },
-      wheelWeights: { text: 'Ciężarki' },
-      wheelCentering: { text: 'Centrowanie koła' },
-      pinsCleaning: { text: 'Czyszczenie / smarowanie szpilek' },
-      tighteningWithTorqueWrench: { text: 'Dokręcanie kluczem dynamometrycznym' },
-      handingOverTighteningCard: { text: 'Przekazanie karty dokręceń' },
-      pumping: { text: 'Pompowanie' },
-      valveChange: { text: 'Montaż / wymiana zaworu' },
-      extensionInstallation: { text: 'Montaż przedłużki' },
-      deepening: { text: 'Pogłębianie' },
-      coldHotRepair: { text: 'Naprawa na zimno / gorąco' },
-      utilization: { text: 'Utylizacja' },
-      driveToClient: { text: 'Dojazd' },
+      tireRepair: { text: 'Naprawa opony' },
+      rimStraightening: { text: 'Prostowanie felgi' },
+      airValve: { text: 'Zawór do felg' },
+      nitrogenFill: { text: 'Napełnianie azotem' },
+      utilization: { text: 'Utylizacja opony' },
+    },
+    fastFitText: {
+      brakePads: { text: 'Montaż klocków' },
+      brakeDiscs: { text: 'Montaż tarcz' },
+      shockAbsorbers: { text: 'Montaż amortyzatorów' },
+      geometry: { text: 'Geometria' },
+      fuelFilter: { text: 'Wymiana filtra paliwa' },
+    },
+    inspectionText: {
+      oil: { text: 'Wymiana oleju silnikowego' },
+      oilFilter: { text: 'Wymiana filtra oleju' },
+      airFilter: { text: 'Wymiana filtra powietrza' },
+      interiorFilter: { text: 'Wymiana filtra kabiny' },
+      airco: { text: 'Klimatyzacja' },
       other: { text: 'Inne' },
     },
     employeeSignature: '',
     clientSignature: '',
   }),
   created() {
-    // copy visual inspection text
-    Object.entries(this.visualInspectionText).forEach(([key, value]) => {
-      this.item.visualInspection[key].text = value.text;
-    });
-    Object.entries(this.visualInspectionText.brakePads).forEach(([key, value]) => {
-      this.item.visualInspection.brakePads[key].text = value.text;
-    });
-    Object.entries(this.visualInspectionText.brakeDiscs).forEach(([key, value]) => {
-      this.item.visualInspection.brakeDiscs[key].text = value.text;
-    });
+    this.copyText();
+  },
+  mounted() {
+    this.fetch();
   },
   methods: {
+    fetch() {
+      // set loading icon
+      this.$emit('isProcessing', true);
 
+      // get item
+      carsService.getOne(this.id)
+      .then((response) => {
+        this.item = response.data.item;
+
+        console.log(JSON.stringify(this.item));
+
+        this.item.client = this.item.client || {};
+        this.item.date = moment(this.item.date, 'YYYY-MM-DD hh:mm:ss.SSS Z').format('YYYY-MM-DD HH:mm');
+        this.item.vehicle.type = vehicleType.getText(this.item.vehicle.type);
+        this.item.incorrectTireWearLocation = axleLocation.getText(this.item.incorrectTireWearLocation);
+        this.item.isGeometryRequired = bool.getText(this.item.isGeometryRequired);
+        this.item.tireChange = tireChangeType.getText(this.item.tireChange);
+        this.copyText();
+
+        //get employee signature
+        signaturesService.get({
+          dir: this.item.directoryId,
+          sig: this.item.employeeSignatureFileName,
+        })
+        .then((res) => {
+          this.employeeSignature = `data:image/png;base64,${res.data}`;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+        //get client signature
+        signaturesService.get({
+          dir: this.item.directoryId,
+          sig: this.item.clientSignatureFileName,
+        })
+        .then((res) => {
+          this.clientSignature = `data:image/png;base64,${res.data}`;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      })
+      .catch((error) => {
+        this.showError(error);
+      });
+
+      this.$emit('isProcessing', false);
+    },
+    copyText() {
+      // copy visual inspection text
+      Object.entries(this.visualInspectionText).forEach(([key, value]) => {
+        this.item.visualInspection[key].text = value.text;
+      });
+      Object.entries(this.visualInspectionText.brakePads).forEach(([key, value]) => {
+        this.item.visualInspection.brakePads[key].text = value.text;
+      });
+      Object.entries(this.visualInspectionText.brakeDiscs).forEach(([key, value]) => {
+        this.item.visualInspection.brakeDiscs[key].text = value.text;
+      });
+      // copy actions text
+      Object.entries(this.actionsText).forEach(([key, value]) => {
+        this.item.actions[key].text = value.text;
+      });
+      // copy fast fit text
+      Object.entries(this.fastFitText).forEach(([key, value]) => {
+        this.item.fastFit[key].text = value.text;
+      });
+      // copy inspection text
+      Object.entries(this.inspectionText).forEach(([key, value]) => {
+        this.item.inspection[key].text = value.text;
+      });
+    },
     showError(error) {
       console.log(error);
       this.$emit('isProcessing', false);
@@ -897,7 +963,6 @@ export default {
       console.log(error.response.data);
       this.$emit('showMessage', 'Zlecenie osobowe', error.response.data.message);
     },
-
   },
   watch: {
     'api.searchInput': debounce(async function searchInput(val) {

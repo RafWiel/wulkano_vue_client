@@ -36,9 +36,10 @@ const routes = [
     },
   },
   {
-    path: '/service/car/',
+    path: '/service/car/:id',
     name: 'CarServiceViewForm',
     component: CarServiceViewForm,
+    props: true,
     meta: {
       isBackButton: true,
     },
