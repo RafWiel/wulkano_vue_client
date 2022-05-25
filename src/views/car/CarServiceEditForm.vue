@@ -195,6 +195,7 @@
               :key="index">
               <tire-measurement-info
                 :item="tire"
+                :isValidation="item.inspectedTires.length == 1 || index < item.inspectedTires.length - 1"
                 @change="addArrayObject(tire, item.inspectedTires, 5, {
                   width: '',
                   profile: '',
@@ -291,6 +292,7 @@
               :key="index">
               <tire-info
                 :item="tire"
+                :isValidation="item.depositTires.length == 1 || index < item.depositTires.length - 1"
                 @change="addArrayObject(tire, item.depositTires, 5, {
                   width: '',
                   profile: '',

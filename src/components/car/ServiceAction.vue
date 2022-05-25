@@ -3,6 +3,7 @@
     <v-col cols="9" md="6" lg="4">
       <div class="inline" >
         <v-checkbox
+          :readonly="isReadonly"
           v-model="item.isChecked"
           hide-details
           class="shrink"/>
@@ -14,6 +15,7 @@
     </v-col>
     <v-col cols="1">
       <v-text-field
+        :readonly="isReadonly"
         v-model.lazy.trim="item.count"
         label="Ilość"
         type="number"
@@ -23,6 +25,7 @@
     </v-col>
     <v-col cols="2" md="5" lg="7">
       <v-text-field
+        :readonly="isReadonly"
         v-model.lazy.trim="item.price"
         label="Cena"
         hide-details
@@ -37,6 +40,7 @@ export default
   name: 'ServiceAction',
   props: {
     item: Object,
+    isReadonly: Boolean,
   },
 };
 </script>

@@ -9,7 +9,9 @@
       </div>
     </v-col>
     <v-col cols="4" sm="3" md="3" lg="3" class="pl-2">
-      <three-state-control v-model="item.status"/>
+      <three-state-control
+        :isReadonly="isReadonly"
+        v-model="item.status"/>
     </v-col>
   </v-row>
 </template>
@@ -21,8 +23,13 @@ export default
   name: 'VisualInspection',
   props: {
     item: Object,
+    isReadonly: Boolean,
   },
   components: { ThreeStateControl },
+  mounted() {
+    console.log('text', this.item.text);
+    console.log('status', this.item.status);
+  },
 };
 </script>
 

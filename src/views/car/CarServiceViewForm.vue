@@ -71,8 +71,8 @@
                   label="Imię i Nazwisko"
                   type="input"
                   class="text_ellipsis"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
               <!-- Phone number -->
               <v-col cols="6" sm="8" md="3" lg="2" class="pl-2">
@@ -92,8 +92,8 @@
                   v-model.lazy="item.description"
                   label="Cel wizyty"
                   type="input"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
             </v-row>
           </v-col>
@@ -121,8 +121,8 @@
                   v-model.lazy="item.vehicle.name"
                   label="Marka pojazdu"
                   type="input"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
               <!-- Registration number -->
               <v-col
@@ -132,8 +132,8 @@
                   v-model.lazy="item.vehicle.registrationNumber"
                   label="Numer rejestracyjny"
                   type="input"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
               <!-- Vehicle type -->
               <v-col
@@ -156,8 +156,8 @@
                   label="Przebieg"
                   type="number"
                   hide-spin-buttons
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
             </v-row>
           </v-col>
@@ -229,7 +229,7 @@
               :key="index">
               <tire-brand-info
                 :item="tire"
-                :isValidation="item.installedTires.length == 1 || index < item.installedTires.length - 1"
+                :isReadonly="true"
                 class="mt-2"/>
             </div>
             <v-row class="no-gutters mt-4">
@@ -266,6 +266,7 @@
               :key="index">
               <tire-info
                 :item="tire"
+                :isReadonly="true"
                 class="mt-2"/>
             </div>
             <v-row class="no-gutters mt-4">
@@ -273,51 +274,56 @@
                 <v-checkbox
                   v-model="item.deposit.isTires"
                   label="Opony"
+                  class="shrink mt-0"
                   hide-details
-                  class="shrink mt-0"/>
+                  readonly/>
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   v-model="item.deposit.isAlloys"
                   label="Koła alu"
+                  class="shrink mt-0"
                   hide-details
-                  class="shrink mt-0"/>
+                  readonly/>
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   v-model="item.deposit.isSteels"
                   label="Koła stalowe"
+                  class="shrink mt-0"
                   hide-details
-                  class="shrink mt-0"/>
+                  readonly/>
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   v-model="item.deposit.isScrews"
                   label="Śruby"
+                  class="shrink mt-0"
                   hide-details
-                  class="shrink mt-0"/>
+                  readonly/>
               </v-col>
               <v-col cols="12" sm="auto">
                 <v-checkbox
                   :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : ''"
                   v-model="item.deposit.isHubcups"
                   label="Kołpaki"
+                  class="shrink mt-0"
                   hide-details
-                  class="shrink mt-0"/>
+                  readonly/>
               </v-col>
             </v-row>
             <v-row class="no-gutters mt-2">
               <v-col>
                 <v-textarea
+                  v-model.lazy="item.depositTiresNote"
                   label="Uwagi"
-                  hide-details="auto"
-                  validate-on-blur
                   auto-grow
                   rows="1"
-                  v-model.lazy="item.depositTiresNote"/>
+                  hide-details
+                  readonly/>
               </v-col>
             </v-row>
           </v-col>
@@ -345,8 +351,8 @@
                   label="Położenie opon"
                   type="input"
                   class="text_ellipsis"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
             </v-row>
           </v-col>
@@ -370,28 +376,57 @@
             <!-- Visual inspection -->
             <v-row class="no-gutters">
               <v-col cols="12" md="6" lg="4">
-                <visual-inspection :item="item.visualInspection.brakePads.front"/>
-                <visual-inspection :item="item.visualInspection.brakePads.rear"/>
-                <visual-inspection :item="item.visualInspection.brakeDiscs.front"/>
-                <visual-inspection :item="item.visualInspection.brakeDiscs.rear"/>
-                <visual-inspection :item="item.visualInspection.shockAbsorbers"/>
-                <visual-inspection :item="item.visualInspection.suspension"/>
-                <visual-inspection :item="item.visualInspection.airco"/>
+                <visual-inspection
+                  :item="item.visualInspection.brakePads.front"
+                  :isReadonly="true"/>
+                <visual-inspection
+                  :item="item.visualInspection.brakePads.rear"
+                  :isReadonly="true"/>
+                <visual-inspection
+                  :item="item.visualInspection.brakeDiscs.front"
+                  :isReadonly="true"/>
+                <visual-inspection
+                  :item="item.visualInspection.brakeDiscs.rear"
+                  :isReadonly="true"/>
+                <visual-inspection
+                  :item="item.visualInspection.shockAbsorbers"
+                  :isReadonly="true"/>
+                <visual-inspection
+                  :item="item.visualInspection.suspension"
+                  :isReadonly="true"/>
+                <visual-inspection
+                  :item="item.visualInspection.airco"
+                  :isReadonly="true"/>
               </v-col>
               <v-col cols="12" md="6" lg="4">
-                <visual-inspection :item="item.visualInspection.oil"/>
-                <visual-inspection :item="item.visualInspection.lights"/>
-                <visual-inspection :item="item.visualInspection.washingFluid"/>
-                <visual-inspection :item="item.visualInspection.brakeFluid"/>
-                <visual-inspection :item="item.visualInspection.coolingFluid"/>
-                <visual-inspection :item="item.visualInspection.wipers"/>
-                <visual-inspection :item="item.visualInspection.other">
+                <visual-inspection
+                  :item="item.visualInspection.oil"
+                  :isReadonly="true"/>
+                <visual-inspection
+                  :item="item.visualInspection.lights"
+                  :isReadonly="true"/>
+                <visual-inspection
+                  :item="item.visualInspection.washingFluid"
+                  :isReadonly="true"/>
+                <visual-inspection
+                  :item="item.visualInspection.brakeFluid"
+                  :isReadonly="true"/>
+                <visual-inspection
+                  :item="item.visualInspection.coolingFluid"
+                  :isReadonly="true"/>
+                <visual-inspection
+                  :item="item.visualInspection.wipers"
+                  :isReadonly="true"/>
+                <visual-inspection
+                  :item="item.visualInspection.other"
+                  :isReadonly="true">
                   <template v-slot:extra-info>
                     <v-text-field
                       v-model.lazy="item.visualInspection.other.extraInfo"
-                      hide-details
                       style="width:80%"
-                      label=""/>
+                      label=""
+                      hide-details
+                      readonly/>
                   </template>
                 </visual-inspection>
               </v-col>
@@ -415,9 +450,15 @@
               </v-col>
             </v-row>
             <!-- Actions -->
-            <service-action :item="item.actions.screwing"/>
-            <service-action :item="item.actions.installation"/>
-            <service-action :item="item.actions.wheelBalancing">
+            <service-action
+              :item="item.actions.screwing"
+              :isReadonly="true"/>
+            <service-action
+              :item="item.actions.installation"
+              :isReadonly="true"/>
+            <service-action
+              :item="item.actions.wheelBalancing"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-row
                   class="no-gutters mr-4"
@@ -428,22 +469,28 @@
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.actions.wheelBalancing.isSteel"
                       label="Stal"
+                      class="shrink mt-4"
                       hide-details
-                      class="shrink mt-4"/>
+                      readonly/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.actions.wheelBalancing.isAlloy"
                       label="Alu"
+                      class="shrink mt-4"
                       hide-details
-                      class="shrink mt-4"/>
+                      readonly/>
                   </v-col>
                 </v-row>
               </template>
             </service-action>
-            <service-action :item="item.actions.tireRepair"/>
-            <service-action :item="item.actions.rimStraightening">
+            <service-action
+              :item="item.actions.tireRepair"
+              :isReadonly="true"/>
+            <service-action
+              :item="item.actions.rimStraightening"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-row
                   class="no-gutters mr-4"
@@ -454,30 +501,39 @@
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.actions.rimStraightening.isSteel"
                       label="Stal"
+                      class="shrink mt-4"
                       hide-details
-                      class="shrink mt-4"/>
+                      readonly/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.actions.rimStraightening.isAlloy"
                       label="Alu"
+                      class="shrink mt-4"
                       hide-details
-                      class="shrink mt-4"/>
+                      readonly/>
                   </v-col>
                 </v-row>
               </template>
             </service-action>
-            <service-action :item="item.actions.airValve">
+            <service-action
+              :item="item.actions.airValve"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-text-field
                   v-model.lazy="item.actions.airValve.extraInfo"
+                  label=""
                   hide-details
-                  label=""/>
+                  readonly/>
               </template>
             </service-action>
-            <service-action :item="item.actions.nitrogenFill"/>
-            <service-action :item="item.actions.utilization"/>
+            <service-action
+              :item="item.actions.nitrogenFill"
+              :isReadonly="true"/>
+            <service-action
+              :item="item.actions.utilization"
+              :isReadonly="true"/>
           </v-col>
         </v-row>
       </v-card>
@@ -497,7 +553,9 @@
               </v-col>
             </v-row>
             <!-- Actions -->
-            <service-action :item="item.fastFit.brakePads">
+            <service-action
+              :item="item.fastFit.brakePads"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-row
                   class="no-gutters mr-4"
@@ -508,21 +566,25 @@
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.brakePads.isFront"
                       label="Przód"
+                      class="shrink mt-4"
                       hide-details
-                      class="shrink mt-4"/>
+                      readonly/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.brakePads.isRear"
                       label="Tył"
+                      class="shrink mt-4"
                       hide-details
-                      class="shrink mt-4"/>
+                      readonly/>
                   </v-col>
                 </v-row>
               </template>
             </service-action>
-            <service-action :item="item.fastFit.brakeDiscs">
+            <service-action
+              :item="item.fastFit.brakeDiscs"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-row
                   class="no-gutters mr-4"
@@ -533,21 +595,25 @@
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.brakeDiscs.isFront"
                       label="Przód"
+                      class="shrink mt-4"
                       hide-details
-                      class="shrink mt-4"/>
+                      readonly/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.brakeDiscs.isRear"
                       label="Tył"
+                      class="shrink mt-4"
                       hide-details
-                      class="shrink mt-4"/>
+                      readonly/>
                   </v-col>
                 </v-row>
               </template>
             </service-action>
-            <service-action :item="item.fastFit.shockAbsorbers">
+            <service-action
+              :item="item.fastFit.shockAbsorbers"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-row
                   :style="$vuetify.breakpoint.smAndUp ? '' : 'width: 180%'"
@@ -558,22 +624,28 @@
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.shockAbsorbers.isFront"
                       label="Przód"
+                      class="shrink mt-4"
                       hide-details
-                      class="shrink mt-4"/>
+                      readonly/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.fastFit.shockAbsorbers.isRear"
                       label="Tył"
+                      class="shrink mt-4"
                       hide-details
-                      class="shrink mt-4"/>
+                      readonly/>
                   </v-col>
                 </v-row>
               </template>
             </service-action>
-            <service-action :item="item.fastFit.geometry"/>
-            <service-action :item="item.fastFit.fuelFilter"/>
+            <service-action
+              :item="item.fastFit.geometry"
+              :isReadonly="true"/>
+            <service-action
+              :item="item.fastFit.fuelFilter"
+              :isReadonly="true"/>
           </v-col>
         </v-row>
       </v-card>
@@ -593,11 +665,21 @@
               </v-col>
             </v-row>
             <!-- Actions -->
-            <service-action :item="item.inspection.oil"/>
-            <service-action :item="item.inspection.oilFilter"/>
-            <service-action :item="item.inspection.airFilter"/>
-            <service-action :item="item.inspection.interiorFilter"/>
-            <service-action :item="item.inspection.airco">
+            <service-action
+              :item="item.inspection.oil"
+              :isReadonly="true"/>
+            <service-action
+              :item="item.inspection.oilFilter"
+              :isReadonly="true"/>
+            <service-action
+              :item="item.inspection.airFilter"
+              :isReadonly="true"/>
+            <service-action
+              :item="item.inspection.interiorFilter"
+              :isReadonly="true"/>
+            <service-action
+              :item="item.inspection.airco"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-row
                   class="no-gutters"
@@ -607,37 +689,43 @@
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.inspection.airco.isCleaning"
                       label="Czyszczenie"
+                      class="shrink mt-4"
                       hide-details
-                      class="shrink mt-4"/>
+                      readonly/>
                   </v-col>
                   <v-col cols="12" sm="auto">
                     <v-checkbox
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.inspection.airco.isFilter"
                       label="Filtr"
+                      class="shrink mt-4"
                       hide-details
-                      class="shrink mt-4"/>
+                      readonly/>
                   </v-col>
                   <v-col cols="12" sm="auto">
                     <v-checkbox
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
                       v-model="item.inspection.airco.isFilling"
                       label="Napełnianie"
+                      class="shrink mt-4"
                       hide-details
-                      class="shrink mt-4"/>
+                      readonly/>
                   </v-col>
                 </v-row>
               </template>
             </service-action>
-            <service-action :item="item.inspection.other">
+            <service-action
+              :item="item.inspection.other"
+              :isReadonly="true">
               <template v-slot:extra-info>
                 <v-textarea
+                  v-model.lazy="item.inspection.other.extraInfo"
                   label=""
-                  hide-details="auto"
                   validate-on-blur
                   auto-grow
                   rows="1"
-                  v-model.lazy="item.inspection.other.extraInfo"/>
+                  hide-details
+                  readonly/>
               </template>
             </service-action>
           </v-col>
@@ -720,8 +808,8 @@
                   label="Numer dokumentu"
                   type="input"
                   class="text_ellipsis"
-                  hide-details="auto"
-                  validate-on-blur/>
+                  hide-details
+                  readonly/>
               </v-col>
             </v-row>
           </v-col>
@@ -887,7 +975,7 @@ export default {
       .then((response) => {
         this.item = response.data.item;
 
-        console.log(JSON.stringify(this.item));
+        //console.log(JSON.stringify(this.item));
 
         this.item.client = this.item.client || {};
         this.item.date = moment(this.item.date, 'YYYY-MM-DD hh:mm:ss.SSS Z').format('YYYY-MM-DD HH:mm');
@@ -896,6 +984,8 @@ export default {
         this.item.isGeometryRequired = bool.getText(this.item.isGeometryRequired);
         this.item.tireChange = tireChangeType.getText(this.item.tireChange);
         this.copyText();
+
+        //console.log(this.item.visualInspection.brakePads.front);
 
         //get employee signature
         signaturesService.get({

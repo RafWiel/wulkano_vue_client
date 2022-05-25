@@ -252,7 +252,8 @@
                 <v-text-field
                   v-model="item.actions.wheelWashing.extraInfo"
                   hide-details
-                  label=""/>
+                  label=""
+                  readonly/>
               </template>
             </service-action>
             <service-action
@@ -262,7 +263,8 @@
                 <v-text-field
                   v-model="item.actions.wheelUnscrewing.extraInfo"
                   hide-details
-                  label=""/>
+                  label=""
+                  readonly/>
               </template>
             </service-action>
             <service-action
@@ -272,7 +274,8 @@
                 <v-text-field
                   v-model="item.actions.tireInstallation.extraInfo"
                   hide-details
-                  label=""/>
+                  label=""
+                  readonly/>
               </template>
             </service-action>
             <service-action
@@ -282,7 +285,8 @@
                 <v-text-field
                   v-model="item.actions.wheelBalancing.extraInfo"
                   hide-details
-                  label=""/>
+                  label=""
+                  readonly/>
               </template>
             </service-action>
             <service-action
@@ -292,7 +296,8 @@
                 <v-text-field
                   v-model="item.actions.wheelWeights.extraInfo"
                   hide-details
-                  label=""/>
+                  label=""
+                  readonly/>
               </template>
             </service-action>
             <service-action
@@ -314,7 +319,8 @@
                 <v-text-field
                   v-model="item.actions.pumping.extraInfo"
                   hide-details
-                  label=""/>
+                  label=""
+                  readonly/>
               </template>
             </service-action>
             <service-action
@@ -324,7 +330,8 @@
                 <v-text-field
                   v-model="item.actions.valveChange.extraInfo"
                   hide-details
-                  label=""/>
+                  label=""
+                  readonly/>
               </template>
             </service-action>
             <service-action
@@ -334,7 +341,8 @@
                 <v-text-field
                   v-model="item.actions.extensionInstallation.extraInfo"
                   hide-details
-                  label=""/>
+                  label=""
+                  readonly/>
               </template>
             </service-action>
             <service-action
@@ -350,7 +358,8 @@
                       label="F"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
-                      class="shrink mt-4"/>
+                      class="shrink mt-4"
+                      readonly/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
@@ -358,7 +367,8 @@
                       label="D"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
-                      class="shrink mt-4"/>
+                      class="shrink mt-4"
+                      readonly/>
                   </v-col>
                   <v-col cols="auto">
                     <v-checkbox
@@ -366,7 +376,8 @@
                       label="T"
                       hide-details
                       :class="$vuetify.breakpoint.smAndUp ? 'ml-4' : 'ml-2'"
-                      class="shrink mt-4"/>
+                      class="shrink mt-4"
+                      readonly/>
                   </v-col>
                 </v-row>
               </template>
@@ -378,7 +389,8 @@
                 <v-text-field
                   v-model="item.actions.coldHotRepair.extraInfo"
                   hide-details
-                  label=""/>
+                  label=""
+                  readonly/>
               </template>
             </service-action>
             <service-action
@@ -388,7 +400,8 @@
                 <v-text-field
                   v-model="item.actions.utilization.extraInfo"
                   hide-details
-                  label=""/>
+                  label=""
+                  readonly/>
               </template>
             </service-action>
             <service-action
@@ -398,7 +411,8 @@
                 <v-text-field
                   v-model="item.actions.driveToClient.extraInfo"
                   hide-details
-                  label=""/>
+                  label=""
+                  readonly/>
               </template>
             </service-action>
             <service-action
@@ -408,7 +422,8 @@
                 <v-text-field
                   v-model="item.actions.other.extraInfo"
                   hide-details
-                  label=""/>
+                  label=""
+                  readonly/>
               </template>
             </service-action>
           </v-col>
