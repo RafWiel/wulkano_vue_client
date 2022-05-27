@@ -1,5 +1,10 @@
 <template>
   <v-row class="no-gutters" align="center">
+    <three-state-control
+        :isReadonly="isReadonly"
+        v-model="item.status"/>
+
+
     <v-col cols="8" sm="4" md="5" lg="6" class="mt-1">
       <div class="inline" >
         <div class="pt-5 pr-2 text_ellipsis" >
@@ -26,6 +31,18 @@ export default
     isReadonly: Boolean,
   },
   components: { ThreeStateControl },
+  watch: {
+    item: {
+      // This will let Vue know to look inside the array
+      deep: true,
+
+      // We have to move our method to a handler field
+      handler() {
+        console.log('text', this.item.text);
+        console.log('status', this.item.status);
+      },
+    },
+  },
 };
 </script>
 

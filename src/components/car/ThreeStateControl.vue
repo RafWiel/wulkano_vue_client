@@ -68,6 +68,12 @@ export default {
       this.$emit('input', value);
     },
   },
+  watch: {
+    value(val) {
+      //fix, sometimes it doesnt update on mounted
+      this.localValue = val;
+    },
+  },
 };
 
 </script>

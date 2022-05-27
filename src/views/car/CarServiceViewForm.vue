@@ -985,8 +985,6 @@ export default {
         this.item.tireChange = tireChangeType.getText(this.item.tireChange);
         this.copyText();
 
-        //console.log(this.item.visualInspection.brakePads.front);
-
         //get employee signature
         signaturesService.get({
           dir: this.item.directoryId,

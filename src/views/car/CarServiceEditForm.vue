@@ -832,40 +832,40 @@ export default {
       requestName: 'Nowe zlecenie',
       date: new Date(),
       client: {
-        name: 'aa',
-        phoneNumber: '123123123',
+        name: '',
+        phoneNumber: '',
       },
-      description: 'aa',
+      description: '',
       vehicle: {
-        name: 'aa',
-        registrationNumber: 'aa',
-        type: 1,
-        mileage: '123',
+        name: '',
+        registrationNumber: '',
+        type: 0,
+        mileage: '',
       },
       inspectedTires: [
         {
           location: tireLocation.leftFront,
-          status: 1,
-          pressure: '11.1',
-          tread: '11.1',
+          status: 0,
+          pressure: '',
+          tread: '',
         },
         {
           location: tireLocation.rightFront,
-          status: 1,
-          pressure: '11.1',
-          tread: '11.1',
+          status: 0,
+          pressure: '',
+          tread: '',
         },
         {
           location: tireLocation.leftRear,
           status: 0,
-          pressure: '11.1',
-          tread: '11.1',
+          pressure: '',
+          tread: '',
         },
         {
           location: tireLocation.rightRear,
           status: 0,
-          pressure: '11.1',
-          tread: '11.1',
+          pressure: '',
+          tread: '',
         },
       ],
       incorrectTireWearLocation: 0,
@@ -873,9 +873,9 @@ export default {
       installedTires: [
         {
           location: tireLocation.leftFront,
-          width: '11',
-          profile: '11',
-          diameter: '11',
+          width: '',
+          profile: '',
+          diameter: '',
           dot: '',
           brand: '',
         },
@@ -905,21 +905,21 @@ export default {
         brakePads: {
           front: {
             text: 'Klocki hamulcowe - Przód',
-            status: 1,
+            status: 0,
           },
           rear: {
             text: 'Klocki hamulcowe - Tył',
-            status: 1,
+            status: 0,
           },
         },
         brakeDiscs: {
           front: {
             text: 'Tarcze hamulcowe - Przód',
-            status: 2,
+            status: 0,
           },
           rear: {
             text: 'Tarcze hamulcowe - Tył',
-            status: 2,
+            status: 0,
           },
         },
         shockAbsorbers: {
@@ -1099,7 +1099,7 @@ export default {
           extraInfo: '',
         },
       },
-      saleDocument: 'aa',
+      saleDocument: '',
       signature: {
         employee: null,
         client: null,
