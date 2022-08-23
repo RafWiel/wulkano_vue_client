@@ -695,8 +695,7 @@
                   type="input"
                   class="text_ellipsis"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
             </v-row>
           </v-col>
@@ -984,7 +983,8 @@ export default {
     },
   }),
   created() {
-    this.item = this.newItem;
+    //deep copy
+    this.item = JSON.parse(JSON.stringify(this.newItem));
   },
   methods: {
     async save() {
@@ -1054,7 +1054,8 @@ export default {
     resetForm() {
       const vm = this;
 
-      vm.item = vm.newItem;
+      //deep copy
+      this.item = JSON.parse(JSON.stringify(this.newItem));
 
       vm.$refs.employeeSignature.resetCanvas();
       vm.$refs.clientSignature.resetCanvas();

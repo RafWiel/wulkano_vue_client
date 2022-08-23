@@ -11,37 +11,34 @@
         label="Pozycja"/>
     </v-col>
     <v-col md="1" class="pl-2">
-      <v-text-field
+      <v-select
         :readonly="isReadonly"
-        :rules="isValidation ? [rules.integer, rules.required] : []"
-        v-model.number.lazy.trim="item.width"
-        label="Szerokość"
-        type="number"
+        :rules="isValidation ? [rules.required] : []"
+        v-model="item.width"
+        :items="tireWidthItems"
+        item-value="id"
         hide-details="auto"
-        hide-spin-buttons
-        validate-on-blur/>
+        label="Szerokość"/>
     </v-col>
     <v-col md="1" class="pl-2">
-      <v-text-field
+      <v-select
         :readonly="isReadonly"
-        :rules="isValidation ? [rules.integer, rules.required] : []"
-        v-model.number.lazy.trim="item.profile"
-        label="Profil"
-        type="number"
+        :rules="isValidation ? [rules.required] : []"
+        v-model="item.profile"
+        :items="tireProfileItems"
+        item-value="id"
         hide-details="auto"
-        hide-spin-buttons
-        validate-on-blur/>
+        label="Profil"/>
     </v-col>
     <v-col md="1" class="pl-2">
-      <v-text-field
+      <v-select
         :readonly="isReadonly"
-        :rules="isValidation ? [rules.float, rules.required] : []"
-        v-model.number.lazy.trim="item.diameter"
-        label="Średnica"
-        type="number"
+        :rules="isValidation ? [rules.required] : []"
+        v-model="item.diameter"
+        :items="tireDiameterItems"
+        item-value="id"
         hide-details="auto"
-        hide-spin-buttons
-        validate-on-blur/>
+        label="Średnica"/>
     </v-col>
     <v-col md="1" class="pl-2">
       <v-text-field
@@ -75,6 +72,9 @@
 <script>
 import rules from '@/misc/rules';
 import tireLocation from '@/enums/car/tireLocation';
+import tireWidth from '@/enums/car/tireWidth';
+import tireProfile from '@/enums/car/tireProfile';
+import tireDiameter from '@/enums/car/tireDiameter';
 
 export default
 {
@@ -86,12 +86,20 @@ export default
   },
   data: () => ({
     tireLocationItems: tireLocation.items,
+    tireWidthItems: tireWidth.items,
+    tireProfileItems: tireProfile.items,
+    tireDiameterItems: tireDiameter.items,
     rules: {
         required: rules.required,
         integer: rules.integer,
         float: rules.float,
       },
   }),
+  created() {
+    tireWidth.initialize();
+    tireProfile.initialize();
+    tireDiameter.initialize();
+  },
   watch: {
     item: {
       // This will let Vue know to look inside the array

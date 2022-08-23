@@ -292,7 +292,7 @@
               :key="index">
               <tire-info
                 :item="tire"
-                :isValidation="item.depositTires.length == 1 || index < item.depositTires.length - 1"
+                :isValidation="item.depositTires.length > 1 && index < item.depositTires.length - 1"
                 @change="addArrayObject(tire, item.depositTires, 5, {
                   width: '',
                   profile: '',
@@ -747,7 +747,6 @@
             <v-row class="no-gutters">
               <v-col>
                 <v-text-field
-                  :rules="[rules.required]"
                   v-model.lazy="item.saleDocument"
                   label="Numer dokumentu"
                   type="input"
@@ -1116,7 +1115,8 @@ export default {
     },
   }),
   created() {
-    this.item = this.newItem;
+    //deep copy
+    this.item = JSON.parse(JSON.stringify(this.newItem));
   },
   methods: {
     async save() {
@@ -1178,7 +1178,8 @@ export default {
     resetForm() {
       const vm = this;
 
-      vm.item = vm.newItem;
+      //deep copy
+      vm.item = JSON.parse(JSON.stringify(vm.newItem));
 
       vm.$refs.employeeSignature.resetCanvas();
       vm.$refs.clientSignature.resetCanvas();
