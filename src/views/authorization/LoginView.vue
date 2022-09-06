@@ -1,0 +1,224 @@
+<template>
+  <div class="mainContainer">
+    <div class="mainWorkspace">
+      <v-form
+        class="mainForm"
+        ref="form"
+        lazy-validation>
+
+
+
+      <!-- Client -->
+      <v-card
+        flat
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-0'">
+        <v-row class="no-gutters">
+          <!-- Content column -->
+          <v-col cols="12" class="pa-0">
+            <!-- Title -->
+            <v-row class="no-gutters">
+              <v-col>
+                <h3 class="primary--text text--darken-1" >
+                  Logowanie
+                </h3>
+              </v-col>
+            </v-row>
+            <v-row class="no-gutters mt-2">
+              <!-- Name -->
+              <v-col cols="6" sm="4" md="3" lg="2">
+                <v-text-field
+                  ref="firstControl"
+                  id="email"
+                  name="email"
+                  type="text"
+                  autocomplete="username email"
+                  label="Użytkownik"
+                  hide-details="auto"
+                  validate-on-blur
+                  :rules="[rules.required]"
+                  v-model.lazy="input.userName"
+                  @keyup.enter="focusPasswordOrLogin"/>
+              </v-col>
+            </v-row>
+            <v-row class="no-gutters mt-2">
+              <!-- Name -->
+              <v-col cols="6" sm="4" md="3" lg="2">
+                <v-text-field
+                  id="password"
+                  name="password"
+                  ref="password"
+                  label="Hasło"
+                  class="mt-2"
+                  hide-details="auto"
+                  validate-on-blur
+                  v-model.lazy="input.password"
+                  :append-icon="isPasswordVisible ? 'mdi-eye' : 'mdi-eye-off'"
+                  :type="isPasswordVisible ? 'text' : 'password'"
+                  :rules="[rules.required]"
+                  :error-messages="errorMessage.password"
+                  @click:append="isPasswordVisible = !isPasswordVisible"
+                  @keyup.enter="login"
+                  @keydown="errorMessage.password = ''"/>
+              </v-col>
+            </v-row>
+            <v-row class="no-gutters mt-2">
+              <!-- Name -->
+              <v-col cols="6" sm="4" md="3" lg="2">
+                <v-btn
+                  id="submit"
+                  depressed
+                  color="primary"
+                  class="mt-8"
+                  @click="login">
+                  Zaloguj się
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+
+
+
+
+
+
+      </v-form>
+    </div>
+  </div>
+</template>
+
+<script>
+import tools from '@/misc/tools';
+import authorizationService from '@/services/authorization';
+
+export default {
+  name: 'LoginView',
+  computed: {
+    size() {
+      const size = { xs: 'small' }[this.$vuetify.breakpoint.name];
+      return size ? { [size]: true } : {};
+    },
+  },
+  data: () => ({
+    isPasswordVisible: false,
+    input: {
+      userName: '',
+      password: '',
+    },
+    errorMessage: { password: '' },
+    rules: { required: (value) => !!value || 'Pole wymagane' },
+  }),
+  mounted() {
+    // focus on first control
+    // this.$refs.firstControl.focus();
+  },
+  methods: {
+    async login() {
+      if (this.$refs.form.validate() === false) {
+        return;
+      }
+
+      // reset error message
+      this.errorMessage.password = '';
+
+      // set loading icon
+      this.$emit('isProcessing', true);
+
+      // request login
+      await authorizationService.login({
+        userName: this.input.userName,
+        password: this.input.password,
+      })
+      .then((response) => {
+        this.$emit('isProcessing', false);
+
+        console.log(response.data);
+
+        // store user info
+        this.$store.dispatch('setToken', response.data.token);
+        this.$store.dispatch('setUser', response.data.user);
+
+        // redirect to main page
+        this.$emit('loginResult', true);
+      })
+      .catch((error) => {
+        console.log(error);
+        this.$emit('isProcessing', false);
+
+        if (error.response === undefined) {
+          this.errorMessage.password = 'Brak odpowiedzi z serwera';
+          return;
+        }
+
+        console.log(error.response.data);
+        this.errorMessage.password = error.response.data.message;
+      });
+    },
+    focusPasswordOrLogin() {
+      // focus next if data not ready
+      if (tools.isEmpty(this.input.userName) || tools.isEmpty(this.input.password)) {
+        this.$refs.password.focus();
+        return;
+      }
+
+      // or else login
+      this.login();
+    },
+    register() {
+      this.$router.push({ name: 'Registration' });
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+  // @import url('https://fonts.googleapis.com/css?family=Montserrat:330,400,600,800');
+
+  $font-family: 'Montserrat';
+
+  .mainContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  .header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+
+    @media (min-width: 768px) {
+      padding: 20px;
+    }
+
+    .logo {
+      @media (max-width: 500px) {
+        width: auto;
+        height: 25px;
+      }
+    }
+  }
+
+  .mainWorkspace {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 75%;
+  }
+
+  .mainForm {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    text-align: center;
+  }
+
+  [class*='text-h']{
+    font-family: $font-family, sans-serif !important;
+    font-weight: 600;
+  }
+
+</style>

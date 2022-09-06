@@ -7,6 +7,7 @@ import CarServiceViewForm from '../views/car/CarServiceViewForm.vue';
 import DepositEditForm from '../views/deposit/DepositEditForm.vue';
 import DepositViewForm from '../views/deposit/DepositViewForm.vue';
 import RequestsListView from '../views/RequestsListView.vue';
+import LoginView from '../views/authorization/LoginView.vue';
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
   {
     path: '*',
     redirect: '/',
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: LoginView,
   },
   {
     path: '/requests',
