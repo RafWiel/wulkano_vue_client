@@ -11,7 +11,7 @@
           <!-- Main workspace -->
           <v-main style="height: 100%">
             <app-bar @menuClicked="isNavigationBarOpen = !isNavigationBarOpen"/>
-            <h3 class="pa-4 yellow">Passport i process.env</h3>
+            <h3 class="pa-4 yellow">Logowanie</h3>
             <router-view
               @isProcessing="isProcessing = $event"
               @showMessage="showMessageDialog"
