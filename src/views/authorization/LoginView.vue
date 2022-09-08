@@ -8,81 +8,73 @@
 
 
 
-      <!-- Client -->
-      <v-card
-        flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-0'">
-        <v-row class="no-gutters">
-          <!-- Content column -->
-          <v-col cols="12" class="pa-0">
-            <!-- Title -->
-            <v-row class="no-gutters">
-              <v-col>
-                <h3 class="primary--text text--darken-1" >
-                  Logowanie
-                </h3>
-              </v-col>
-            </v-row>
-            <v-row class="no-gutters mt-2">
-              <!-- Name -->
-              <v-col cols="6" sm="4" md="3" lg="2">
-                <v-text-field
-                  ref="firstControl"
-                  id="email"
-                  name="email"
-                  type="text"
-                  autocomplete="username email"
-                  label="Użytkownik"
-                  hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"
-                  v-model.lazy="input.userName"
-                  @keyup.enter="focusPasswordOrLogin"/>
-              </v-col>
-            </v-row>
-            <v-row class="no-gutters mt-2">
-              <!-- Name -->
-              <v-col cols="6" sm="4" md="3" lg="2">
-                <v-text-field
-                  id="password"
-                  name="password"
-                  ref="password"
-                  label="Hasło"
-                  class="mt-2"
-                  hide-details="auto"
-                  validate-on-blur
-                  v-model.lazy="input.password"
-                  :append-icon="isPasswordVisible ? 'mdi-eye' : 'mdi-eye-off'"
-                  :type="isPasswordVisible ? 'text' : 'password'"
-                  :rules="[rules.required]"
-                  :error-messages="errorMessage.password"
-                  @click:append="isPasswordVisible = !isPasswordVisible"
-                  @keyup.enter="login"
-                  @keydown="errorMessage.password = ''"/>
-              </v-col>
-            </v-row>
-            <v-row class="no-gutters mt-2">
-              <!-- Name -->
-              <v-col cols="6" sm="4" md="3" lg="2">
-                <v-btn
-                  id="submit"
-                  depressed
-                  color="primary"
-                  class="mt-8"
-                  @click="login">
-                  Zaloguj się
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-      </v-card>
 
-
-
-
-
-
+        <v-card
+          flat
+          :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-0'">
+          <v-row class="no-gutters">
+            <!-- Content column -->
+            <v-col cols="12" class="pa-0">
+              <!-- Title -->
+              <v-row class="no-gutters">
+                <v-col>
+                  <h3 class="primary--text text--darken-1" >
+                    Logowanie
+                  </h3>
+                </v-col>
+              </v-row>
+              <v-row class="no-gutters mt-2">
+                <v-col cols="12">
+                  <v-text-field
+                    ref="firstControl"
+                    id="email"
+                    name="email"
+                    type="text"
+                    autocomplete="username email"
+                    label="Użytkownik"
+                    hide-details="auto"
+                    validate-on-blur
+                    :rules="[rules.required]"
+                    v-model.lazy="input.userName"
+                    @keyup.enter="focusPasswordOrLogin"/>
+                </v-col>
+              </v-row>
+              <v-row class="no-gutters mt-2">
+                <v-col cols="12">
+                  <v-text-field
+                    id="password"
+                    name="password"
+                    ref="password"
+                    label="Hasło"
+                    class="mt-2"
+                    hide-details="auto"
+                    validate-on-blur
+                    v-model.lazy="input.password"
+                    :append-icon="isPasswordVisible ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="isPasswordVisible ? 'text' : 'password'"
+                    :rules="[rules.required]"
+                    :error-messages="errorMessage.password"
+                    @click:append="isPasswordVisible = !isPasswordVisible"
+                    @keyup.enter="login"
+                    @keydown="errorMessage.password = ''"/>
+                </v-col>
+              </v-row>
+              <v-row class="no-gutters mt-8" justify="end">
+                <v-col cols="12" md="6">
+                  <v-btn
+                    id="submit"
+                    depressed
+                    block
+                    color="primary"
+                    class="save-btn"
+                    @click="login">
+                    Zaloguj się
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-card>
       </v-form>
     </div>
   </div>
@@ -212,7 +204,7 @@ export default {
   .mainForm {
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 400px;
     text-align: center;
   }
 

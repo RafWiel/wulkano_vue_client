@@ -28,7 +28,7 @@
       </v-row>
       <!-- Message box -->
       <v-row justify="center" class="no-gutters">
-        <MessageDialog
+        <message-dialog
           :title="messageDialog.title"
           :isVisible="messageDialog.isVisible"
           :message="messageDialog.message"
@@ -36,7 +36,7 @@
       </v-row>
       <!-- Delete message box -->
       <v-row justify="center" class="no-gutters">
-        <QuestionDialog
+        <question-dialog
           :title="questionDialog.title"
           :isVisible="questionDialog.isVisible"
           :itemId="questionDialog.id"

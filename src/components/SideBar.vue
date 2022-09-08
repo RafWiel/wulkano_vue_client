@@ -32,10 +32,9 @@
           </v-list-item>
         </v-list>
       </v-row>
-
-      <!-- <v-row class="align-self-end">
+      <v-row class="align-self-end">
         <v-list class="fill-width pa-0">
-          <v-list-item @click="$emit('logout', false)">
+          <v-list-item router to="login">
             <v-list-item-action class="mr-4">
               <v-icon class="grey--text text--lighten-2">mdi-logout</v-icon>
             </v-list-item-action>
@@ -46,7 +45,7 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
-      </v-row> -->
+      </v-row>
     </v-container>
   </v-navigation-drawer>
 </template>
