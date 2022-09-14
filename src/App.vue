@@ -11,7 +11,7 @@
           <!-- Main workspace -->
           <v-main style="height: 100%">
             <app-bar @menuClicked="isNavigationBarOpen = !isNavigationBarOpen"/>
-            <h3 class="pa-4 yellow">Logowanie</h3>
+            <h3 class="pa-4 yellow">Ukryj menu na ekranie Logowanie</h3>
             <router-view
               @isProcessing="isProcessing = $event"
               @showMessage="showMessageDialog"
@@ -89,6 +89,24 @@ export default {
       },
     },
   }),
+  created() {
+    console.log('created localStorage.user:', localStorage.user);
+    // todo: na razie zapis w localStorage, do poprawy?
+    if (!localStorage.user) {
+      if (this.$route.name !== 'Login') {
+        this.$router.replace({ name: 'Login' });
+      }
+
+      return;
+    }
+
+    // set store user info
+    this.$store.dispatch('setUser', JSON.parse(localStorage.user));
+    this.$store.dispatch('setToken', localStorage.token);
+
+    console.log('store.user: ', this.$store.state.user);
+    console.log('store.token: ', this.$store.state.token);
+  },
   methods: {
     showMessageDialog(title, message) {
       this.messageDialog.title = title;

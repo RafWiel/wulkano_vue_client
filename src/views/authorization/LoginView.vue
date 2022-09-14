@@ -5,10 +5,6 @@
         class="mainForm"
         ref="form"
         lazy-validation>
-
-
-
-
         <v-card
           flat
           :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-0'">
@@ -103,7 +99,15 @@ export default {
   }),
   mounted() {
     // focus on first control
-    // this.$refs.firstControl.focus();
+    //this.$refs.firstControl.focus();
+
+    // reset store
+    this.$store.dispatch('setUser', null);
+    this.$store.dispatch('setToken', null);
+
+    // reset local storage
+    localStorage.user = '';
+    localStorage.token = '';
   },
   methods: {
     async login() {
@@ -127,12 +131,16 @@ export default {
 
         console.log(response.data);
 
+        // save user info to local storage
+        localStorage.user = JSON.stringify(this.input.userName);
+        localStorage.token = response.data.token;
+
         // store user info
+        this.$store.dispatch('setUser', this.input.userName);
         this.$store.dispatch('setToken', response.data.token);
-        this.$store.dispatch('setUser', response.data.user);
 
         // redirect to main page
-        this.$emit('loginResult', true);
+        this.$router.replace({ name: 'Main' });
       })
       .catch((error) => {
         console.log(error);
@@ -156,9 +164,6 @@ export default {
 
       // or else login
       this.login();
-    },
-    register() {
-      this.$router.push({ name: 'Registration' });
     },
   },
 };

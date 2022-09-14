@@ -1,7 +1,9 @@
 import Vue from 'vue';
+import { sync } from 'vuex-router-sync';
 import App from './App.vue';
 import router from './router';
 import vuetify from './plugins/vuetify';
+import store from './store/store';
 import './styles/main.scss';
 
 Vue.config.productionTip = false;
@@ -44,8 +46,11 @@ Vue.directive('formFocusNextOnEnter', {
   },
 });
 
+sync(store, router);
+
 new Vue({
   router,
   vuetify,
+  store,
   render: (h) => h(App),
 }).$mount('#app');
