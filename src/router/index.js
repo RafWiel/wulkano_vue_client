@@ -27,6 +27,9 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: LoginView,
+    meta: {
+      isLoginView: true,
+    },
   },
   {
     path: '/requests',

@@ -12,7 +12,10 @@
       @click="$router.push({ name: 'RequestsListView'})">
       <v-icon color="grey lighten-2">mdi-chevron-left</v-icon>
     </v-btn>
-    <v-btn icon @click="$emit('menuClicked')">
+    <v-btn
+      v-if="!$route.meta.isLoginView"
+      icon
+      @click="$emit('menuClicked')">
       <v-icon color="grey lighten-2">mdi-menu</v-icon>
     </v-btn>
     <logo />

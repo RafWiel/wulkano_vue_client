@@ -4,6 +4,7 @@
       <v-select
         :items="tireLocationItems"
         :readonly="isReadonly"
+        :rules="isValidation ? [rules.required] : []"
         v-model.lazy.trim="item.location"
         item-value="id"
         hide-details="auto"
