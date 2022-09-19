@@ -11,7 +11,12 @@
           <!-- Main workspace -->
           <v-main style="height: 100%">
             <app-bar @menuClicked="isNavigationBarOpen = !isNavigationBarOpen"/>
-            <h3 class="pa-4 yellow">Zapisz błędy do loga</h3>
+            <h4 class="px-2 py-1 yellow">Nazwy tabel</h4>
+            <h4 class="px-2 py-1 yellow">belongsTo triggery usuwanie (ogolnie sprawdz co da sie zrobic tutaj)</h4>
+            <h4 class="px-2 py-1 yellow">vue .env adres servera</h4>
+            <h4 class="px-2 py-1 yellow">Użytkownik z możliwością edycji</h4>
+            <h4 class="px-2 py-1 yellow">Obsłuż wygaśnięcie tokena</h4>
+            <h4 class="px-2 py-1 yellow">Zapisz błędy do loga</h4>
             <router-view
               @isProcessing="isProcessing = $event"
               @showMessage="showMessageDialog"
