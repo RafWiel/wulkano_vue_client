@@ -335,14 +335,19 @@ export default {
         });
       })
       .catch((error) => {
-        this.showError(error);
+        this.processError(error);
       });
 
       this.$emit('isProcessing', false);
     },
-    showError(error) {
+    processError(error) {
       console.log(error);
       this.$emit('isProcessing', false);
+
+      if (error.response.status === 401) {
+        this.$router.replace({ name: 'Login' });
+        return;
+      }
 
       if (error.response === undefined) {
         this.$emit('showMessage', 'Depozyt', 'Brak odpowiedzi z serwera');

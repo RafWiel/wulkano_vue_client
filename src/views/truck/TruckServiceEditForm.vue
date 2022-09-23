@@ -988,12 +988,10 @@ export default {
   },
   methods: {
     async save() {
-      const vm = this;
-
       //validation
-      const v1 = vm.$refs.form.validate();
-      const v2 = vm.$refs.employeeSignature.validate();
-      const v3 = vm.$refs.clientSignature.validate();
+      const v1 = this.$refs.form.validate();
+      const v2 = this.$refs.employeeSignature.validate();
+      const v3 = this.$refs.clientSignature.validate();
       if (!v1 || !v2 || !v3) {
         this.$nextTick(() => {
           const el = this.$el.querySelector('.v-messages.error--text:first-of-type');
@@ -1005,29 +1003,29 @@ export default {
       }
 
       try {
-        vm.$emit('isProcessing', true);
+        this.$emit('isProcessing', true);
 
-        vm.item.signature.employee = vm.$refs.employeeSignature.getImageData();
-        vm.item.signature.client = vm.$refs.clientSignature.getImageData();
+        this.item.signature.employee = this.$refs.employeeSignature.getImageData();
+        this.item.signature.client = this.$refs.clientSignature.getImageData();
 
-        const response = await trucksService.create(vm.item);
+        const response = await trucksService.create(this.item);
 
         if (response.data.result) {
-          vm.$emit('isProcessing', false);
-          vm.$emit('showMessage', 'Zlecenie ciężarowe', 'Zlecenie zapisane');
-          vm.resetForm();
-          vm.$vuetify.goTo(0);
+          this.$emit('isProcessing', false);
+          this.$emit('showMessage', 'Zlecenie ciężarowe', 'Zlecenie zapisane');
+          this.resetForm();
+          this.$vuetify.goTo(0);
 
           return;
         }
 
-        vm.$emit('showMessage', 'Zlecenie ciężarowe', 'Nieudany zapis');
+        this.$emit('showMessage', 'Zlecenie ciężarowe', 'Nieudany zapis');
       }
       catch (error) {
-        vm.showError(error);
+        this.processError(error);
       }
 
-      vm.$emit('isProcessing', false);
+      this.$emit('isProcessing', false);
     },
     addArrayObject(item, array, maxCount, newItem) {
       //check if last item in array
@@ -1039,7 +1037,7 @@ export default {
       //add new item
       array.push(newItem);
     },
-    showError(error) {
+    processError(error) {
       console.log(error);
       this.$emit('isProcessing', false);
 

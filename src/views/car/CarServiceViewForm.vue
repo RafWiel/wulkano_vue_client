@@ -1010,7 +1010,7 @@ export default {
         });
       })
       .catch((error) => {
-        this.showError(error);
+        this.processError(error);
       });
 
       this.$emit('isProcessing', false);
@@ -1039,9 +1039,14 @@ export default {
         this.item.inspection[key].text = value.text;
       });
     },
-    showError(error) {
+    processError(error) {
       console.log(error);
       this.$emit('isProcessing', false);
+
+      if (error.response.status === 401) {
+        this.$router.replace({ name: 'Login' });
+        return;
+      }
 
       if (error.response === undefined) {
         this.$emit('showMessage', 'Zlecenie osobowe', 'Brak odpowiedzi z serwera');

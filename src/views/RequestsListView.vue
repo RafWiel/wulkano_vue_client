@@ -119,13 +119,11 @@ export default {
   }),
   mounted() {
     if (Object.keys(this.$route.query).length === 0) {
-      console.log('MOUNTED fetch');
       this.fetch();
     }
   },
   methods: {
     fetch() {
-      console.log('fetch');
       // set loading icon
       this.$emit('isProcessing', true);
 
@@ -160,16 +158,7 @@ export default {
         }
       })
       .catch((error) => {
-        console.log(error);
-        this.$emit('isProcessing', false);
-
-        if (error.response === undefined) {
-          this.$emit('showMessage', 'Zlecenia serwisowe', 'Brak odpowiedzi z serwera');
-          return;
-        }
-
-        console.log(error.response.data);
-        this.$emit('showMessage', 'Zlecenia serwisowe', error.response.data.message);
+        this.processError(error);
       });
     },
     goToItem(idConcat) {
@@ -198,9 +187,14 @@ export default {
       // refresh with new sorting
       this.fetch();
     },
-    showError(error) {
+    processError(error) {
       console.log(error);
       this.$emit('isProcessing', false);
+
+      if (error.response.status === 401) {
+        this.$router.replace({ name: 'Login' });
+        return;
+      }
 
       if (error.response === undefined) {
         this.$emit('showMessage', 'Zlecenia serwisowe', 'Brak odpowiedzi z serwera');

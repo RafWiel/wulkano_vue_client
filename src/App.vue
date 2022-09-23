@@ -13,7 +13,6 @@
             <app-bar @menuClicked="isNavigationBarOpen = !isNavigationBarOpen"/>
             <h4 class="px-2 py-1 yellow">vue .env adres servera</h4>
             <h4 class="px-2 py-1 yellow">Użytkownik z możliwością edycji</h4>
-            <h4 class="px-2 py-1 yellow">Obsłuż wygaśnięcie tokena</h4>
             <h4 class="px-2 py-1 yellow">Zapisz błędy do loga</h4>
             <router-view
               @isProcessing="isProcessing = $event"
@@ -94,12 +93,17 @@ export default {
   }),
   created() {
     console.log('created localStorage.user:', localStorage.user);
-    // todo: na razie zapis w localStorage, do poprawy?
     if (!localStorage.user) {
       if (this.$route.name !== 'Login') {
         this.$router.replace({ name: 'Login' });
       }
+      return;
+    }
 
+    //require login each day
+    const loginTimestamp = new Date(parseInt(localStorage.timestamp, 10));
+    if (!loginTimestamp || loginTimestamp.getDate() !== new Date().getDate()) {
+      this.$router.replace({ name: 'Login' });
       return;
     }
 

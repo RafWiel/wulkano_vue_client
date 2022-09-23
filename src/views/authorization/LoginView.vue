@@ -108,6 +108,7 @@ export default {
     // reset local storage
     localStorage.user = '';
     localStorage.token = '';
+    localStorage.timestamp = '';
   },
   methods: {
     async login() {
@@ -134,6 +135,7 @@ export default {
         // save user info to local storage
         localStorage.user = JSON.stringify(this.input.userName);
         localStorage.token = response.data.token;
+        localStorage.timestamp = new Date().getTime();
 
         // store user info
         this.$store.dispatch('setUser', this.input.userName);
