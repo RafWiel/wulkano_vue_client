@@ -11,7 +11,6 @@
           <!-- Main workspace -->
           <v-main style="height: 100%">
             <app-bar @menuClicked="isNavigationBarOpen = !isNavigationBarOpen"/>
-            <h4 class="px-2 py-1 yellow">vue .env adres servera</h4>
             <h4 class="px-2 py-1 yellow">Użytkownik z możliwością edycji</h4>
             <h4 class="px-2 py-1 yellow">Zapisz błędy do loga</h4>
             <router-view
@@ -92,27 +91,31 @@ export default {
     },
   }),
   created() {
-    console.log('created localStorage.user:', localStorage.user);
-    if (!localStorage.user) {
+    console.log('created localStorage.userInfo:', localStorage.getItem('userInfo'));
+    if (!localStorage.getItem('userInfo')) {
       if (this.$route.name !== 'Login') {
         this.$router.replace({ name: 'Login' });
       }
       return;
     }
 
-    //require login each day
-    const loginTimestamp = new Date(parseInt(localStorage.timestamp, 10));
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+    // require login each day
+    const loginTimestamp = new Date(parseInt(userInfo.timestamp, 10));
     if (!loginTimestamp || loginTimestamp.getDate() !== new Date().getDate()) {
       this.$router.replace({ name: 'Login' });
       return;
     }
 
     // set store user info
-    this.$store.dispatch('setUser', JSON.parse(localStorage.user));
-    this.$store.dispatch('setToken', localStorage.token);
+    this.$store.dispatch('setUserName', userInfo.userName);
+    this.$store.dispatch('setToken', userInfo.token);
+    this.$store.dispatch('setAccountManager', userInfo.isAccountManager);
 
-    console.log('store.user: ', this.$store.state.user);
-    console.log('store.token: ', this.$store.state.token);
+    // console.log('store.user: ', this.$store.state.userName);
+    // console.log('store.token: ', this.$store.state.token);
+    // console.log('store.manager: ', this.$store.state.isAccountManager);
   },
   methods: {
     showMessageDialog(title, message) {

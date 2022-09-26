@@ -7,7 +7,8 @@ export default new Vuex.Store({
   strict: true,
   state: {
     token: null,
-    user: null,
+    userName: null,
+    isAccountManager: false,
     isUserLoggedIn: false,
   },
   mutations: {
@@ -20,16 +21,22 @@ export default new Vuex.Store({
         state.isUserLoggedIn = false;
       }
     },
-    setUser(state, value) {
-      state.user = value;
+    setUserName(state, value) {
+      state.userName = value;
+    },
+    setAccountManager(state, value) {
+      state.isAccountManager = value;
     },
   },
   actions: {
     setToken({ commit }, value) {
       commit('setToken', value);
     },
-    setUser({ commit }, value) {
-      commit('setUser', value);
+    setUserName({ commit }, value) {
+      commit('setUserName', value);
+    },
+    setAccountManager({ commit }, value) {
+      commit('setAccountManager', value);
     },
   },
 });

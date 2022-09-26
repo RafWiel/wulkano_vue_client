@@ -102,13 +102,12 @@ export default {
     //this.$refs.firstControl.focus();
 
     // reset store
-    this.$store.dispatch('setUser', null);
+    this.$store.dispatch('setUserName', null);
     this.$store.dispatch('setToken', null);
+    this.$store.dispatch('setAccountManager', null);
 
     // reset local storage
-    localStorage.user = '';
-    localStorage.token = '';
-    localStorage.timestamp = '';
+    localStorage.userInfo = '';
   },
   methods: {
     async login() {
@@ -133,13 +132,19 @@ export default {
         console.log(response.data);
 
         // save user info to local storage
-        localStorage.user = JSON.stringify(this.input.userName);
-        localStorage.token = response.data.token;
-        localStorage.timestamp = new Date().getTime();
+        const userInfo = {
+          userName: this.input.userName,
+          timestamp: new Date().getTime(),
+          token: response.data.token,
+          isAccountManager: response.data.isAccountManager,
+        };
+
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
         // store user info
-        this.$store.dispatch('setUser', this.input.userName);
+        this.$store.dispatch('setUserName', this.input.userName);
         this.$store.dispatch('setToken', response.data.token);
+        this.$store.dispatch('setAccountManager', response.data.isAccountManager);
 
         // redirect to main page
         this.$router.replace({ name: 'Main' });
