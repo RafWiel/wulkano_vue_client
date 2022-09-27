@@ -696,14 +696,31 @@
             <v-row class="no-gutters">
               <v-col>
                 <v-text-field
+                  :readonly="$store.state.isAccountManager !== true"
                   v-model="item.saleDocument"
                   label="Numer dokumentu"
                   type="input"
                   class="text_ellipsis"
-                  hide-details
-                  readonly/>
+                  hide-details/>
               </v-col>
             </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+      <!-- Apply button -->
+      <v-card
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'"
+        v-if="$store.state.isAccountManager"
+        flat>
+        <v-row class="no-gutters" justify="end">
+          <v-col cols="12" sm="6" md="4" lg="2">
+            <v-btn
+              depressed
+              block
+              class="save-btn"
+              @click="save">
+              Zapisz
+            </v-btn>
           </v-col>
         </v-row>
       </v-card>
@@ -722,7 +739,7 @@ import TireBrandInfo from '@/components/truck/TireBrandInfo.vue';
 import Mechanic from '@/components/truck/Mechanic.vue';
 
 export default {
-  name: 'TruckServiceViewForm',
+  name: 'TruckServiceViewEditForm',
   props: { id: [String, Number] },
   components: {
     TireMeasurementInfo,
@@ -857,6 +874,48 @@ export default {
       .catch((error) => {
         this.processError(error);
       });
+
+      this.$emit('isProcessing', false);
+    },
+    async save() {
+      //validation
+      const v1 = this.$refs.form.validate();
+      const v2 = this.$refs.employeeSignature.validate();
+      const v3 = this.$refs.clientSignature.validate();
+      if (!v1 || !v2 || !v3) {
+        this.$nextTick(() => {
+          const el = this.$el.querySelector('.v-messages.error--text:first-of-type');
+
+          this.$vuetify.goTo(el, { offset: 60 });
+        });
+
+        return;
+      }
+
+      try {
+        this.$emit('isProcessing', true);
+
+        console.log(JSON.stringify(this.item));
+
+        this.item.signature.employee = this.$refs.employeeSignature.getImageData();
+        this.item.signature.client = this.$refs.clientSignature.getImageData();
+
+        const response = await trucksService.create(this.item);
+
+        if (response.data.result) {
+          this.$emit('isProcessing', false);
+          this.$emit('showMessage', 'Zlecenie osobowe', 'Dokument sprzedaży zapisany');
+          this.resetForm();
+          this.$vuetify.goTo(0);
+
+          return;
+        }
+
+        this.$emit('showMessage', 'Zlecenie osobowe', 'Nieudany zapis');
+      }
+      catch (error) {
+        this.processError(error);
+      }
 
       this.$emit('isProcessing', false);
     },

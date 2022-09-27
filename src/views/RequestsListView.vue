@@ -165,8 +165,8 @@ export default {
       const type = parseInt(idConcat.split('_')[0], 10);
       const id = idConcat.split('_')[1];
 
-      if (type === requestType.carService) this.$router.push({ name: 'CarServiceViewForm', params: { id } });
-      if (type === requestType.truckService) this.$router.push({ name: 'TruckServiceViewForm', params: { id } });
+      if (type === requestType.carService) this.$router.push({ name: 'CarServiceViewEditForm', params: { id } });
+      if (type === requestType.truckService) this.$router.push({ name: 'TruckServiceViewEditForm', params: { id } });
       if (type === requestType.deposit) this.$router.push({ name: 'DepositViewForm', params: { id } });
     },
     filterData(filter) {

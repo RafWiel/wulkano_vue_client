@@ -34,7 +34,7 @@
       </v-row>
       <v-row class="align-self-end">
         <v-list class="fill-width pa-0">
-          <v-list-item router to="login">
+          <v-list-item router :to="logoutRoute">
             <v-list-item-action class="mr-4">
               <v-icon class="grey--text text--lighten-2">mdi-logout</v-icon>
             </v-list-item-action>
@@ -59,6 +59,11 @@ export default {
   props: {
     value: Boolean,
     links: Array,
+  },
+  computed: {
+    logoutRoute() {
+      return '/login';
+    },
   },
   data() {
     return { isOpen: this.value };

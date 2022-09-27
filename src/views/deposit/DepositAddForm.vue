@@ -296,7 +296,7 @@ import TireInfo from '@/components/deposit/TireInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
 
 export default {
-  name: 'DepositEditForm',
+  name: 'DepositAddForm',
   components: {
     TireInfo,
     SignatureField,
@@ -310,7 +310,7 @@ export default {
     item: null,
     newItem: {
       requestName: 'Nowe zlecenie',
-      date: new Date(),
+      // date: new Date(),
       client: {
         name: '',
         companyName: '',

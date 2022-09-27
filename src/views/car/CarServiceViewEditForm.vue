@@ -804,14 +804,31 @@
             <v-row class="no-gutters">
               <v-col>
                 <v-text-field
+                  :readonly="$store.state.isAccountManager !== true"
                   v-model.lazy="item.saleDocument"
                   label="Numer dokumentu"
                   type="input"
                   class="text_ellipsis"
-                  hide-details
-                  readonly/>
+                  hide-details/>
               </v-col>
             </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+      <!-- Apply button -->
+      <v-card
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'"
+        v-if="$store.state.isAccountManager"
+        flat>
+        <v-row class="no-gutters" justify="end">
+          <v-col cols="12" sm="6" md="4" lg="2">
+            <v-btn
+              depressed
+              block
+              class="save-btn"
+              @click="save">
+              Zapisz
+            </v-btn>
           </v-col>
         </v-row>
       </v-card>
@@ -845,7 +862,7 @@ import clientsService from '@/services/clients';
 import signaturesService from '@/services/signatures';
 
 export default {
-  name: 'CarServiceViewForm',
+  name: 'CarServiceViewEditForm',
   props: { id: [String, Number] },
   components: {
     TireMeasurementInfo,

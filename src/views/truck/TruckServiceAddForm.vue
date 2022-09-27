@@ -674,8 +674,9 @@
       </v-card>
       <!-- Sale document -->
       <v-card
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'"
         flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
+        v-if="$store.state.isAccountManager">
         <v-row class="no-gutters">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
@@ -726,7 +727,6 @@ import debounce from 'lodash.debounce';
 import moment from 'moment';
 import rules from '@/misc/rules';
 import vehicleType from '@/enums/truck/vehicleType';
-//import tireLocation from '@/enums/truck/tireLocation';
 import companiesService from '@/services/companies';
 import trucksService from '@/services/trucks';
 import TireMeasurementInfo from '@/components/truck/TireMeasurementInfo.vue';
@@ -736,7 +736,7 @@ import SignatureField from '@/components/SignatureField.vue';
 import Mechanic from '@/components/truck/Mechanic.vue';
 
 export default {
-  name: 'TruckServiceEditForm',
+  name: 'TruckServiceAddForm',
   components: {
     TireMeasurementInfo,
     ServiceAction,
@@ -767,7 +767,7 @@ export default {
     item: null,
     newItem: {
       requestName: 'Nowe zlecenie',
-      date: new Date(),
+      // date: new Date(),
       company: {
         name: '',
         taxId: '',

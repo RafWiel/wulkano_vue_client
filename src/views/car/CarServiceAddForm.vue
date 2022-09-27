@@ -731,8 +731,9 @@
       </v-card>
       <!-- Sale document -->
       <v-card
-        flat
-        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'">
+        :class="$vuetify.breakpoint.mdAndUp ? 'mx-4 mt-4 mb-4 pa-4' : 'pa-3 mt-2'"
+        v-if="$store.state.isAccountManager"
+        flat>
         <v-row class="no-gutters">
           <!-- Content column -->
           <v-col cols="12" class="pa-0">
@@ -806,7 +807,7 @@ import carsService from '@/services/cars';
 import clientsService from '@/services/clients';
 
 export default {
-  name: 'CarServiceEditForm',
+  name: 'CarServiceAddForm',
   components: {
     TireMeasurementInfo,
     TireBrandInfo,
@@ -829,7 +830,7 @@ export default {
     item: null,
     newItem: {
       requestName: 'Nowe zlecenie',
-      date: new Date(),
+      // date: new Date(),
       client: {
         name: '',
         phoneNumber: '',

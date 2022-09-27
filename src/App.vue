@@ -11,6 +11,8 @@
           <!-- Main workspace -->
           <v-main style="height: 100%">
             <app-bar @menuClicked="isNavigationBarOpen = !isNavigationBarOpen"/>
+            <h4 class="px-2 py-1 yellow">Nie dziala tworzenie zlecen</h4>
+            <h4 class="px-2 py-1 yellow">Tylko depozyt ma weryfikacje numeru telefonu</h4>
             <h4 class="px-2 py-1 yellow">Użytkownik z możliwością edycji</h4>
             <h4 class="px-2 py-1 yellow">Zapisz błędy do loga</h4>
             <router-view

@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import TruckServiceEditForm from '../views/truck/TruckServiceEditForm.vue';
-import TruckServiceViewForm from '../views/truck/TruckServiceViewForm.vue';
-import CarServiceEditForm from '../views/car/CarServiceEditForm.vue';
-import CarServiceViewForm from '../views/car/CarServiceViewForm.vue';
-import DepositEditForm from '../views/deposit/DepositEditForm.vue';
+import TruckServiceAddForm from '../views/truck/TruckServiceAddForm.vue';
+import TruckServiceViewEditForm from '../views/truck/TruckServiceViewEditForm.vue';
+import CarServiceAddForm from '../views/car/CarServiceAddForm.vue';
+import CarServiceViewEditForm from '../views/car/CarServiceViewEditForm.vue';
+import DepositAddForm from '../views/deposit/DepositAddForm.vue';
 import DepositViewForm from '../views/deposit/DepositViewForm.vue';
 import RequestsListView from '../views/RequestsListView.vue';
 import LoginView from '../views/authorization/LoginView.vue';
@@ -38,16 +38,16 @@ const routes = [
   },
   {
     path: '/service/car/',
-    name: 'CarServiceEditForm',
-    component: CarServiceEditForm,
+    name: 'CarServiceAddForm',
+    component: CarServiceAddForm,
     meta: {
       isBackButton: true,
     },
   },
   {
     path: '/service/car/:id',
-    name: 'CarServiceViewForm',
-    component: CarServiceViewForm,
+    name: 'CarServiceViewEditForm',
+    component: CarServiceViewEditForm,
     props: true,
     meta: {
       isBackButton: true,
@@ -55,16 +55,16 @@ const routes = [
   },
   {
     path: '/service/truck/',
-    name: 'TruckServiceEditForm',
-    component: TruckServiceEditForm,
+    name: 'TruckServiceAddForm',
+    component: TruckServiceAddForm,
     meta: {
       isBackButton: true,
     },
   },
   {
     path: '/requests/truck-service/:id',
-    name: 'TruckServiceViewForm',
-    component: TruckServiceViewForm,
+    name: 'TruckServiceViewEditForm',
+    component: TruckServiceViewEditForm,
     props: true,
     meta: {
       isBackButton: true,
@@ -72,8 +72,8 @@ const routes = [
   },
   {
     path: '/deposit',
-    name: 'DepositEditForm',
-    component: DepositEditForm,
+    name: 'DepositAddForm',
+    component: DepositAddForm,
     meta: {
       isBackButton: true,
     },
