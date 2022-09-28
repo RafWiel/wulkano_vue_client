@@ -14,6 +14,8 @@
             <h4 class="px-2 py-1 yellow">Nie dziala tworzenie zlecen</h4>
             <h4 class="px-2 py-1 yellow">Tylko depozyt ma weryfikacje numeru telefonu</h4>
             <h4 class="px-2 py-1 yellow">Użytkownik z możliwością edycji</h4>
+            <h4 class="px-2 py-1 yellow">Wczytuj klienta po numerze telefonu w Vue</h4>
+            <h4 class="px-2 py-1 yellow">Usun wczytywanie klienta na serwerze, numer tel moze byc powielony </h4>
             <h4 class="px-2 py-1 yellow">Zapisz błędy do loga</h4>
             <router-view
               @isProcessing="isProcessing = $event"

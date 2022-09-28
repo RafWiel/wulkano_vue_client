@@ -195,13 +195,13 @@
               :key="index">
               <tire-measurement-info
                 :item="tire"
-                :isValidation="item.inspectedTires.length == 1 || index < item.inspectedTires.length - 1"
+                :isValidation="tire.location !== tireLocation.none"
                 @change="addArrayObject(tire, item.inspectedTires, 5, {
-                  width: '',
-                  profile: '',
-                  diameter: '',
+                  location: tireLocation.none,
+                  status: 0,
                   pressure: '',
-                  tread: '' })"
+                  tread: '',
+                })"
                 />
             </div>
             <v-row class="no-gutters mt-4">
@@ -247,14 +247,14 @@
               :key="index">
               <tire-brand-info
                 :item="tire"
-                :isValidation="item.installedTires.length == 1 || index < item.installedTires.length - 1"
+                :isValidation="tire.location !== tireLocation.none || tire.width !== '' || tire.profile !== '' || tire.diameter !== ''"
                 @change="addArrayObject(tire, item.installedTires, 4, {
+                  location: tireLocation.none,
                   width: '',
                   profile: '',
                   diameter: '',
+                  dot: '',
                   brand: '',
-                  tread: '',
-                  serial: ''
                 })"
               class="mt-2"/>
             </div>
@@ -292,7 +292,7 @@
               :key="index">
               <tire-info
                 :item="tire"
-                :isValidation="item.depositTires.length > 1 && index < item.depositTires.length - 1"
+                :isValidation="tire.width !== '' || tire.profile !== '' || tire.diameter !== ''"
                 @change="addArrayObject(tire, item.depositTires, 5, {
                   width: '',
                   profile: '',
@@ -300,7 +300,7 @@
                   dot: '',
                   brand: '',
                   tread: '',
-                  note: ''
+                  note: '',
                 }); isDepositLocationCardVisible = true;"
                 class="mt-2"/>
             </div>
@@ -823,9 +823,11 @@ export default {
   },
   data: () => ({
     isDepositLocationCardVisible: false,
+    isFormReset: false,
     axleLocationItems: axleLocation.items,
     boolItems: bool.items,
     tireChangeItems: tireChangeType.items,
+    tireLocation,
     vehicleTypeItems: vehicleType.items,
     item: null,
     newItem: {
@@ -844,25 +846,7 @@ export default {
       },
       inspectedTires: [
         {
-          location: tireLocation.leftFront,
-          status: 0,
-          pressure: '',
-          tread: '',
-        },
-        {
-          location: tireLocation.rightFront,
-          status: 0,
-          pressure: '',
-          tread: '',
-        },
-        {
-          location: tireLocation.leftRear,
-          status: 0,
-          pressure: '',
-          tread: '',
-        },
-        {
-          location: tireLocation.rightRear,
+          location: tireLocation.none,
           status: 0,
           pressure: '',
           tread: '',
@@ -872,7 +856,7 @@ export default {
       isGeometryRequired: false,
       installedTires: [
         {
-          location: tireLocation.leftFront,
+          location: tireLocation.none,
           width: '',
           profile: '',
           diameter: '',
@@ -1116,7 +1100,7 @@ export default {
     },
   }),
   created() {
-    //deep copy
+    // deep copy
     this.item = JSON.parse(JSON.stringify(this.newItem));
   },
   methods: {
@@ -1174,15 +1158,27 @@ export default {
       console.log(error.response.data);
       this.$emit('showMessage', 'Zlecenie osobowe', error.response.data.message);
     },
+    sayHi() {
+      alert('Hello');
+      this.isFormReset = false;
+    },
     resetForm() {
+      this.isFormReset = true;
+
       //deep copy
       this.item = JSON.parse(JSON.stringify(this.newItem));
 
       this.$refs.employeeSignature.resetCanvas();
       this.$refs.clientSignature.resetCanvas();
       this.$refs.form.reset();
+
+      setTimeout(() => { this.isFormReset = false; }, 1000);
     },
     addArrayObject(item, array, maxCount, newItem) {
+      if (this.isFormReset === true) {
+        return;
+      }
+
       //check if last item in array
       const index = array.indexOf(item);
       if (array.length >= maxCount || index < array.length - 1) {
