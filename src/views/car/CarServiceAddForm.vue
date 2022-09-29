@@ -23,7 +23,7 @@
                 md="4"
                 :class="$vuetify.breakpoint.mdAndUp ? 'text-left' : 'text-center'">
                 <p class="grey--text text--lighten-2 text-h5 ma-0 semibold">
-                  Zlecenie warsztatowe
+                  Zlecenie osobowe
                 </p>
               </v-col>
               <v-col
@@ -198,9 +198,9 @@
                 :isValidation="tire.location !== tireLocation.none"
                 @change="addArrayObject(tire, item.inspectedTires, 5, {
                   location: tireLocation.none,
-                  status: 0,
-                  pressure: '',
-                  tread: '',
+                  status: threeState.none,
+                  pressure: null,
+                  tread: null,
                 })"
                 />
             </div>
@@ -247,14 +247,14 @@
               :key="index">
               <tire-brand-info
                 :item="tire"
-                :isValidation="tire.location !== tireLocation.none || tire.width !== '' || tire.profile !== '' || tire.diameter !== ''"
+                :isValidation="tire.location !== tireLocation.none || tire.width !== null || tire.profile !== null || tire.diameter !== null"
                 @change="addArrayObject(tire, item.installedTires, 4, {
                   location: tireLocation.none,
-                  width: '',
-                  profile: '',
-                  diameter: '',
-                  dot: '',
-                  brand: '',
+                  width: null,
+                  profile: null,
+                  diameter: null,
+                  dot: null,
+                  brand: null,
                 })"
               class="mt-2"/>
             </div>
@@ -292,15 +292,15 @@
               :key="index">
               <tire-info
                 :item="tire"
-                :isValidation="tire.width !== '' || tire.profile !== '' || tire.diameter !== ''"
+                :isValidation="tire.width !== null || tire.profile !== null || tire.diameter !== null"
                 @change="addArrayObject(tire, item.depositTires, 5, {
-                  width: '',
-                  profile: '',
-                  diameter: '',
-                  dot: '',
-                  brand: '',
-                  tread: '',
-                  note: '',
+                  width: null,
+                  profile: null,
+                  diameter: null,
+                  dot: null,
+                  brand: null,
+                  tread: null,
+                  note: null,
                 }); isDepositLocationCardVisible = true;"
                 class="mt-2"/>
             </div>
@@ -805,6 +805,7 @@ import VisualInspection from '@/components/car/VisualInspection.vue';
 import ServiceAction from '@/components/car/ServiceAction.vue';
 import carsService from '@/services/cars';
 import clientsService from '@/services/clients';
+import threeState from '@/enums/threeState';
 
 export default {
   name: 'CarServiceAddForm',
@@ -834,22 +835,22 @@ export default {
       requestName: 'Nowe zlecenie',
       // date: new Date(),
       client: {
-        name: '',
-        phoneNumber: '',
+        name: null,
+        phoneNumber: null,
       },
-      description: '',
+      description: null,
       vehicle: {
-        name: '',
-        registrationNumber: '',
+        name: null,
+        registrationNumber: null,
         type: 0,
-        mileage: '',
+        mileage: null,
       },
       inspectedTires: [
         {
           location: tireLocation.none,
           status: 0,
-          pressure: '',
-          tread: '',
+          pressure: null,
+          tread: null,
         },
       ],
       incorrectTireWearLocation: 0,
@@ -857,23 +858,23 @@ export default {
       installedTires: [
         {
           location: tireLocation.none,
-          width: '',
-          profile: '',
-          diameter: '',
-          dot: '',
-          brand: '',
+          width: null,
+          profile: null,
+          diameter: null,
+          dot: null,
+          brand: null,
         },
       ],
       tireChange: tireChangeType.none,
       depositTires: [
         {
-          width: '',
-          profile: '',
-          diameter: '',
-          dot: '',
-          brand: '',
-          tread: '',
-          note: '',
+          width: null,
+          profile: null,
+          diameter: null,
+          dot: null,
+          brand: null,
+          tread: null,
+          note: null,
         },
       ],
       deposit: {
@@ -883,194 +884,194 @@ export default {
         isScrews: false,
         isHubcups: false,
       },
-      depositTiresNote: '',
-      depositTiresLocation: '',
+      depositTiresNote: null,
+      depositTiresLocation: null,
       visualInspection: {
         brakePads: {
           front: {
             text: 'Klocki hamulcowe - Przód',
-            status: 0,
+            status: threeState.none,
           },
           rear: {
             text: 'Klocki hamulcowe - Tył',
-            status: 0,
+            status: threeState.none,
           },
         },
         brakeDiscs: {
           front: {
             text: 'Tarcze hamulcowe - Przód',
-            status: 0,
+            status: threeState.none,
           },
           rear: {
             text: 'Tarcze hamulcowe - Tył',
-            status: 0,
+            status: threeState.none,
           },
         },
         shockAbsorbers: {
           text: 'Amortyzatory',
-          status: 0,
+          status: threeState.none,
         },
         suspension: {
           text: 'Zawieszenie',
-          status: 0,
+          status: threeState.none,
         },
         airco: {
           text: 'Klimatyzacja',
-          status: 0,
+          status: threeState.none,
         },
         oil: {
           text: 'Poziom oleju w silniku',
-          status: 0,
+          status: threeState.none,
         },
         lights: {
           text: 'Światła',
-          status: 0,
+          status: threeState.none,
         },
         washingFluid: {
           text: 'Płyn do spryskiwaczy',
-          status: 0,
+          status: threeState.none,
         },
         brakeFluid: {
           text: 'Płyn hamulcowy',
-          status: 0,
+          status: threeState.none,
         },
         coolingFluid: {
           text: 'Płyn chłodzący',
-          status: 0,
+          status: threeState.none,
         },
         wipers: {
           text: 'Pióra wycieraczek',
-          status: 0,
+          status: threeState.none,
         },
         other: {
           text: 'Inne',
-          status: 0,
-          extraInfo: '',
+          status: threeState.none,
+          extraInfo: null,
         },
       },
       actions: {
         screwing: {
           isChecked: false,
           text: 'Odkręcenie / Przykręcenie',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
         },
         installation: {
           isChecked: false,
           text: 'Montaż / Demontaż',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
         },
         wheelBalancing: {
           isChecked: false,
           text: 'Wyważanie',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
           isSteel: false,
           isAlloy: false,
         },
         tireRepair: {
           isChecked: false,
           text: 'Naprawa opony',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
         },
         rimStraightening: {
           isChecked: false,
           text: 'Prostowanie felgi',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
           isSteel: false,
           isAlloy: false,
         },
         airValve: {
           isChecked: false,
           text: 'Zawór do felg',
-          count: '',
-          price: '',
-          extraInfo: '',
+          count: null,
+          price: null,
+          extraInfo: null,
         },
         nitrogenFill: {
           isChecked: false,
           text: 'Napełnianie azotem',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
         },
         utilization: {
           isChecked: false,
           text: 'Utylizacja opony',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
         },
       },
       fastFit: {
         brakePads: {
           isChecked: false,
           text: 'Montaż klocków',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
           isFront: false,
           isRear: false,
         },
         brakeDiscs: {
           isChecked: false,
           text: 'Montaż tarcz',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
           isFront: false,
           isRear: false,
         },
         shockAbsorbers: {
           isChecked: false,
           text: 'Montaż amortyzatorów',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
           isFront: false,
           isRear: false,
         },
         geometry: {
           isChecked: false,
           text: 'Geometria',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
         },
         fuelFilter: {
           isChecked: false,
           text: 'Wymiana filtra paliwa',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
         },
       },
       inspection: {
         oil: {
           isChecked: false,
           text: 'Wymiana oleju silnikowego',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
         },
         oilFilter: {
           isChecked: false,
           text: 'Wymiana filtra oleju',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
         },
         airFilter: {
           isChecked: false,
           text: 'Wymiana filtra powietrza',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
         },
         interiorFilter: {
           isChecked: false,
           text: 'Wymiana filtra kabiny',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
         },
         airco: {
           isChecked: false,
           text: 'Klimatyzacja',
-          count: '',
-          price: '',
+          count: null,
+          price: null,
           isCleaning: false,
           isFilter: false,
           isFilling: false,
@@ -1078,12 +1079,12 @@ export default {
         other: {
           isChecked: false,
           text: 'Inne',
-          count: '',
-          price: '',
-          extraInfo: '',
+          count: null,
+          price: null,
+          extraInfo: null,
         },
       },
-      saleDocument: '',
+      saleDocument: null,
       signature: {
         employee: null,
         client: null,
@@ -1122,7 +1123,7 @@ export default {
       try {
         this.$emit('isProcessing', true);
 
-        console.log(JSON.stringify(this.item));
+        // console.log(JSON.stringify(this.item));
 
         this.item.signature.employee = this.$refs.employeeSignature.getImageData();
         this.item.signature.client = this.$refs.clientSignature.getImageData();
@@ -1158,10 +1159,6 @@ export default {
       console.log(error.response.data);
       this.$emit('showMessage', 'Zlecenie osobowe', error.response.data.message);
     },
-    sayHi() {
-      alert('Hello');
-      this.isFormReset = false;
-    },
     resetForm() {
       this.isFormReset = true;
 
@@ -1175,15 +1172,11 @@ export default {
       setTimeout(() => { this.isFormReset = false; }, 1000);
     },
     addArrayObject(item, array, maxCount, newItem) {
-      if (this.isFormReset === true) {
-        return;
-      }
+      if (this.isFormReset === true) return;
 
       //check if last item in array
       const index = array.indexOf(item);
-      if (array.length >= maxCount || index < array.length - 1) {
-        return;
-      }
+      if (array.length >= maxCount || index < array.length - 1) return;
 
       //add new item
       array.push(newItem);

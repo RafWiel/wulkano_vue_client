@@ -23,7 +23,7 @@
                 md="4"
                 :class="$vuetify.breakpoint.mdAndUp ? 'text-left' : 'text-center'">
                 <p class="grey--text text--lighten-2 text-h5 ma-0 semibold">
-                  Zlecenie warsztatowe
+                  Zlecenie ciężarowe
                 </p>
               </v-col>
               <v-col
@@ -224,13 +224,15 @@
               :key="index">
               <tire-measurement-info
                 :item="tire"
-                :isValidation="item.sizeTires.length == 1 || index < item.sizeTires.length - 1"
+                :isValidation="tire.location !== tireLocation.none || tire.width !== null || tire.profile !== null || tire.diameter !== null"
                 @change="addArrayObject(tire, item.sizeTires, 18, {
-                  width: '',
-                  profile: '',
-                  diameter: '',
-                  pressure: '',
-                  tread: '' })"
+                  location: tireLocation.none,
+                  width: null,
+                  profile: null,
+                  diameter: null,
+                  pressure: null,
+                  tread: null
+                })"
                 class="mt-2"/>
             </div>
             <!-- Diagnostics -->
@@ -418,14 +420,16 @@
               :key="index">
               <tire-brand-info
                 :item="tire"
-                :isValidation="item.installedTires.length == 1 || index < item.installedTires.length - 1"
+                :isValidation="tire.location !== tireLocation.none || tire.width !== null || tire.profile !== null || tire.diameter !== null"
                 @change="addArrayObject(tire, item.installedTires, 18, {
-                  width: '',
-                  profile: '',
-                  diameter: '',
-                  brand: '',
-                  tread: '',
-                  serial: ''
+                  location: tireLocation.none,
+                  width: null,
+                  profile: null,
+                  diameter: null,
+                  pressure: null,
+                  tread: null,
+                  brand: null,
+                  serial: null,
                 })"
                 class="mt-2"/>
             </div>
@@ -482,15 +486,17 @@
               :key="index">
               <tire-brand-info
                 :item="tire"
-                :isValidation="item.dismantledTires.length == 1 || index < item.dismantledTires.length - 1"
+                :isValidation="tire.location !== tireLocation.none || tire.width !== null || tire.profile !== null || tire.diameter !== null"
                 class="mt-2"
                 @change="addArrayObject(tire, item.dismantledTires, 18, {
-                width: '',
-                profile: '',
-                diameter: '',
-                brand: '',
-                tread: '',
-                serial: ''
+                location: tireLocation.none,
+                width: null,
+                profile: null,
+                diameter: null,
+                pressure: null,
+                tread: null,
+                brand: null,
+                serial: null,
               })"/>
             </div>
           </v-col>
@@ -616,7 +622,7 @@
                   :item="mechanic"
                   :isValidation="item.mechanics.length == 1 || index < item.mechanics.length - 1"
                   @change="addArrayObject(mechanic, item.mechanics, 5, {
-                  name: '',
+                  name: null,
                 })"/>
               </v-col>
             </v-row>
@@ -727,6 +733,7 @@ import debounce from 'lodash.debounce';
 import moment from 'moment';
 import rules from '@/misc/rules';
 import vehicleType from '@/enums/truck/vehicleType';
+import tireLocation from '@/enums/truck/tireLocation';
 import companiesService from '@/services/companies';
 import trucksService from '@/services/trucks';
 import TireMeasurementInfo from '@/components/truck/TireMeasurementInfo.vue';
@@ -764,132 +771,134 @@ export default {
   },
   data: () => ({
     vehicleTypeItems: vehicleType.items,
+    isFormReset: false,
+    tireLocation,
     item: null,
     newItem: {
       requestName: 'Nowe zlecenie',
       // date: new Date(),
       company: {
-        name: '',
-        taxId: '',
-        phoneNumber: '',
-        city: '',
+        name: null,
+        taxId: null,
+        phoneNumber: null,
+        city: null,
       },
       vehicle: {
-        name: '',
-        type: 0,
-        registrationNumber: '',
-        mileage: '',
+        name: null,
+        type: vehicleType.none,
+        registrationNumber: null,
+        mileage: null,
       },
-      description: 'Opis',
+      description: null,
       sizeTires: [
         {
-          location: null,
-          width: '',
-          profile: '',
-          diameter: '',
-          pressure: '',
-          tread: '',
+          location: tireLocation.none,
+          width: null,
+          profile: null,
+          diameter: null,
+          pressure: null,
+          tread: null,
         },
       ],
-      tireDiagnostics: '',
+      tireDiagnostics: null,
       actions: {
         tiresInspection: {
           isChecked: false,
           text: 'Inspekcja stanu ogumienia',
-          count: '',
-          info: '',
+          count: null,
+          info: null,
         },
         pressureRegulation: {
           isChecked: false,
           text: 'Regulacja ciśnienia',
-          count: '',
-          info: '',
+          count: null,
+          info: null,
         },
         wheelWashing: {
           isChecked: false,
           text: 'Mycie koła',
-          count: '',
-          info: '',
-          extraInfo: '',
+          count: null,
+          info: null,
+          extraInfo: null,
         },
         wheelUnscrewing: {
           isChecked: false,
           text: 'Odkręcanie koła',
-          count: '',
-          info: '',
-          extraInfo: '',
+          count: null,
+          info: null,
+          extraInfo: null,
         },
         tireInstallation: {
           isChecked: false,
           text: 'Demontaż / montaż opony',
-          count: '',
-          info: '',
-          extraInfo: '',
+          count: null,
+          info: null,
+          extraInfo: null,
         },
         wheelBalancing: {
           isChecked: false,
           text: 'Wyważanie',
-          count: '',
-          info: '',
-          extraInfo: '',
+          count: null,
+          info: null,
+          extraInfo: null,
         },
         wheelWeights: {
           isChecked: false,
           text: 'Ciężarki',
-          count: '',
-          info: '',
-          extraInfo: '',
+          count: null,
+          info: null,
+          extraInfo: null,
         },
         wheelCentering: {
           isChecked: false,
           text: 'Centrowanie koła',
-          count: '',
-          info: '',
+          count: null,
+          info: null,
         },
         pinsCleaning: {
           isChecked: false,
           text: 'Czyszczenie / smarowanie szpilek',
-          count: '',
-          info: '',
+          count: null,
+          info: null,
         },
         tighteningWithTorqueWrench: {
           isChecked: false,
           text: 'Dokręcanie kluczem dynamometrycznym',
-          count: '',
-          info: '',
+          count: null,
+          info: null,
         },
         handingOverTighteningCard: {
           isChecked: false,
           text: 'Przekazanie karty dokręceń',
-          count: '',
-          info: '',
+          count: null,
+          info: null,
         },
         pumping: {
           isChecked: false,
           text: 'Pompowanie',
-          count: '',
-          info: '',
-          extraInfo: '',
+          count: null,
+          info: null,
+          extraInfo: null,
         },
         valveChange: {
           isChecked: false,
           text: 'Montaż / wymiana zaworu',
-          count: '',
-          info: '',
-          extraInfo: '',
+          count: null,
+          info: null,
+          extraInfo: null,
         },
         extensionInstallation: {
           isChecked: false,
           text: 'Montaż przedłużki',
-          count: '',
-          info: '',
-          extraInfo: '',
+          count: null,
+          info: null,
+          extraInfo: null,
         },
         deepening: {
           isChecked: false,
           text: 'Pogłębianie',
-          count: '',
-          info: '',
+          count: null,
+          info: null,
           F: false,
           D: false,
           T: false,
@@ -897,55 +906,55 @@ export default {
         coldHotRepair: {
           isChecked: false,
           text: 'Naprawa na zimno / gorąco',
-          count: '',
-          info: '',
-          extraInfo: '',
+          count: null,
+          info: null,
+          extraInfo: null,
         },
         utilization: {
           isChecked: false,
           text: 'Utylizacja',
-          count: '',
-          info: '',
-          extraInfo: '',
+          count: null,
+          info: null,
+          extraInfo: null,
         },
         driveToClient: {
           isChecked: false,
           text: 'Dojazd',
-          count: '',
-          info: '',
-          extraInfo: '',
+          count: null,
+          info: null,
+          extraInfo: null,
         },
         other: {
           isChecked: false,
           text: 'Inne',
-          count: '',
-          info: '',
-          extraInfo: '',
+          count: null,
+          info: null,
+          extraInfo: null,
         },
       },
       installedTires: [
         {
-          location: null,
-          width: '',
-          profile: '',
-          diameter: '',
-          pressure: '',
-          tread: '',
-          brand: '',
-          serial: '',
+          location: tireLocation.none,
+          width: null,
+          profile: null,
+          diameter: null,
+          pressure: null,
+          tread: null,
+          brand: null,
+          serial: null,
         },
       ],
-      otherMaterials: '',
+      otherMaterials: null,
       dismantledTires: [
         {
-          location: null,
-          width: '',
-          profile: '',
-          diameter: '',
-          pressure: '',
-          tread: '',
-          brand: '',
-          serial: '',
+          location: tireLocation.none,
+          width: null,
+          profile: null,
+          diameter: null,
+          pressure: null,
+          tread: null,
+          brand: null,
+          serial: null,
         },
       ],
       recommendations: {
@@ -955,13 +964,13 @@ export default {
       },
       nextVisit: {
         isDatePickerVisible: false,
-        date: '',
-        description: '',
+        date: null,
+        description: null,
       },
       mechanics: [
-        { name: '' },
+        { name: null },
       ],
-      saleDocument: '',
+      saleDocument: null,
       signature: {
         employee: null,
         client: null,
@@ -1008,6 +1017,8 @@ export default {
         this.item.signature.employee = this.$refs.employeeSignature.getImageData();
         this.item.signature.client = this.$refs.clientSignature.getImageData();
 
+        // console.log(JSON.stringify(this.item));
+
         const response = await trucksService.create(this.item);
 
         if (response.data.result) {
@@ -1028,11 +1039,11 @@ export default {
       this.$emit('isProcessing', false);
     },
     addArrayObject(item, array, maxCount, newItem) {
+      if (this.isFormReset === true) return;
+
       //check if last item in array
       const index = array.indexOf(item);
-      if (array.length >= maxCount || index < array.length - 1) {
-        return;
-      }
+      if (array.length >= maxCount || index < array.length - 1) return;
 
       //add new item
       array.push(newItem);
@@ -1050,6 +1061,8 @@ export default {
       this.$emit('showMessage', 'Zlecenie ciężarowe', error.response.data.message);
     },
     resetForm() {
+      this.isFormReset = true;
+
       const vm = this;
 
       //deep copy
@@ -1058,6 +1071,8 @@ export default {
       vm.$refs.employeeSignature.resetCanvas();
       vm.$refs.clientSignature.resetCanvas();
       vm.$refs.form.reset();
+
+      setTimeout(() => { this.isFormReset = false; }, 1000);
     },
   },
   watch: {

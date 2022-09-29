@@ -11,12 +11,12 @@
           <!-- Main workspace -->
           <v-main style="height: 100%">
             <app-bar @menuClicked="isNavigationBarOpen = !isNavigationBarOpen"/>
-            <h4 class="px-2 py-1 yellow">Nie dziala tworzenie zlecen</h4>
-            <h4 class="px-2 py-1 yellow">Tylko depozyt ma weryfikacje numeru telefonu</h4>
-            <h4 class="px-2 py-1 yellow">Użytkownik z możliwością edycji</h4>
-            <h4 class="px-2 py-1 yellow">Wczytuj klienta po numerze telefonu w Vue</h4>
-            <h4 class="px-2 py-1 yellow">Usun wczytywanie klienta na serwerze, numer tel moze byc powielony </h4>
-            <h4 class="px-2 py-1 yellow">Zapisz błędy do loga</h4>
+            <h5 class="px-2 py-1 yellow">Dodaj użytkownika z możliwością edycji</h5>
+            <h5 class="px-2 py-1 yellow">Wczytuj klienta po numerze telefonu w Vue</h5>
+            <h5 class="px-2 py-1 yellow">Usun wczytywanie klienta na serwerze, numer tel nie moze byc unikalny</h5>
+            <h5 class="px-2 py-1 yellow">Formatka rejestracja użytkownika</h5>
+            <h5 class="px-2 py-1 yellow">Zapisz błędy do loga</h5>
+            <h1 class="px-2 py-1 yellow">Instrukcja instalacji</h1>
             <router-view
               @isProcessing="isProcessing = $event"
               @showMessage="showMessageDialog"
@@ -79,8 +79,8 @@ export default {
       { icon: 'mdi-home-import-outline', text: 'Nowy depozyt', route: '/deposit' },
     ],
     messageDialog: {
-      title: '',
-      message: '',
+      title: null,
+      message: null,
       isVisible: false,
     },
     questionDialog: {

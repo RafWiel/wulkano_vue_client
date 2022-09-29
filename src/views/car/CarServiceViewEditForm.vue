@@ -23,7 +23,7 @@
                 md="4"
                 :class="$vuetify.breakpoint.mdAndUp ? 'text-left' : 'text-center'">
                 <p class="grey--text text--lighten-2 text-h5 ma-0 semibold">
-                  Zlecenie warsztatowe
+                  Zlecenie osobowe
                 </p>
               </v-col>
               <v-col

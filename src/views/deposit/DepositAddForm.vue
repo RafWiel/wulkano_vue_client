@@ -127,16 +127,16 @@
               :key="index">
               <tire-info
                 :item="tire"
-                :isValidation="item.tires.length == 1 || index < item.tires.length - 1"
+                :isValidation="tire.width !== null || tire.profile !== null || tire.diameter !== null"
                 class="mt-2"
                 @change="addArrayObject(tire, item.tires, 5, {
-                  width: '',
-                  profile: '',
-                  diameter: '',
-                  dot: '',
-                  brand: '',
-                  tread: '',
-                  note: ''
+                  width: null,
+                  profile: null,
+                  diameter: null,
+                  dot: null,
+                  brand: null,
+                  tread: null,
+                  note: null
                 })"/>
             </div>
             <v-row class="no-gutters mt-4">
@@ -307,24 +307,25 @@ export default {
     },
   },
   data: () => ({
+    isFormReset: false,
     item: null,
     newItem: {
       requestName: 'Nowe zlecenie',
       // date: new Date(),
       client: {
-        name: '',
-        companyName: '',
-        phoneNumber: '',
+        name: null,
+        companyName: null,
+        phoneNumber: null,
       },
       tires: [
         {
-          width: '',
-          profile: '',
-          diameter: '',
-          dot: '',
-          brand: '',
-          tread: '',
-          note: '',
+          width: null,
+          profile: null,
+          diameter: null,
+          dot: null,
+          brand: null,
+          tread: null,
+          note: null,
         },
       ],
       isTires: false,
@@ -332,8 +333,8 @@ export default {
       isSteels: false,
       isScrews: false,
       isHubcups: false,
-      tiresNote: '',
-      tiresLocation: '',
+      tiresNote: null,
+      tiresLocation: null,
       signature: {
         employee: null,
         client: null,
@@ -375,6 +376,8 @@ export default {
         this.item.signature.employee = this.$refs.employeeSignature.getImageData();
         this.item.signature.client = this.$refs.clientSignature.getImageData();
 
+        // console.log(JSON.stringify(this.item));
+
         const response = await depositsService.create(this.item);
 
         if (response.data.result) {
@@ -395,11 +398,11 @@ export default {
       this.$emit('isProcessing', false);
     },
     addArrayObject(item, array, maxCount, newItem) {
+      if (this.isFormReset === true) return;
+
       //check if last item in array
       const index = array.indexOf(item);
-      if (array.length >= maxCount || index < array.length - 1) {
-        return;
-      }
+      if (array.length >= maxCount || index < array.length - 1) return;
 
       //add new item
       array.push(newItem);
@@ -417,12 +420,16 @@ export default {
       this.$emit('showMessage', 'Depozyt', error.response.data.message);
     },
     resetForm() {
+      this.isFormReset = true;
+
       //deep copy
       this.item = JSON.parse(JSON.stringify(this.newItem));
 
       this.$refs.employeeSignature.resetCanvas();
       this.$refs.clientSignature.resetCanvas();
       this.$refs.form.reset();
+
+      setTimeout(() => { this.isFormReset = false; }, 1000);
     },
   },
   watch: {
