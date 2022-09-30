@@ -11,12 +11,13 @@
           <!-- Main workspace -->
           <v-main style="height: 100%">
             <app-bar @menuClicked="isNavigationBarOpen = !isNavigationBarOpen"/>
+            <h3 class="px-2 py-1 yellow">Rejestracja z dodatkowym hasłem</h3>
             <h5 class="px-2 py-1 yellow">Dodaj użytkownika z możliwością edycji</h5>
             <h5 class="px-2 py-1 yellow">Wczytuj klienta po numerze telefonu w Vue</h5>
             <h5 class="px-2 py-1 yellow">Usun wczytywanie klienta na serwerze, numer tel nie moze byc unikalny</h5>
             <h5 class="px-2 py-1 yellow">Formatka rejestracja użytkownika</h5>
             <h5 class="px-2 py-1 yellow">Zapisz błędy do loga</h5>
-            <h1 class="px-2 py-1 yellow">Instrukcja instalacji</h1>
+            <h5 class="px-2 py-1 yellow">Instrukcja instalacji</h5>
             <router-view
               @isProcessing="isProcessing = $event"
               @showMessage="showMessageDialog"
@@ -97,7 +98,7 @@ export default {
   created() {
     console.log('created localStorage.userInfo:', localStorage.getItem('userInfo'));
     if (!localStorage.getItem('userInfo')) {
-      if (this.$route.name !== 'Login') {
+      if (this.$route.name !== 'Login' && this.$route.name !== 'Register') {
         this.$router.replace({ name: 'Login' });
       }
       return;
@@ -107,7 +108,9 @@ export default {
 
     // require login each day
     const loginTimestamp = new Date(parseInt(userInfo.timestamp, 10));
-    if (!loginTimestamp || loginTimestamp.getDate() !== new Date().getDate()) {
+    if ((!loginTimestamp || loginTimestamp.getDate() !== new Date().getDate())
+    && this.$route.name !== 'Login'
+    && this.$route.name !== 'Register') {
       this.$router.replace({ name: 'Login' });
       return;
     }

@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import RegisterView from '../views/authorization/RegisterView.vue';
+import LoginView from '../views/authorization/LoginView.vue';
 import TruckServiceAddForm from '../views/truck/TruckServiceAddForm.vue';
 import TruckServiceViewEditForm from '../views/truck/TruckServiceViewEditForm.vue';
 import CarServiceAddForm from '../views/car/CarServiceAddForm.vue';
@@ -7,7 +9,6 @@ import CarServiceViewEditForm from '../views/car/CarServiceViewEditForm.vue';
 import DepositAddForm from '../views/deposit/DepositAddForm.vue';
 import DepositViewForm from '../views/deposit/DepositViewForm.vue';
 import RequestsListView from '../views/RequestsListView.vue';
-import LoginView from '../views/authorization/LoginView.vue';
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,14 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: LoginView,
+    meta: {
+      isLoginView: true,
+    },
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: RegisterView,
     meta: {
       isLoginView: true,
     },
