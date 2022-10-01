@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import RegisterView from '../views/authorization/RegisterView.vue';
+import RegisterView from '../views/users/RegisterView.vue';
 import LoginView from '../views/authorization/LoginView.vue';
 import TruckServiceAddForm from '../views/truck/TruckServiceAddForm.vue';
 import TruckServiceViewEditForm from '../views/truck/TruckServiceViewEditForm.vue';

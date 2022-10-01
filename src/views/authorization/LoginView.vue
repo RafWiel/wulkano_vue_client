@@ -23,10 +23,10 @@
                 <v-col cols="12">
                   <v-text-field
                     ref="firstControl"
-                    id="email"
-                    name="email"
+                    id="username"
+                    name="username"
                     type="text"
-                    autocomplete="username email"
+                    autocomplete="username"
                     label="Użytkownik"
                     hide-details="auto"
                     validate-on-blur
