@@ -829,6 +829,7 @@ export default {
     boolItems: bool.items,
     tireChangeItems: tireChangeType.items,
     tireLocation,
+    threeState,
     vehicleTypeItems: vehicleType.items,
     item: null,
     newItem: {

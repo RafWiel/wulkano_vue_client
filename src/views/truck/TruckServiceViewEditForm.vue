@@ -697,11 +697,13 @@
               <v-col>
                 <v-text-field
                   :readonly="$store.state.isAccountManager !== true"
+                  :rules="$store.state.isAccountManager === true ? [rules.required] : null"
                   v-model="item.saleDocument"
                   label="Numer dokumentu"
                   type="input"
                   class="text_ellipsis"
-                  hide-details/>
+                  hide-details="auto"
+                  validate-on-blur/>
               </v-col>
             </v-row>
           </v-col>
@@ -730,6 +732,7 @@
 
 <script>
 import moment from 'moment';
+import rules from '@/misc/rules';
 import trucksService from '@/services/trucks';
 import signaturesService from '@/services/signatures';
 import vehicleType from '@/enums/truck/vehicleType';
@@ -817,6 +820,7 @@ export default {
     },
     employeeSignature: '',
     clientSignature: '',
+    rules: { required: rules.required },
   }),
   created() {
     // copy actions text
@@ -879,10 +883,7 @@ export default {
     },
     async save() {
       //validation
-      const v1 = this.$refs.form.validate();
-      const v2 = this.$refs.employeeSignature.validate();
-      const v3 = this.$refs.clientSignature.validate();
-      if (!v1 || !v2 || !v3) {
+      if (!this.$refs.form.validate()) {
         this.$nextTick(() => {
           const el = this.$el.querySelector('.v-messages.error--text:first-of-type');
 
@@ -895,23 +896,19 @@ export default {
       try {
         this.$emit('isProcessing', true);
 
-        console.log(JSON.stringify(this.item));
+        //console.log(JSON.stringify(this.item));
 
-        this.item.signature.employee = this.$refs.employeeSignature.getImageData();
-        this.item.signature.client = this.$refs.clientSignature.getImageData();
+        const response = await trucksService.update(this.item);
 
-        const response = await trucksService.create(this.item);
-
-        if (response.data.result) {
+        if (response.data.result === true) {
           this.$emit('isProcessing', false);
-          this.$emit('showMessage', 'Zlecenie osobowe', 'Dokument sprzedaży zapisany');
-          this.resetForm();
+          this.$emit('showMessage', 'Zlecenie ciężarowe', 'Zlecenie zapisane');
           this.$vuetify.goTo(0);
 
           return;
         }
 
-        this.$emit('showMessage', 'Zlecenie osobowe', 'Nieudany zapis');
+        this.$emit('showMessage', 'Zlecenie ciężarowe', 'Nieudany zapis');
       }
       catch (error) {
         this.processError(error);

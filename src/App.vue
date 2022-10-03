@@ -11,9 +11,6 @@
           <!-- Main workspace -->
           <v-main style="height: 100%">
             <app-bar @menuClicked="isNavigationBarOpen = !isNavigationBarOpen"/>
-            <h5 class="px-2 py-1 yellow">threeState is undefined</h5>
-            <h5 class="px-2 py-1 yellow">Użytkownik małe i polskie znaki</h5>
-            <h5 class="px-2 py-1 yellow">Dodaj użytkownika z możliwością edycji</h5>
             <h5 class="px-2 py-1 yellow">Wczytuj klienta po numerze telefonu w Vue</h5>
             <h5 class="px-2 py-1 yellow">Usun wczytywanie klienta na serwerze, numer tel nie moze byc unikalny</h5>
             <h5 class="px-2 py-1 yellow">Zapisz błędy do loga</h5>

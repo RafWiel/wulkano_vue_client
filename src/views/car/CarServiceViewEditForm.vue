@@ -805,11 +805,13 @@
               <v-col>
                 <v-text-field
                   :readonly="$store.state.isAccountManager !== true"
+                  :rules="$store.state.isAccountManager === true ? [rules.required] : null"
                   v-model.lazy="item.saleDocument"
                   label="Numer dokumentu"
                   type="input"
                   class="text_ellipsis"
-                  hide-details/>
+                  hide-details="auto"
+                  validate-on-blur/>
               </v-col>
             </v-row>
           </v-col>
@@ -847,6 +849,7 @@
 
 <script>
 import debounce from 'lodash.debounce';
+import rules from '@/misc/rules';
 import moment from 'moment';
 import axleLocation from '@/enums/axleLocation';
 import bool from '@/enums/bool';
@@ -975,6 +978,7 @@ export default {
     },
     employeeSignature: '',
     clientSignature: '',
+    rules: { required: rules.required },
   }),
   created() {
     this.copyText();
@@ -1072,6 +1076,41 @@ export default {
 
       console.log(error.response.data);
       this.$emit('showMessage', 'Zlecenie osobowe', error.response.data.message);
+    },
+    async save() {
+      //validation
+      if (!this.$refs.form.validate()) {
+        this.$nextTick(() => {
+          const el = this.$el.querySelector('.v-messages.error--text:first-of-type');
+
+          this.$vuetify.goTo(el, { offset: 60 });
+        });
+
+        return;
+      }
+
+      try {
+        this.$emit('isProcessing', true);
+
+        //console.log(JSON.stringify(this.item));
+
+        const response = await carsService.update(this.item);
+
+        if (response.data.result === true) {
+          this.$emit('isProcessing', false);
+          this.$emit('showMessage', 'Zlecenie osobowe', 'Zlecenie zapisane');
+          this.$vuetify.goTo(0);
+
+          return;
+        }
+
+        this.$emit('showMessage', 'Zlecenie osobowe', 'Nieudany zapis');
+      }
+      catch (error) {
+        this.processError(error);
+      }
+
+      this.$emit('isProcessing', false);
     },
   },
   watch: {
