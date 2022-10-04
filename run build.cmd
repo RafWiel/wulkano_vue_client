@@ -1,2 +1,3 @@
-@echo off
-npm run build
+@echo on
+call npm run build
+copy web.config dist_vue_client
