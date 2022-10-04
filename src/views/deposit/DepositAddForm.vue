@@ -95,12 +95,14 @@
                   :items="api.values"
                   :loading="api.isLoading"
                   :search-input.sync="api.searchInput"
+                  :rules="[rules.required]"
+                  @change="getClient(item.client.phoneNumber)"
                   hide-no-data
                   hide-selected
                   no-filter
                   type="input"
                   label="Telefon kontaktowy"
-                  :rules="[rules.required]"/>
+                  />
               </v-col>
             </v-row>
           </v-col>
@@ -430,6 +432,23 @@ export default {
       this.$refs.form.reset();
 
       setTimeout(() => { this.isFormReset = false; }, 1000);
+    },
+    getClient(phoneNumber) {
+      console.log(phoneNumber);
+      if (this.api.isLoading) return;
+
+      this.api.isLoading = true;
+
+      clientsService.getFirstByPhoneNumber({ 'phone-number': phoneNumber })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        this.api.isLoading = false;
+      });
     },
   },
   watch: {
