@@ -67,7 +67,7 @@
               <!-- Name -->
               <v-col cols="6" sm="4" md="3" lg="2">
                 <v-text-field
-                  ref="firstControl"
+                  ref="clientName"
                   v-model.lazy.trim="item.client.name"
                   label="Imię i Nazwisko"
                   type="input"
@@ -315,6 +315,7 @@ export default {
       requestName: 'Nowe zlecenie',
       // date: new Date(),
       client: {
+        id: null,
         name: null,
         companyName: null,
         phoneNumber: null,
@@ -434,14 +435,23 @@ export default {
       setTimeout(() => { this.isFormReset = false; }, 1000);
     },
     getClient(phoneNumber) {
-      console.log(phoneNumber);
       if (this.api.isLoading) return;
 
       this.api.isLoading = true;
 
       clientsService.getFirstByPhoneNumber({ 'phone-number': phoneNumber })
       .then((res) => {
-        console.log(res.data);
+        if (!res.data.name) return;
+
+        if (!this.item.client.name && !this.item.client.companyName) {
+          const { id, name, companyName } = res.data;
+
+          this.item.client.id = id;
+          this.item.client.name = name;
+          this.item.client.companyName = companyName;
+
+          this.$refs.clientName.resetValidation();
+        }
       })
       .catch((error) => {
         console.log(error);
