@@ -66,43 +66,51 @@
             <v-row class="no-gutters mt-2">
               <!-- Name -->
               <v-col cols="6" sm="4" md="3" lg="2">
-                <v-text-field
-                  ref="clientName"
-                  v-model.lazy.trim="item.client.name"
-                  label="Imię i Nazwisko"
-                  type="input"
-                  class="text_ellipsis"
-                  hide-details="auto"
+                <v-combobox
+                  :items="namesApi.values"
+                  :loading="namesApi.isLoading"
+                  :search-input.sync="namesApi.searchInput"
                   :rules="[rules.required]"
-                  validate-on-blur/>
+                  @change="getClientByName(item.client.name)"
+                  ref="clientName"
+                  hide-no-data
+                  hide-selected
+                  no-filter
+                  type="input"
+                  label="Imię i nazwisko"
+                  v-model="item.client.name"/>
               </v-col>
               <!-- Company -->
               <v-col cols="6" sm="4" md="3" lg="2" class="pl-2">
-                <v-text-field
-                  v-model.lazy.trim="item.client.companyName"
-                  label="Firma"
+                <v-combobox
+                  :items="companyNamesApi.values"
+                  :loading="companyNamesApi.isLoading"
+                  :search-input.sync="companyNamesApi.searchInput"
+                  @change="getClientByCompanyName(item.client.companyName)"
+                  hide-no-data
+                  hide-selected
+                  no-filter
                   type="input"
-                  hide-details="auto"
-                  class="text_ellipsis"
-                  validate-on-blur/>
+                  label="Firma"
+                  v-model="item.client.companyName"/>
               </v-col>
               <!-- Phone number -->
               <v-col
                 cols="12" sm="4" md="6" lg="8"
                 :class="$vuetify.breakpoint.smAndUp ? 'pl-2' : ''">
                 <v-combobox
-                  v-model="item.client.phoneNumber"
-                  :items="api.values"
-                  :loading="api.isLoading"
-                  :search-input.sync="api.searchInput"
+                  :items="phoneNumbersApi.values"
+                  :loading="phoneNumbersApi.isLoading"
+                  :search-input.sync="phoneNumbersApi.searchInput"
                   :rules="[rules.required]"
-                  @change="getClient(item.client.phoneNumber)"
+                  @change="getClientByPhoneNumber(item.client.phoneNumber)"
+                  ref="clientPhoneNumber"
                   hide-no-data
                   hide-selected
                   no-filter
                   type="input"
                   label="Telefon kontaktowy"
-                  />
+                  v-model="item.client.phoneNumber"/>
               </v-col>
             </v-row>
           </v-col>
@@ -343,7 +351,17 @@ export default {
         client: null,
       },
     },
-    api: {
+    namesApi: {
+      searchInput: null,
+      values: [],
+      isLoading: false,
+    },
+    companyNamesApi: {
+      searchInput: null,
+      values: [],
+      isLoading: false,
+    },
+    phoneNumbersApi: {
       searchInput: null,
       values: [],
       isLoading: false,
@@ -434,12 +452,65 @@ export default {
 
       setTimeout(() => { this.isFormReset = false; }, 1000);
     },
-    getClient(phoneNumber) {
-      if (this.api.isLoading) return;
+    getClientByName(name) {
+      if (this.namesApi.isLoading) return;
 
-      this.api.isLoading = true;
+      this.namesApi.isLoading = true;
 
-      clientsService.getFirstByPhoneNumber({ 'phone-number': phoneNumber })
+      clientsService.getFirst({ name })
+      .then((res) => {
+        if (!res.data.name) return;
+
+        if (!this.item.client.companyName && !this.item.client.phoneNumber) {
+          const { id, companyName, phoneNumber } = res.data;
+
+          this.item.client.id = id;
+          this.item.client.companyName = companyName;
+          this.item.client.phoneNumber = phoneNumber;
+
+          this.$refs.clientPhoneNumber.resetValidation();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        this.namesApi.isLoading = false;
+      });
+    },
+    getClientByCompanyName(companyName) {
+      if (this.companyNamesApi.isLoading) return;
+
+      this.companyNamesApi.isLoading = true;
+
+      clientsService.getFirst({ 'company-name': companyName })
+      .then((res) => {
+        if (!res.data.name) return;
+
+        if (!this.item.client.name && !this.item.client.phoneNumber) {
+          const { id, name, phoneNumber } = res.data;
+
+          this.item.client.id = id;
+          this.item.client.name = name;
+          this.item.client.phoneNumber = phoneNumber;
+
+          this.$refs.clientName.resetValidation();
+          this.$refs.clientPhoneNumber.resetValidation();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        this.companyNamesApi.isLoading = false;
+      });
+    },
+    getClientByPhoneNumber(phoneNumber) {
+      if (this.phoneNumbersApi.isLoading) return;
+
+      this.phoneNumbersApi.isLoading = true;
+
+      clientsService.getFirst({ 'phone-number': phoneNumber })
       .then((res) => {
         if (!res.data.name) return;
 
@@ -457,26 +528,40 @@ export default {
         console.log(error);
       })
       .finally(() => {
-        this.api.isLoading = false;
+        this.phoneNumbersApi.isLoading = false;
       });
     },
   },
   watch: {
-    'api.searchInput': debounce(async function searchInput(val) {
-      if (this.api.isLoading) return;
+    'namesApi.searchInput': debounce(async function searchInput(val) {
+      if (this.namesApi.isLoading) return;
 
-      this.api.isLoading = true;
+      this.namesApi.isLoading = true;
+
+      clientsService.getNames({ filter: val })
+      .then((res) => { this.namesApi.values = res.data; })
+      .catch((error) => console.log(error))
+      .finally(() => { this.namesApi.isLoading = false; });
+    }, 500, { maxWait: 5000 }),
+    'companyNamesApi.searchInput': debounce(async function searchInput(val) {
+      if (this.companyNamesApi.isLoading) return;
+
+      this.companyNamesApi.isLoading = true;
+
+      clientsService.getCompanyNames({ filter: val })
+      .then((res) => { this.companyNamesApi.values = res.data; })
+      .catch((error) => console.log(error))
+      .finally(() => { this.companyNamesApi.isLoading = false; });
+    }, 500, { maxWait: 5000 }),
+    'phoneNumbersApi.searchInput': debounce(async function searchInput(val) {
+      if (this.phoneNumbersApi.isLoading) return;
+
+      this.phoneNumbersApi.isLoading = true;
 
       clientsService.getPhoneNumbers({ filter: val })
-      .then((res) => {
-        this.api.values = res.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        this.api.isLoading = false;
-      });
+      .then((res) => { this.phoneNumbersApi.values = res.data; })
+      .catch((error) => console.log(error))
+      .finally(() => { this.phoneNumbersApi.isLoading = false; });
     }, 500, { maxWait: 5000 }),
   },
 };
