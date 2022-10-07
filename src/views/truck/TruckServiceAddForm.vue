@@ -66,60 +66,70 @@
             <v-row class="no-gutters mt-2">
               <!-- Company -->
               <v-col cols="6" sm="4" md="3" lg="2">
-                <v-text-field
-                  v-model.lazy.trim="item.company.name"
-                  label="Firma"
+                <v-combobox
+                  :items="nameApi.values"
+                  :loading="nameApi.isLoading"
+                  :search-input.sync="nameApi.searchInput"
+                  :rules="[rules.required]"
+                  @change="getCompanyByName(item.company.name)"
+                  ref="companyName"
+                  hide-no-data
+                  hide-selected
+                  no-filter
                   type="input"
-                  class="text_ellipsis"
-                  hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  label="Firma"
+                  v-model="item.company.name"/>
               </v-col>
               <!-- Tax Id number -->
               <v-col
                 cols="6" sm="4" md="3" lg="2"
                 class="pl-2">
                 <v-combobox
-                  v-model="item.company.taxId"
                   :items="taxIdApi.values"
                   :loading="taxIdApi.isLoading"
                   :search-input.sync="taxIdApi.searchInput"
+                  :rules="[rules.required]"
+                  @change="getCompanyByTaxId(item.company.taxId)"
+                  ref="companyTaxId"
                   hide-details="auto"
                   hide-no-data
                   hide-selected
                   no-filter
                   type="input"
                   label="NIP"
-                  :rules="[rules.required]"/>
+                  v-model="item.company.taxId"/>
               </v-col>
               <!-- Phone number -->
               <v-col
                 cols="6" sm="4" md="3" lg="2"
                 :class="$vuetify.breakpoint.smAndUp ? 'pl-2' : 'mt-2'">
                 <v-combobox
-                  v-model="item.company.phoneNumber"
-                  :items="phoneApi.values"
-                  :loading="phoneApi.isLoading"
-                  :search-input.sync="phoneApi.searchInput"
+                  :rules="[rules.required]"
+                  :items="phoneNumberApi.values"
+                  :loading="phoneNumberApi.isLoading"
+                  :search-input.sync="phoneNumberApi.searchInput"
+                  @change="getCompanyByPhoneNumber(item.company.phoneNumber)"
+                  ref="companyPhoneNumber"
                   hide-details="auto"
                   hide-no-data
                   hide-selected
                   no-filter
                   type="input"
                   label="Telefon kontaktowy"
-                  :rules="[rules.required]"/>
+                  v-model="item.company.phoneNumber"/>
               </v-col>
               <!-- City -->
               <v-col
                 cols="6" sm="4" md="3" lg="2"
                 :class="companyCityClass">
                 <v-text-field
+                  :rules="[rules.required]"
+                  ref="companyCity"
                   v-model.lazy.trim="item.company.city"
                   label="Miasto"
                   type="input"
                   hide-details="auto"
-                  validate-on-blur
-                  :rules="[rules.required]"/>
+                  validate-on-blur/>
               </v-col>
               <!-- Description -->
               <v-col
@@ -782,6 +792,7 @@ export default {
         taxId: null,
         phoneNumber: null,
         city: null,
+        email: null,
       },
       vehicle: {
         name: null,
@@ -976,12 +987,17 @@ export default {
         client: null,
       },
     },
-    phoneApi: {
+    nameApi: {
       searchInput: null,
       values: [],
       isLoading: false,
     },
     taxIdApi: {
+      searchInput: null,
+      values: [],
+      isLoading: false,
+    },
+    phoneNumberApi: {
       searchInput: null,
       values: [],
       isLoading: false,
@@ -1074,32 +1090,58 @@ export default {
 
       setTimeout(() => { this.isFormReset = false; }, 1000);
     },
-  },
-  watch: {
-    'phoneApi.searchInput': debounce(async function searchInput(val) {
-      if (this.phoneApi.isLoading) return;
+    getCompanyByName(name) {
+      if (this.nameApi.isLoading) return;
 
-      this.phoneApi.isLoading = true;
+      this.nameApi.isLoading = true;
 
-      companiesService.getPhoneNumbers({ filter: val })
+      companiesService.getFirst({ name })
       .then((res) => {
-        this.phoneApi.values = res.data;
+        if (!res.data.id) return;
+
+        if (!this.item.company.taxId
+        && !this.item.company.phoneNumber
+        && !this.item.company.city) {
+          const { taxId, phoneNumber, city } = res.data;
+
+          this.item.company.taxId = taxId;
+          this.item.company.phoneNumber = phoneNumber;
+          this.item.company.city = city;
+
+          this.$refs.companyTaxId.resetValidation();
+          this.$refs.companyPhoneNumber.resetValidation();
+          this.$refs.companyCity.resetValidation();
+        }
       })
       .catch((error) => {
         console.log(error);
       })
       .finally(() => {
-        this.phoneApi.isLoading = false;
+        this.nameApi.isLoading = false;
       });
-    }, 500, { maxWait: 5000 }),
-    'taxIdApi.searchInput': debounce(async function searchInput(val) {
+    },
+    getCompanyByTaxId(taxId) {
       if (this.taxIdApi.isLoading) return;
 
       this.taxIdApi.isLoading = true;
 
-      companiesService.getTaxIdNumbers({ filter: val })
+      companiesService.getFirst({ 'tax-id': taxId })
       .then((res) => {
-        this.taxIdApi.values = res.data;
+        if (!res.data.id) return;
+
+        if (!this.item.company.name
+        && !this.item.company.phoneNumber
+        && !this.item.company.city) {
+          const { name, phoneNumber, city } = res.data;
+
+          this.item.company.name = name;
+          this.item.company.phoneNumber = phoneNumber;
+          this.item.company.city = city;
+
+          this.$refs.companyName.resetValidation();
+          this.$refs.companyPhoneNumber.resetValidation();
+          this.$refs.companyCity.resetValidation();
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -1107,6 +1149,68 @@ export default {
       .finally(() => {
         this.taxIdApi.isLoading = false;
       });
+    },
+    getCompanyByPhoneNumber(phoneNumber) {
+      if (this.phoneNumberApi.isLoading) return;
+
+      this.phoneNumberApi.isLoading = true;
+
+      companiesService.getFirst({ 'phone-number': phoneNumber })
+      .then((res) => {
+        if (!res.data.id) return;
+
+        if (!this.item.company.name
+        && !this.item.company.taxId
+        && !this.item.company.city) {
+          const { name, taxId, city } = res.data;
+
+          this.item.company.name = name;
+          this.item.company.taxId = taxId;
+          this.item.company.city = city;
+
+          this.$refs.companyName.resetValidation();
+          this.$refs.companyTaxId.resetValidation();
+          this.$refs.companyCity.resetValidation();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        this.phoneNumberApi.isLoading = false;
+      });
+    },
+  },
+  watch: {
+    'nameApi.searchInput': debounce(async function searchInput(val) {
+      if (this.nameApi.isLoading) return;
+
+      this.nameApi.isLoading = true;
+
+      companiesService.getNames({ filter: val })
+      .then((res) => { this.nameApi.values = res.data; })
+      .catch((error) => console.log(error))
+      .finally(() => { this.nameApi.isLoading = false; });
+    }, 500, { maxWait: 5000 }),
+    'taxIdApi.searchInput': debounce(async function searchInput(val) {
+      if (this.taxIdApi.isLoading) return;
+
+      this.taxIdApi.isLoading = true;
+
+      companiesService.getTaxIdNumbers({ filter: val })
+      .then((res) => { this.taxIdApi.values = res.data; })
+      .catch((error) => console.log(error))
+      .finally(() => { this.taxIdApi.isLoading = false; });
+    }, 500, { maxWait: 5000 }),
+    'phoneNumberApi.searchInput': debounce(async function searchInput(val) {
+      if (this.phoneNumberApi.isLoading) return;
+
+      this.phoneNumberApi.isLoading = true;
+
+      companiesService.getPhoneNumbers({ filter: val })
+      .then((res) => { this.phoneNumberApi.values = res.data; })
+      .catch((error) => console.log(error))
+      .finally(() => { this.phoneNumberApi.isLoading = false; });
     }, 500, { maxWait: 5000 }),
   },
 };

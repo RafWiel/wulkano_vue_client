@@ -66,29 +66,35 @@
             <v-row class="no-gutters mt-2">
               <!-- Name -->
               <v-col cols="6" sm="4" md="3" lg="2">
-                <v-text-field
-                  :rules="[rules.required]"
-                  v-model.lazy="item.client.name"
-                  label="Imię i Nazwisko"
-                  type="input"
-                  class="text_ellipsis"
-                  hide-details="auto"
-                  validate-on-blur
-                  />
-              </v-col>
-              <!-- Phone number -->
-              <v-col cols="6" sm="8" md="3" lg="2" class="pl-2">
                 <v-combobox
-                  :items="api.values"
-                  :loading="api.isLoading"
+                  :items="nameApi.values"
+                  :loading="nameApi.isLoading"
+                  :search-input.sync="nameApi.searchInput"
                   :rules="[rules.required]"
-                  :search-input.sync="api.searchInput"
-                  v-model="item.client.phoneNumber"
+                  @change="getClientByName(item.client.name)"
+                  ref="clientName"
                   hide-no-data
                   hide-selected
                   no-filter
                   type="input"
-                  label="Telefon kontaktowy"/>
+                  label="Imię i nazwisko"
+                  v-model="item.client.name"/>
+              </v-col>
+              <!-- Phone number -->
+              <v-col cols="6" sm="8" md="3" lg="2" class="pl-2">
+                <v-combobox
+                  :items="phoneNumberApi.values"
+                  :loading="phoneNumberApi.isLoading"
+                  :search-input.sync="phoneNumberApi.searchInput"
+                  :rules="[rules.required]"
+                  @change="getClientByPhoneNumber(item.client.phoneNumber)"
+                  ref="clientPhoneNumber"
+                  hide-no-data
+                  hide-selected
+                  no-filter
+                  type="input"
+                  label="Telefon kontaktowy"
+                  v-model="item.client.phoneNumber"/>
               </v-col>
               <!-- Description -->
               <v-col
@@ -838,6 +844,7 @@ export default {
       client: {
         name: null,
         phoneNumber: null,
+        email: null,
       },
       description: null,
       vehicle: {
@@ -1095,7 +1102,12 @@ export default {
       required: rules.required,
       integer: rules.integer,
     },
-    api: {
+    nameApi: {
+      searchInput: null,
+      values: [],
+      isLoading: false,
+    },
+    phoneNumberApi: {
       searchInput: null,
       values: [],
       isLoading: false,
@@ -1182,23 +1194,75 @@ export default {
       //add new item
       array.push(newItem);
     },
-  },
-  watch: {
-    'api.searchInput': debounce(async function searchInput(val) {
-      if (this.api.isLoading) return;
+    getClientByName(name) {
+      if (this.nameApi.isLoading) return;
 
-      this.api.isLoading = true;
+      this.nameApi.isLoading = true;
 
-      clientsService.getPhoneNumbers({ filter: val })
+      clientsService.getFirst({ name })
       .then((res) => {
-        this.api.values = res.data;
+        if (!res.data.id) return;
+
+        if (!this.item.client.phoneNumber) {
+          const { phoneNumber } = res.data;
+
+          this.item.client.phoneNumber = phoneNumber;
+
+          this.$refs.clientPhoneNumber.resetValidation();
+        }
       })
       .catch((error) => {
         console.log(error);
       })
       .finally(() => {
-        this.api.isLoading = false;
+        this.nameApi.isLoading = false;
       });
+    },
+    getClientByPhoneNumber(phoneNumber) {
+      if (this.phoneNumberApi.isLoading) return;
+
+      this.phoneNumberApi.isLoading = true;
+
+      clientsService.getFirst({ 'phone-number': phoneNumber })
+      .then((res) => {
+        if (!res.data.id) return;
+
+        if (!this.item.client.name) {
+          const { name } = res.data;
+
+          this.item.client.name = name;
+
+          this.$refs.clientName.resetValidation();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        this.phoneNumberApi.isLoading = false;
+      });
+    },
+  },
+  watch: {
+    'nameApi.searchInput': debounce(async function searchInput(val) {
+      if (this.nameApi.isLoading) return;
+
+      this.nameApi.isLoading = true;
+
+      clientsService.getNames({ filter: val })
+      .then((res) => { this.nameApi.values = res.data; })
+      .catch((error) => console.log(error))
+      .finally(() => { this.nameApi.isLoading = false; });
+    }, 500, { maxWait: 5000 }),
+    'phoneNumberApi.searchInput': debounce(async function searchInput(val) {
+      if (this.phoneNumberApi.isLoading) return;
+
+      this.phoneNumberApi.isLoading = true;
+
+      clientsService.getPhoneNumbers({ filter: val })
+      .then((res) => { this.phoneNumberApi.values = res.data; })
+      .catch((error) => console.log(error))
+      .finally(() => { this.phoneNumberApi.isLoading = false; });
     }, 500, { maxWait: 5000 }),
   },
 };

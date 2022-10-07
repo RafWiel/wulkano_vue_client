@@ -67,9 +67,9 @@
               <!-- Name -->
               <v-col cols="6" sm="4" md="3" lg="2">
                 <v-combobox
-                  :items="namesApi.values"
-                  :loading="namesApi.isLoading"
-                  :search-input.sync="namesApi.searchInput"
+                  :items="nameApi.values"
+                  :loading="nameApi.isLoading"
+                  :search-input.sync="nameApi.searchInput"
                   :rules="[rules.required]"
                   @change="getClientByName(item.client.name)"
                   ref="clientName"
@@ -83,9 +83,9 @@
               <!-- Company -->
               <v-col cols="6" sm="4" md="3" lg="2" class="pl-2">
                 <v-combobox
-                  :items="companyNamesApi.values"
-                  :loading="companyNamesApi.isLoading"
-                  :search-input.sync="companyNamesApi.searchInput"
+                  :items="companyNameApi.values"
+                  :loading="companyNameApi.isLoading"
+                  :search-input.sync="companyNameApi.searchInput"
                   @change="getClientByCompanyName(item.client.companyName)"
                   hide-no-data
                   hide-selected
@@ -99,9 +99,9 @@
                 cols="12" sm="4" md="6" lg="8"
                 :class="$vuetify.breakpoint.smAndUp ? 'pl-2' : ''">
                 <v-combobox
-                  :items="phoneNumbersApi.values"
-                  :loading="phoneNumbersApi.isLoading"
-                  :search-input.sync="phoneNumbersApi.searchInput"
+                  :items="phoneNumberApi.values"
+                  :loading="phoneNumberApi.isLoading"
+                  :search-input.sync="phoneNumberApi.searchInput"
                   :rules="[rules.required]"
                   @change="getClientByPhoneNumber(item.client.phoneNumber)"
                   ref="clientPhoneNumber"
@@ -323,10 +323,10 @@ export default {
       requestName: 'Nowe zlecenie',
       // date: new Date(),
       client: {
-        id: null,
         name: null,
         companyName: null,
         phoneNumber: null,
+        email: null,
       },
       tires: [
         {
@@ -351,17 +351,17 @@ export default {
         client: null,
       },
     },
-    namesApi: {
+    nameApi: {
       searchInput: null,
       values: [],
       isLoading: false,
     },
-    companyNamesApi: {
+    companyNameApi: {
       searchInput: null,
       values: [],
       isLoading: false,
     },
-    phoneNumbersApi: {
+    phoneNumberApi: {
       searchInput: null,
       values: [],
       isLoading: false,
@@ -453,18 +453,17 @@ export default {
       setTimeout(() => { this.isFormReset = false; }, 1000);
     },
     getClientByName(name) {
-      if (this.namesApi.isLoading) return;
+      if (this.nameApi.isLoading) return;
 
-      this.namesApi.isLoading = true;
+      this.nameApi.isLoading = true;
 
       clientsService.getFirst({ name })
       .then((res) => {
-        if (!res.data.name) return;
+        if (!res.data.id) return;
 
         if (!this.item.client.companyName && !this.item.client.phoneNumber) {
-          const { id, companyName, phoneNumber } = res.data;
+          const { companyName, phoneNumber } = res.data;
 
-          this.item.client.id = id;
           this.item.client.companyName = companyName;
           this.item.client.phoneNumber = phoneNumber;
 
@@ -475,22 +474,21 @@ export default {
         console.log(error);
       })
       .finally(() => {
-        this.namesApi.isLoading = false;
+        this.nameApi.isLoading = false;
       });
     },
     getClientByCompanyName(companyName) {
-      if (this.companyNamesApi.isLoading) return;
+      if (this.companyNameApi.isLoading) return;
 
-      this.companyNamesApi.isLoading = true;
+      this.companyNameApi.isLoading = true;
 
       clientsService.getFirst({ 'company-name': companyName })
       .then((res) => {
-        if (!res.data.name) return;
+        if (!res.data.id) return;
 
         if (!this.item.client.name && !this.item.client.phoneNumber) {
-          const { id, name, phoneNumber } = res.data;
+          const { name, phoneNumber } = res.data;
 
-          this.item.client.id = id;
           this.item.client.name = name;
           this.item.client.phoneNumber = phoneNumber;
 
@@ -502,22 +500,21 @@ export default {
         console.log(error);
       })
       .finally(() => {
-        this.companyNamesApi.isLoading = false;
+        this.companyNameApi.isLoading = false;
       });
     },
     getClientByPhoneNumber(phoneNumber) {
-      if (this.phoneNumbersApi.isLoading) return;
+      if (this.phoneNumberApi.isLoading) return;
 
-      this.phoneNumbersApi.isLoading = true;
+      this.phoneNumberApi.isLoading = true;
 
       clientsService.getFirst({ 'phone-number': phoneNumber })
       .then((res) => {
-        if (!res.data.name) return;
+        if (!res.data.id) return;
 
         if (!this.item.client.name && !this.item.client.companyName) {
-          const { id, name, companyName } = res.data;
+          const { name, companyName } = res.data;
 
-          this.item.client.id = id;
           this.item.client.name = name;
           this.item.client.companyName = companyName;
 
@@ -528,40 +525,40 @@ export default {
         console.log(error);
       })
       .finally(() => {
-        this.phoneNumbersApi.isLoading = false;
+        this.phoneNumberApi.isLoading = false;
       });
     },
   },
   watch: {
-    'namesApi.searchInput': debounce(async function searchInput(val) {
-      if (this.namesApi.isLoading) return;
+    'nameApi.searchInput': debounce(async function searchInput(val) {
+      if (this.nameApi.isLoading) return;
 
-      this.namesApi.isLoading = true;
+      this.nameApi.isLoading = true;
 
       clientsService.getNames({ filter: val })
-      .then((res) => { this.namesApi.values = res.data; })
+      .then((res) => { this.nameApi.values = res.data; })
       .catch((error) => console.log(error))
-      .finally(() => { this.namesApi.isLoading = false; });
+      .finally(() => { this.nameApi.isLoading = false; });
     }, 500, { maxWait: 5000 }),
-    'companyNamesApi.searchInput': debounce(async function searchInput(val) {
-      if (this.companyNamesApi.isLoading) return;
+    'companyNameApi.searchInput': debounce(async function searchInput(val) {
+      if (this.companyNameApi.isLoading) return;
 
-      this.companyNamesApi.isLoading = true;
+      this.companyNameApi.isLoading = true;
 
       clientsService.getCompanyNames({ filter: val })
-      .then((res) => { this.companyNamesApi.values = res.data; })
+      .then((res) => { this.companyNameApi.values = res.data; })
       .catch((error) => console.log(error))
-      .finally(() => { this.companyNamesApi.isLoading = false; });
+      .finally(() => { this.companyNameApi.isLoading = false; });
     }, 500, { maxWait: 5000 }),
-    'phoneNumbersApi.searchInput': debounce(async function searchInput(val) {
-      if (this.phoneNumbersApi.isLoading) return;
+    'phoneNumberApi.searchInput': debounce(async function searchInput(val) {
+      if (this.phoneNumberApi.isLoading) return;
 
-      this.phoneNumbersApi.isLoading = true;
+      this.phoneNumberApi.isLoading = true;
 
       clientsService.getPhoneNumbers({ filter: val })
-      .then((res) => { this.phoneNumbersApi.values = res.data; })
+      .then((res) => { this.phoneNumberApi.values = res.data; })
       .catch((error) => console.log(error))
-      .finally(() => { this.phoneNumbersApi.isLoading = false; });
+      .finally(() => { this.phoneNumberApi.isLoading = false; });
     }, 500, { maxWait: 5000 }),
   },
 };

@@ -11,9 +11,9 @@
           <!-- Main workspace -->
           <v-main style="height: 100%">
             <app-bar @menuClicked="isNavigationBarOpen = !isNavigationBarOpen"/>
-            <!-- <h5 class="px-2 py-1 yellow">Migrations</h5>
-            <h5 class="px-2 py-1 yellow">Wczytuj klienta po nazwie i firmie</h5>
-            <h5 class="px-2 py-1 yellow">Usun wczytywanie klienta na serwerze, numer tel nie moze byc unikalny</h5>
+            <!-- <h5 class="px-2 py-1 yellow">NIP rules</h5>
+            <h5 class="px-2 py-1 yellow">Tel rules</h5>
+            <h5 class="px-2 py-1 yellow">Mode Development bez autoryzacji</h5>
             <h5 class="px-2 py-1 yellow">Zapisz błędy do loga</h5>
             <h5 class="px-2 py-1 yellow">Instrukcja instalacji</h5> -->
             <router-view
