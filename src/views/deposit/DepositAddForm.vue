@@ -102,7 +102,7 @@
                   :items="phoneNumberApi.values"
                   :loading="phoneNumberApi.isLoading"
                   :search-input.sync="phoneNumberApi.searchInput"
-                  :rules="[rules.required]"
+                  :rules="[rules.required, rules.phoneNumber]"
                   @change="getClientByPhoneNumber(item.client.phoneNumber)"
                   ref="clientPhoneNumber"
                   hide-no-data
@@ -369,6 +369,7 @@ export default {
     rules: {
       required: rules.required,
       integer: rules.integer,
+      phoneNumber: rules.phoneNumber,
     },
   }),
   created() {

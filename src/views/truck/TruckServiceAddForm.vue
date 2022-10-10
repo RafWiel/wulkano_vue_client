@@ -88,7 +88,7 @@
                   :items="taxIdApi.values"
                   :loading="taxIdApi.isLoading"
                   :search-input.sync="taxIdApi.searchInput"
-                  :rules="[rules.required]"
+                  :rules="[rules.required, rules.taxId]"
                   @change="getCompanyByTaxId(item.company.taxId)"
                   ref="companyTaxId"
                   hide-details="auto"
@@ -104,10 +104,10 @@
                 cols="6" sm="4" md="3" lg="2"
                 :class="$vuetify.breakpoint.smAndUp ? 'pl-2' : 'mt-2'">
                 <v-combobox
-                  :rules="[rules.required]"
                   :items="phoneNumberApi.values"
                   :loading="phoneNumberApi.isLoading"
                   :search-input.sync="phoneNumberApi.searchInput"
+                  :rules="[rules.required, rules.phoneNumber]"
                   @change="getCompanyByPhoneNumber(item.company.phoneNumber)"
                   ref="companyPhoneNumber"
                   hide-details="auto"
@@ -1005,6 +1005,8 @@ export default {
     rules: {
       required: rules.required,
       integer: rules.integer,
+      phoneNumber: rules.phoneNumber,
+      taxId: rules.taxId,
     },
   }),
   created() {
