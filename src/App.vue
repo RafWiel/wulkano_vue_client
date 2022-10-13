@@ -56,6 +56,8 @@ import MessageDialog from '@/components/MessageDialog.vue';
 import QuestionDialog from '@/components/QuestionDialog.vue';
 import AppBar from '@/components/AppBar.vue';
 import SideBar from '@/components/SideBar.vue';
+import logger from '@/misc/logger';
+
 
 export default {
   name: 'App',
@@ -92,7 +94,8 @@ export default {
     },
   }),
   created() {
-    console.log('created localStorage.userInfo:', localStorage.getItem('userInfo'));
+    logger.debug('test:', '123');
+    logger.debug('created localStorage.userInfo:', localStorage.getItem('userInfo'));
     if (!localStorage.getItem('userInfo')) {
       if (this.$route.name !== 'Login' && this.$route.name !== 'Register') {
         this.$router.replace({ name: 'Login' });
