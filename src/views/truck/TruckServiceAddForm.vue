@@ -751,6 +751,7 @@ import ServiceAction from '@/components/truck/ServiceAction.vue';
 import TireBrandInfo from '@/components/truck/TireBrandInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
 import Mechanic from '@/components/truck/Mechanic.vue';
+import logger from '@/misc/logger';
 
 export default {
   name: 'TruckServiceAddForm',
@@ -1067,7 +1068,7 @@ export default {
       array.push(newItem);
     },
     processError(error) {
-      console.log(error);
+      logger.error(error);
       this.$emit('isProcessing', false);
 
       if (error.response === undefined) {
@@ -1075,7 +1076,7 @@ export default {
         return;
       }
 
-      console.log(error.response.data);
+      logger.error(error.response.data);
       this.$emit('showMessage', 'Zlecenie ciężarowe', error.response.data.message);
     },
     resetForm() {
@@ -1115,9 +1116,7 @@ export default {
           this.$refs.companyCity.resetValidation();
         }
       })
-      .catch((error) => {
-        console.log(error);
-      })
+      .catch((error) => logger.error(error))
       .finally(() => {
         this.nameApi.isLoading = false;
       });
@@ -1145,9 +1144,7 @@ export default {
           this.$refs.companyCity.resetValidation();
         }
       })
-      .catch((error) => {
-        console.log(error);
-      })
+      .catch((error) => logger.error(error))
       .finally(() => {
         this.taxIdApi.isLoading = false;
       });
@@ -1175,9 +1172,7 @@ export default {
           this.$refs.companyCity.resetValidation();
         }
       })
-      .catch((error) => {
-        console.log(error);
-      })
+      .catch((error) => logger.error(error))
       .finally(() => {
         this.phoneNumberApi.isLoading = false;
       });
@@ -1190,9 +1185,13 @@ export default {
       this.nameApi.isLoading = true;
 
       companiesService.getNames({ filter: val })
-      .then((res) => { this.nameApi.values = res.data; })
-      .catch((error) => console.log(error))
-      .finally(() => { this.nameApi.isLoading = false; });
+      .then((res) => {
+        this.nameApi.values = res.data;
+      })
+      .catch((error) => logger.error(error))
+      .finally(() => {
+        this.nameApi.isLoading = false;
+      });
     }, 500, { maxWait: 5000 }),
     'taxIdApi.searchInput': debounce(async function searchInput(val) {
       if (this.taxIdApi.isLoading) return;
@@ -1200,9 +1199,13 @@ export default {
       this.taxIdApi.isLoading = true;
 
       companiesService.getTaxIdNumbers({ filter: val })
-      .then((res) => { this.taxIdApi.values = res.data; })
-      .catch((error) => console.log(error))
-      .finally(() => { this.taxIdApi.isLoading = false; });
+      .then((res) => {
+        this.taxIdApi.values = res.data;
+      })
+      .catch((error) => logger.error(error))
+      .finally(() => {
+        this.taxIdApi.isLoading = false;
+      });
     }, 500, { maxWait: 5000 }),
     'phoneNumberApi.searchInput': debounce(async function searchInput(val) {
       if (this.phoneNumberApi.isLoading) return;
@@ -1210,9 +1213,13 @@ export default {
       this.phoneNumberApi.isLoading = true;
 
       companiesService.getPhoneNumbers({ filter: val })
-      .then((res) => { this.phoneNumberApi.values = res.data; })
-      .catch((error) => console.log(error))
-      .finally(() => { this.phoneNumberApi.isLoading = false; });
+      .then((res) => {
+        this.phoneNumberApi.values = res.data;
+      })
+      .catch((error) => logger.error(error))
+      .finally(() => {
+        this.phoneNumberApi.isLoading = false;
+      });
     }, 500, { maxWait: 5000 }),
   },
 };

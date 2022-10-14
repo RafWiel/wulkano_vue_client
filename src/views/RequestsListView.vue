@@ -38,6 +38,7 @@ import requestType from '@/enums/requestType';
 import DataGrid from '@/components/DataGrid.vue';
 import RequestsMobileSorting from '@/components/requests/RequestsMobileSorting.vue';
 import RequestsFilter from '@/components/requests/RequestsFilter.vue';
+import logger from '@/misc/logger';
 
 export default {
   name: 'RequestsListView',
@@ -140,8 +141,8 @@ export default {
       .then((response) => {
         this.$emit('isProcessing', false);
 
-        console.log('currentPage', this.currentPage);
-        console.log(response.data);
+        // console.log('currentPage', this.currentPage);
+        // console.log(response.data);
 
         if (response.data.requests.length) {
           // format values
@@ -188,7 +189,7 @@ export default {
       this.fetch();
     },
     processError(error) {
-      console.log(error);
+      logger.error(error);
       this.$emit('isProcessing', false);
 
       if (error.response.status === 401) {
@@ -201,7 +202,7 @@ export default {
         return;
       }
 
-      console.log(error.response.data);
+      logger.error(error.response.data);
       this.$emit('showMessage', 'Zlecenia serwisowe', error.response.data.message);
     },
   },

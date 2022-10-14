@@ -304,6 +304,7 @@ import clientsService from '@/services/clients';
 import depositsService from '@/services/deposits';
 import TireInfo from '@/components/deposit/TireInfo.vue';
 import SignatureField from '@/components/SignatureField.vue';
+import logger from '@/misc/logger';
 
 export default {
   name: 'DepositAddForm',
@@ -430,7 +431,7 @@ export default {
       array.push(newItem);
     },
     processError(error) {
-      console.log(error);
+      logger.error(error);
       this.$emit('isProcessing', false);
 
       if (error.response === undefined) {
@@ -438,7 +439,7 @@ export default {
         return;
       }
 
-      console.log(error.response.data);
+      logger.error(error.response.data);
       this.$emit('showMessage', 'Depozyt', error.response.data.message);
     },
     resetForm() {
@@ -451,7 +452,9 @@ export default {
       this.$refs.clientSignature.resetCanvas();
       this.$refs.form.reset();
 
-      setTimeout(() => { this.isFormReset = false; }, 1000);
+      setTimeout(() => {
+        this.isFormReset = false;
+      }, 1000);
     },
     getClientByName(name) {
       if (this.nameApi.isLoading) return;
@@ -471,9 +474,7 @@ export default {
           this.$refs.clientPhoneNumber.resetValidation();
         }
       })
-      .catch((error) => {
-        console.log(error);
-      })
+      .catch((error) => logger.error(error))
       .finally(() => {
         this.nameApi.isLoading = false;
       });
@@ -497,9 +498,7 @@ export default {
           this.$refs.clientPhoneNumber.resetValidation();
         }
       })
-      .catch((error) => {
-        console.log(error);
-      })
+      .catch((error) => logger.error(error))
       .finally(() => {
         this.companyNameApi.isLoading = false;
       });
@@ -522,9 +521,7 @@ export default {
           this.$refs.clientName.resetValidation();
         }
       })
-      .catch((error) => {
-        console.log(error);
-      })
+      .catch((error) => logger.error(error))
       .finally(() => {
         this.phoneNumberApi.isLoading = false;
       });
@@ -537,9 +534,13 @@ export default {
       this.nameApi.isLoading = true;
 
       clientsService.getNames({ filter: val })
-      .then((res) => { this.nameApi.values = res.data; })
-      .catch((error) => console.log(error))
-      .finally(() => { this.nameApi.isLoading = false; });
+      .then((res) => {
+        this.nameApi.values = res.data;
+      })
+      .catch((error) => logger.error(error))
+      .finally(() => {
+        this.nameApi.isLoading = false;
+      });
     }, 500, { maxWait: 5000 }),
     'companyNameApi.searchInput': debounce(async function searchInput(val) {
       if (this.companyNameApi.isLoading) return;
@@ -547,9 +548,13 @@ export default {
       this.companyNameApi.isLoading = true;
 
       clientsService.getCompanyNames({ filter: val })
-      .then((res) => { this.companyNameApi.values = res.data; })
-      .catch((error) => console.log(error))
-      .finally(() => { this.companyNameApi.isLoading = false; });
+      .then((res) => {
+        this.companyNameApi.values = res.data;
+      })
+      .catch((error) => logger.error(error))
+      .finally(() => {
+        this.companyNameApi.isLoading = false;
+      });
     }, 500, { maxWait: 5000 }),
     'phoneNumberApi.searchInput': debounce(async function searchInput(val) {
       if (this.phoneNumberApi.isLoading) return;
@@ -557,9 +562,13 @@ export default {
       this.phoneNumberApi.isLoading = true;
 
       clientsService.getPhoneNumbers({ filter: val })
-      .then((res) => { this.phoneNumberApi.values = res.data; })
+      .then((res) => {
+        this.phoneNumberApi.values = res.data;
+      })
       .catch((error) => console.log(error))
-      .finally(() => { this.phoneNumberApi.isLoading = false; });
+      .finally(() => {
+        this.phoneNumberApi.isLoading = false;
+      });
     }, 500, { maxWait: 5000 }),
   },
 };

@@ -812,6 +812,7 @@ import ServiceAction from '@/components/car/ServiceAction.vue';
 import carsService from '@/services/cars';
 import clientsService from '@/services/clients';
 import threeState from '@/enums/threeState';
+import logger from '@/misc/logger';
 
 export default {
   name: 'CarServiceAddForm',
@@ -1162,7 +1163,7 @@ export default {
       this.$emit('isProcessing', false);
     },
     processError(error) {
-      console.log(error);
+      logger.error(error);
       this.$emit('isProcessing', false);
 
       if (error.response === undefined) {
@@ -1170,7 +1171,7 @@ export default {
         return;
       }
 
-      console.log(error.response.data);
+      logger.error(error.response.data);
       this.$emit('showMessage', 'Zlecenie osobowe', error.response.data.message);
     },
     resetForm() {
@@ -1212,9 +1213,7 @@ export default {
           this.$refs.clientPhoneNumber.resetValidation();
         }
       })
-      .catch((error) => {
-        console.log(error);
-      })
+      .catch((error) => logger.error(error))
       .finally(() => {
         this.nameApi.isLoading = false;
       });
@@ -1236,9 +1235,7 @@ export default {
           this.$refs.clientName.resetValidation();
         }
       })
-      .catch((error) => {
-        console.log(error);
-      })
+      .catch((error) => logger.error(error))
       .finally(() => {
         this.phoneNumberApi.isLoading = false;
       });
@@ -1251,9 +1248,13 @@ export default {
       this.nameApi.isLoading = true;
 
       clientsService.getNames({ filter: val })
-      .then((res) => { this.nameApi.values = res.data; })
-      .catch((error) => console.log(error))
-      .finally(() => { this.nameApi.isLoading = false; });
+      .then((res) => {
+        this.nameApi.values = res.data;
+      })
+      .catch((error) => logger.error(error))
+      .finally(() => {
+        this.nameApi.isLoading = false;
+      });
     }, 500, { maxWait: 5000 }),
     'phoneNumberApi.searchInput': debounce(async function searchInput(val) {
       if (this.phoneNumberApi.isLoading) return;
@@ -1261,9 +1262,13 @@ export default {
       this.phoneNumberApi.isLoading = true;
 
       clientsService.getPhoneNumbers({ filter: val })
-      .then((res) => { this.phoneNumberApi.values = res.data; })
-      .catch((error) => console.log(error))
-      .finally(() => { this.phoneNumberApi.isLoading = false; });
+      .then((res) => {
+        this.phoneNumberApi.values = res.data;
+      })
+      .catch((error) => logger.error(error))
+      .finally(() => {
+        this.phoneNumberApi.isLoading = false;
+      });
     }, 500, { maxWait: 5000 }),
   },
 };

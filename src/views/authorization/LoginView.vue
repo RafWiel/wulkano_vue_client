@@ -79,6 +79,7 @@
 <script>
 import tools from '@/misc/tools';
 import authorizationService from '@/services/authorization';
+import logger from '@/misc/logger';
 
 export default {
   name: 'LoginView',
@@ -129,7 +130,7 @@ export default {
       .then((response) => {
         this.$emit('isProcessing', false);
 
-        console.log(response.data);
+        // console.log(response.data);
 
         // save user info to local storage
         const userInfo = {
@@ -150,7 +151,7 @@ export default {
         this.$router.replace({ name: 'Main' });
       })
       .catch((error) => {
-        console.log(error);
+        logger.error(error);
         this.$emit('isProcessing', false);
 
         if (error.response === undefined) {
@@ -158,7 +159,7 @@ export default {
           return;
         }
 
-        console.log(error.response.data);
+        logger.error(error.response.data);
         this.errorMessage.password = error.response.data.message;
       });
     },

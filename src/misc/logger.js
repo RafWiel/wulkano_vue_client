@@ -9,8 +9,6 @@ const levels = {
 };
 
 async function log(level, ...args) {
-  if (process.env.NODE_ENV === 'development') console.log(...args);
-
   await logsService.create({
     message: args.join(' '),
     level,

@@ -145,6 +145,7 @@
 import debounce from 'lodash.debounce'; // debounce - opoznienie
 import userType from '@/enums/userType';
 import usersService from '@/services/users';
+import logger from '@/misc/logger';
 
 export default {
   name: 'RegisterView',
@@ -210,7 +211,7 @@ export default {
       .then((response) => {
         this.$emit('isProcessing', false);
 
-        console.log(response.data);
+        // console.log(response.data);
 
         if (response.data.result) {
           this.$emit('showMessage', 'Rejestracja', `Użytkownik ${this.input.userName} został dodany`);
@@ -219,17 +220,15 @@ export default {
           this.$emit('showMessage', 'Rejestracja', 'Operacja zakończona niepowodzem');
         }
       })
-      .catch((error) => {
-        this.processError(error);
-      });
+      .catch((error) => this.processError(error));
     },
     async verifyUserName() {
       // check users
       const response = await usersService.isUniqueUserName({ userName: this.input.userName })
-        .catch((error) => {
-          console.log(error);
-          return false;
-        });
+      .catch((error) => {
+        logger.error(error);
+        return false;
+      });
 
       if (response.data === undefined) {
         return false;
@@ -263,7 +262,7 @@ export default {
       return true;
     },
     processError(error) {
-      console.log(error);
+      logger.error(error);
       this.$emit('isProcessing', false);
 
       if (error.response === undefined) {
@@ -271,7 +270,7 @@ export default {
         return;
       }
 
-      console.log(error.response.data);
+      logger.error(error.response.data);
       this.$emit('showMessage', 'Rejestracja', error.response.data.message);
     },
     removePolishChars(text) {

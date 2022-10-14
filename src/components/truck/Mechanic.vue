@@ -21,6 +21,7 @@
 import debounce from 'lodash.debounce';
 import rules from '@/misc/rules';
 import mechanicsService from '@/services/mechanics';
+import logger from '@/misc/logger';
 
 export default
 {
@@ -60,7 +61,7 @@ export default
         this.api.values = res.data;
       })
       .catch((error) => {
-        console.log(error);
+        logger.error(error);
       })
       .finally(() => {
         this.api.isLoading = false;

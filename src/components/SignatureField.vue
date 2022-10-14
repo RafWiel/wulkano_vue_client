@@ -214,8 +214,6 @@ export default
       const { img } = vm.$refs;
 
       img.src = dataURL;
-
-      console.log(dataURL);
     },
     getImageData: function aa() {
       const vm = this;

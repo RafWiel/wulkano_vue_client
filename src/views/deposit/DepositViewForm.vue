@@ -272,6 +272,7 @@ import moment from 'moment';
 import depositsService from '@/services/deposits';
 import signaturesService from '@/services/signatures';
 import TireInfo from '@/components/deposit/TireInfo.vue';
+import logger from '@/misc/logger';
 
 export default {
   name: 'DepositViewForm',
@@ -305,7 +306,7 @@ export default {
       .then((response) => {
         this.item = response.data.item;
 
-        console.log(this.item);
+        // console.log(this.item);
 
         this.item.client = this.item.client || {};
         this.item.date = moment(this.item.date, 'YYYY-MM-DD hh:mm:ss.SSS Z').format('YYYY-MM-DD HH:mm');
@@ -318,9 +319,7 @@ export default {
         .then((res) => {
           this.employeeSignature = `data:image/png;base64,${res.data}`;
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => logger.error(error));
 
         //get client signature
         signaturesService.get({
@@ -330,18 +329,14 @@ export default {
         .then((res) => {
           this.clientSignature = `data:image/png;base64,${res.data}`;
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => logger.error(error));
       })
-      .catch((error) => {
-        this.processError(error);
-      });
+      .catch((error) => this.processError(error));
 
       this.$emit('isProcessing', false);
     },
     processError(error) {
-      console.log(error);
+      logger.error(error);
       this.$emit('isProcessing', false);
 
       if (error.response.status === 401) {
@@ -354,7 +349,7 @@ export default {
         return;
       }
 
-      console.log(error.response.data);
+      logger.error(error.response.data);
       this.$emit('showMessage', 'Depozyt', error.response.data.message);
     },
   },

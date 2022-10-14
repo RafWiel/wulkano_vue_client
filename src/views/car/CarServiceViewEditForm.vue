@@ -863,6 +863,7 @@ import ServiceAction from '@/components/car/ServiceAction.vue';
 import carsService from '@/services/cars';
 import clientsService from '@/services/clients';
 import signaturesService from '@/services/signatures';
+import logger from '@/misc/logger';
 
 export default {
   name: 'CarServiceViewEditForm',
@@ -996,7 +997,7 @@ export default {
       .then((response) => {
         this.item = response.data.item;
 
-        //console.log(JSON.stringify(this.item));
+        // console.log(JSON.stringify(this.item));
 
         this.item.client = this.item.client || {};
         this.item.date = moment(this.item.date, 'YYYY-MM-DD hh:mm:ss.SSS Z').format('YYYY-MM-DD HH:mm');
@@ -1014,9 +1015,7 @@ export default {
         .then((res) => {
           this.employeeSignature = `data:image/png;base64,${res.data}`;
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => logger.error(error));
 
         //get client signature
         signaturesService.get({
@@ -1026,13 +1025,9 @@ export default {
         .then((res) => {
           this.clientSignature = `data:image/png;base64,${res.data}`;
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => logger.error(error));
       })
-      .catch((error) => {
-        this.processError(error);
-      });
+      .catch((error) => this.processError(error));
 
       this.$emit('isProcessing', false);
     },
@@ -1061,7 +1056,7 @@ export default {
       });
     },
     processError(error) {
-      console.log(error);
+      logger.error(error);
       this.$emit('isProcessing', false);
 
       if (error.response.status === 401) {
@@ -1074,7 +1069,7 @@ export default {
         return;
       }
 
-      console.log(error.response.data);
+      logger.error(error.response.data);
       this.$emit('showMessage', 'Zlecenie osobowe', error.response.data.message);
     },
     async save() {
@@ -1092,7 +1087,7 @@ export default {
       try {
         this.$emit('isProcessing', true);
 
-        //console.log(JSON.stringify(this.item));
+        // console.log(JSON.stringify(this.item));
 
         const response = await carsService.update(this.item);
 
@@ -1106,9 +1101,7 @@ export default {
 
         this.$emit('showMessage', 'Zlecenie osobowe', 'Nieudany zapis');
       }
-      catch (error) {
-        this.processError(error);
-      }
+      catch (error) { this.processError(error); }
 
       this.$emit('isProcessing', false);
     },
@@ -1123,12 +1116,8 @@ export default {
       .then((res) => {
         this.api.values = res.data;
       })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        this.api.isLoading = false;
-      });
+      .catch((error) => logger.error(error))
+      .finally(() => { this.api.isLoading = false; });
     }, 500, { maxWait: 5000 }),
   },
 };
