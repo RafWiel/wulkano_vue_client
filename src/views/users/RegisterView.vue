@@ -128,7 +128,7 @@
                     block
                     color="primary"
                     class="save-btn"
-                    @click="login">
+                    @click="create">
                     Dodaj
                   </v-btn>
                 </v-col>
@@ -190,7 +190,7 @@ export default {
     this.$refs.firstControl.focus();
   },
   methods: {
-    async login() {
+    async create() {
       // validate input
       if (this.$refs.form.validate() === false
       || this.verifyAdminPassword() === false
