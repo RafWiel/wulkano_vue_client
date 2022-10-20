@@ -1,2 +1,2 @@
-cd ~/Projekty/Wulkano/wulkano_vue_client
+cd ~/Projekty/Wulkano/vue_client
 npm run serve
