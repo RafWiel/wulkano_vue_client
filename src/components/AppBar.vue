@@ -35,7 +35,7 @@ export default
 };
 </script>
 <style lang="scss" scoped>
-  @import '@/styles/main.scss';
+  @import '@/assets/main.scss';
 
   .app-bar {
     background-color: $app-bar-color !important;

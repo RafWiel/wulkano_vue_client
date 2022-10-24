@@ -80,7 +80,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '@/styles/main.scss';
+  @import '@/assets/main.scss';
 
   .menu {
     background-color: $app-bar-color;
