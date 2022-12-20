@@ -24,6 +24,7 @@
         @itemClick="goToItem"
         @sort="sortData"/>
     </v-card>
+    <div v-if="items.length" v-intersect.quiet="intersect" />
   </v-container>
 </template>
 
@@ -186,6 +187,13 @@ export default {
       this.sorting.order = sorting.order;
 
       // refresh with new sorting
+      this.fetch();
+    },
+    intersect(entries, observer, isIntersecting) {
+      if (!isIntersecting) {
+        return;
+      }
+
       this.fetch();
     },
     processError(error) {
